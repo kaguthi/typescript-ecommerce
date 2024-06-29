@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const useRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute');
+const categoryRoute = require('./routes/categoryRoute');
 const path = require('path');
 const app = express();
 const cors = require('cors')
@@ -26,6 +27,7 @@ app.use(cookieParser());
 // all routes
 app.use("/", useRoute);
 app.use("/products", productRoute);
+app.use("/category", categoryRoute);
 
 // server
 app.listen(process.env.PORT, ()=>{
