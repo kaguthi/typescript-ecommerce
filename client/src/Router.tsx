@@ -4,7 +4,7 @@ import Signin from './page/auth/Signin'
 import Layout from './page/Layout'
 import SignUp from './page/auth/SignUp'
 import NotFound from './page/NotFound'
-import Student from './page/User/Student'
+import User from './page/User/User'
 import Edit from './page/User/Edit'
 import Delete from './page/User/Delete'
 import Product from './page/Product/Product'
@@ -27,8 +27,8 @@ function Router() {
             <Route path='editProduct' element={ <EditProduct />} />
             <Route path='deleteProduct' element={ <DeleteProduct />} />
           </Route>
-          <Route path='student'>
-            <Route index element={ <Student />} />
+          <Route path='user'>
+            <Route index element={ <User />} />
             <Route path='edit' element={ <Edit />} />
             <Route path='delete' element={ <Delete />} />
           </Route>

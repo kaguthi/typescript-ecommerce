@@ -24,7 +24,7 @@ function Signin() {
       const data = await response.json();
       if(data.success === true){
         toast.success(data.message);
-        document.cookie = `username=${data.token}`;
+        document.cookie = `token=${data.token}`;
         navigate("/");
       }else{
         toast.error(data.message);

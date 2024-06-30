@@ -28,7 +28,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom";
 
 
-function Student() {
+function User() {
     const [student, setStudent] = useState<studentDetail[]>([]);
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -218,4 +218,4 @@ function Student() {
   )
 }
 
-export default Student
+export default User;
