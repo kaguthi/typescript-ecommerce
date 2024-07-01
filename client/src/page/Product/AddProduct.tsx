@@ -13,7 +13,7 @@ function AddProduct() {
     event.preventDefault();
     const formData = new FormData();
     formData.append('name', product.name);
-    formData.append('price', product.price);
+    formData.append('price', product.price.toString());
     formData.append('description', product.description);
     if (product.image) {
       formData.append('image', product.image)
@@ -56,7 +56,7 @@ function AddProduct() {
           type="number"
           className="p-3 m-5 border border-orange-500 rounded-md w-full"
           value={product.price} 
-          onChange={(e) => setProduct({ ...product, price: e.target.value })} 
+          onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })} 
         />
         <label htmlFor="description">Description</label>
         <textarea
