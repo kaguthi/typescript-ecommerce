@@ -29,7 +29,7 @@ function EditProduct() {
 
     try {
       const response = await fetch(`${host}/products/update/${prodId}`, {
-        method: 'POST',
+        method: 'PUT',
         body: formData,
         headers: {
           "authorization" : document.cookie

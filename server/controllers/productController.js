@@ -91,11 +91,22 @@ async function deleteProduct(req, res) {
         return res.status(400).json({ message: "Product id is required."})
     }
     try {
+        const existingProduct = await productSchema.findById(id);
+        if(!existingProduct) {
+            return res.status(404).json({ message: "Product not found"});
+        }
+        if (existingProduct.image) {
+            const filePath = path.join(uploadDir, path.basename(existingProduct.image));
+            fs.promises.unlink(filePath)
+                .then(() => console.log('File deleted successfully'))
+                .catch(error => console.error('Error deleting file:', error.message));
+        }
         const product = await productSchema.findByIdAndDelete(id);
         if(!product) {
-            return res.status(404).json({ message: "product not found."})
+            return res.status(404).json({ message: "Product not found."})
         }
-        res.status(200).json({ message: "Product deleted successfully."})
+        
+        res.status(200).json({ message: "Product deleted successfully." })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
