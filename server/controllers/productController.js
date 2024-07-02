@@ -72,17 +72,36 @@ async function createProduct(req, res){
 async function updateProduct(req, res) {
     const id = req.params.id;
     if (!id) {
-        return res.status(400).json({ message: "Product id is required"});
+        return res.status(400).json({ message: "Product ID is required." });
     }
-    try {
-        const product = await productSchema.findByIdAndUpdate(id, req.body, { new: true });
-        if(!product) {
-            return res.status(404).json({ message: "Product not found"});
+    upload.single('image')(req, res, async (err) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
         }
-        res.status(200).json({ message: "Product updated Successfully."});
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+        try {
+            const existingProduct = await productSchema.findById(id);
+            if (!existingProduct) {
+                return res.status(404).json({ message: "Product not found." });
+            }
+            const updateData = { ...req.body };
+            if (req.file) {
+                if (existingProduct.image) {
+                    const oldImagePath = path.join(uploadDir, path.basename(existingProduct.image));
+                    fs.promises.unlink(oldImagePath)
+                        .then(() => console.log("File deleted successfully"))
+                        .catch(error => console.error(error.message));
+                }
+                updateData.image = req.file.filename;
+            }
+            const product = await productSchema.findByIdAndUpdate(id, updateData, { new: true });
+            if (!product) {
+                return res.status(404).json({ message: "Product not found." });
+            }
+            res.status(200).json({ message: "Product updated successfully", product });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    });
 }
 
 async function deleteProduct(req, res) {
