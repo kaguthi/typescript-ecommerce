@@ -90,7 +90,7 @@ function DeleteProduct() {
         <DialogTrigger className="bg-primary mt-10 p-3 w-full text-slate-50 rounded-md">Delete</DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirm Delete Product</DialogTitle>
+            <DialogTitle>Confirm Delete of Product</DialogTitle>
             <DialogDescription>
             Are you absolutely sure want to delete this product?
             </DialogDescription>

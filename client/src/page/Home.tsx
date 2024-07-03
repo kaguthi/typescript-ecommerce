@@ -39,6 +39,10 @@ function Home() {
   
   const token = document.cookie;
 
+  const addToCart = () => {
+    toast.success("Product added to cart")
+  }
+
   return token ? (
     <div className="sm:flex sm:flex-col sm:justify-center lg:flex lg:flex-row lg:flex-wrap w-full justify-center">
       <Toaster />
@@ -56,7 +60,7 @@ function Home() {
                 </CardDescription>
               </CardContent>
               <CardFooter>
-                <Button>Add to cart</Button>
+                <Button onClick={addToCart}>Add to cart</Button>
               </CardFooter>
             </Card>
          ))
