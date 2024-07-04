@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { host } from "@/utils/constants";
 
 function Navbar() {
   const token = document.cookie.split('; ').find(row => row.startsWith('token='));
   const name = localStorage.getItem("username");
+  const profileImage = localStorage.getItem("profileImage")
   return (
     <div className="bg-primary flex space-x-2 justify-between sticky top-0">
       <Link to="/" className="text-amber-600 text-2xl text-center py-4 px-4 font-semibold">E-Buy</Link>
@@ -27,9 +29,15 @@ function Navbar() {
                 <h4 className="text-slate-200 text-xl">{name}</h4>
               </li>
               <li>
-                <Avatar className="size-8 mr-10">
-                  <AvatarFallback>{name?.slice(0, 2).toUpperCase()}</AvatarFallback>
-                </Avatar>
+                {
+                  profileImage && profileImage != "undefined" ? 
+                  <Avatar className="size-8 mr-10">
+                    <AvatarFallback><img src={`${host}/uploads/${profileImage}`}/></AvatarFallback>
+                  </Avatar> :
+                  <Avatar className="size-8 mr-10">
+                    <AvatarFallback>{name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                }
               </li>
             </>
           ) : (

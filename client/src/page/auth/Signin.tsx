@@ -24,6 +24,7 @@ function Signin() {
       const data = await response.json();
       if(data.success === true){
         toast.success(data.message);
+        localStorage.setItem("profileImage", data.profileImage)
         document.cookie = `token=${data.token}`;
         navigate("/");
       }else{
