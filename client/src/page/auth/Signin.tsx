@@ -4,9 +4,11 @@ import { loginDetail } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
+import { useAuth } from "./AuthContext";
 
 function Signin() {
   const navigate = useNavigate();
+  const { setToken, setName, setProfileImage } = useAuth();
 
   const [studentDetail, setStudentDetails] = useState<loginDetail>({ username: "", password: ""});
   const handleSubmit = async (e: FormEvent) => {
@@ -24,8 +26,10 @@ function Signin() {
       const data = await response.json();
       if(data.success === true){
         toast.success(data.message);
-        localStorage.setItem("profileImage", data.profileImage)
-        document.cookie = `token=${data.token}`;
+        setProfileImage(data.profileImage);
+        setToken(data.token)
+        setName(data.username)
+        // document.cookie = `token=${data.token}`;
         navigate("/");
       }else{
         toast.error(data.message);

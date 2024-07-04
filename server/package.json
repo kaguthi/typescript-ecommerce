@@ -7,7 +7,7 @@
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "peter Ngugi kaguathi",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
