@@ -108,6 +108,16 @@ async function deleteUser(req, res) {
         return res.status(400).json({ message: "User ID is required." });
     }
     try {
+        const existingUser = await User.findById(id);
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found"})
+        }
+        if (existingUser.profileImage) {
+            const filePath = path.join(uploadDir, path.basename(existingUser.profileImage))
+            fs.promises.unlink(filePath)
+                .then(() => console.log("Image file deleted successfully"))
+                .catch(error => console.error(error.message))
+        }
         const user = await User.findByIdAndDelete(id);
         if (!user) {
             return res.status(404).json({ message: "User not found." });
@@ -124,15 +134,36 @@ async function updateUser(req, res) {
     if (!id) {
         return res.status(400).json({ message: "User ID is required." });
     }
-    try {
-        const user = await User.findByIdAndUpdate(id, req.body, { new: true });
-        if (!user) {
-            return res.status(404).json({ message: "User not found." });
-        }
-        res.status(200).json({ message: "User updated successfully", user });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+        upload.single('profileImage')(req, res, async (err) => {
+            if (err) {
+                return res.status(400).json({ message: err.message })
+            }
+            try {
+                const existingUser = await User.findById(id)
+                if (!existingUser) {
+                    return res.status(404).json({ message: "User not found."})
+                }
+                const updateData = { ...req.body };
+                if (req.file) {
+                    if (existingUser.profileImage) {
+                        const oldImagePath = path.join(uploadDir, path.basename(existingUser.profileImage))
+                        fs.promises.unlink(oldImagePath)
+                            .then(() => console.log("Image file deleted successfully"))
+                            .catch(error => console.error(error.message))
+                    }
+                    updateData.profileImage = req.file.filename;
+                }
+                const user = await User.findByIdAndUpdate(id, req.body, { new: true });
+                if (!user) {
+                    return res.status(404).json({ message: "User not found." });
+                }
+                res.status(200).json({ message: "User updated successfully", user });
+            } catch (error) { 
+                res.status(500).json({ message: error.message })
+            }
+        })
+       
+       
 }
 
 module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById};
