@@ -153,7 +153,7 @@ async function updateUser(req, res) {
                     }
                     updateData.profileImage = req.file.filename;
                 }
-                const user = await User.findByIdAndUpdate(id, req.body, { new: true });
+                const user = await User.findByIdAndUpdate(id, updateData, { new: true });
                 if (!user) {
                     return res.status(404).json({ message: "User not found." });
                 }

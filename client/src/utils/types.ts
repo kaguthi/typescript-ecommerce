@@ -6,7 +6,8 @@ export type ImageDetail = {
 
 export interface userDetail {
     username: string,
-    email: string
+    email: string,
+    profileImage: File | null
 }
 
 export interface studentDetail {

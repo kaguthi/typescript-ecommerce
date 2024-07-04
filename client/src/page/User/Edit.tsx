@@ -9,7 +9,7 @@ function Edit() {
     const [student] = useSearchParams();
     const navigate = useNavigate();
 
-    const [studentDetail, setStudentDetails] = useState<userDetail>({ username: "", email: "" });
+    const [studentDetail, setStudentDetails] = useState<userDetail>({ username: "", email: "", profileImage: null });
     const stud = student.get("studentId");
     useEffect(() =>{
       if (stud) {
@@ -25,6 +25,7 @@ function Edit() {
           .catch(error => console.error('Error fetching student details:', error));
       }
     },[stud]);
+    // TODO: add image input and post capabilities
 
     // submitting the form
     const handleSubmit = async (e: FormEvent) => {
@@ -35,12 +36,18 @@ function Edit() {
       }
   
       try {
+        const formData = new FormData();
+        formData.append("username", studentDetail.username)
+        formData.append("email", studentDetail.email)
+        if (studentDetail.profileImage) {
+          formData.append("profileImage", studentDetail.profileImage)
+        }
         const response = await fetch(`${host}/update/${stud}`, {
           method: "PUT",
           headers: {
-            'Content-Type': 'application/json',
+            'authorization': document.cookie,
           },
-          body: JSON.stringify(studentDetail),
+          body: formData,
         });
   
         if (!response.ok) {
@@ -50,7 +57,7 @@ function Edit() {
   
         const data = await response.json();
         toast.success(data.message);
-        navigate('/student');
+        navigate('/user');
       } catch (error: any) {
         toast.error(`Error updating student details: ${error.message}`);
       }
@@ -70,8 +77,19 @@ function Edit() {
           type="email"
           className="p-3 m-5 border border-orange-500 rounded-md w-full"
           value={studentDetail.email} 
-          onChange={(e) => setStudentDetails({ ...studentDetail, email: e.target.value })} />
-          <Button type="submit" className="mt-3 w-full">Edit</Button>
+          onChange={(e) => setStudentDetails({ ...studentDetail, email: e.target.value })} 
+        />
+        <label htmlFor="profileImage">Profile Image</label>
+        <input 
+          type="file" 
+          className="p-3 m-5 border border-orange-500 rounded-md w-full"
+          name="profileImage"
+          onChange={(e) => {
+            const file = e.target.files?.[0] || null;
+            setStudentDetails({ ...studentDetail, profileImage: file})
+          }}
+        />
+          <Button type="submit" className="mt-3 w-full">Update User</Button>
       </form>
   </div>
   )
