@@ -1,18 +1,16 @@
-import { createContext, useState, useContext } from "react"
+import { createContext, useState, useContext, ReactNode } from "react"
+import { AuthContextType } from "@/utils/types";
 
-const AuthContext = createContext();
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children}) => {
-    const [token, setToken] = useState(null);
-    const [name, setName] = useState("");
-    const [profileImage, setProfileImage] = useState("");
+interface AuthProviderProps {
+    children: ReactNode;
+  }
 
-    // useEffect(() => {
-    //     const cookieToken = document.cookie.split('; ').find(row => row.startsWith('token='));
-    //     setToken(cookieToken ? cookieToken.split('=')[1] : null);
-    //     setName(localStorage.getItem("username") || "");
-    //     setProfileImage(localStorage.getItem("profileImage") || "");
-    //   }, []);
+export const AuthProvider = ({ children } : AuthProviderProps) => {
+    const [token, setToken] = useState<string | null>(null);
+    const [name, setName] = useState<string>("");
+    const [profileImage, setProfileImage] = useState<string>("");
 
     return (
         <AuthContext.Provider value={{ token, name, profileImage, setToken, setName, setProfileImage }}>
@@ -21,4 +19,10 @@ export const AuthProvider = ({ children}) => {
     )
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = (): AuthContextType => {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+      throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
+};

@@ -42,3 +42,13 @@ export interface productDetail {
     image: File | null,
     description: string
 }
+
+export interface AuthContextType {
+    token: string | null;
+    name: string;
+    profileImage: string;
+    setToken: (token: string | null) => void;
+    setName: (name: string) => void;
+    setProfileImage: (profileImage: string) => void;
+  }
+  

@@ -2,12 +2,14 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { host } from "@/utils/constants"; // Make sure to define your API host here
+import { host } from "@/utils/constants"; 
 import { productSchema } from "@/utils/types";
+import { useAuth } from "../auth/AuthContext";
 
 function AddProduct() {
   const [product, setProduct] = useState<productSchema>({ name: "", price: 0, image: null, description: "" });
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -24,7 +26,7 @@ function AddProduct() {
         method: 'POST',
         body: formData,
         headers: {
-          "authorization": document.cookie
+          "authorization": `${token}`
         }
       });
 

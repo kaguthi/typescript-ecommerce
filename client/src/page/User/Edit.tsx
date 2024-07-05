@@ -4,6 +4,7 @@ import { userDetail } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
+import { useAuth } from "../auth/AuthContext";
 
 function Edit() {
     const [student] = useSearchParams();
@@ -11,12 +12,13 @@ function Edit() {
 
     const [studentDetail, setStudentDetails] = useState<userDetail>({ username: "", email: "", profileImage: null });
     const stud = student.get("studentId");
+    const { token } = useAuth();
     useEffect(() =>{
       if (stud) {
         fetch(`${host}/users/${stud}`,
           {
             headers: {
-              "authorization": document.cookie
+              "authorization": `${token}`,
             }
           }
         )
@@ -24,9 +26,7 @@ function Edit() {
           .then(data => setStudentDetails(data))
           .catch(error => console.error('Error fetching student details:', error));
       }
-    },[stud]);
-    // TODO: add image input and post capabilities
-
+    },[stud, token]);
     // submitting the form
     const handleSubmit = async (e: FormEvent) => {
       e.preventDefault();
@@ -45,7 +45,7 @@ function Edit() {
         const response = await fetch(`${host}/update/${stud}`, {
           method: "PUT",
           headers: {
-            'authorization': document.cookie,
+            'authorization': `${token}`,
           },
           body: formData,
         });

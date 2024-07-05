@@ -27,6 +27,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom";
 import { host } from "@/utils/constants";
 import { productDetail } from "@/utils/types";
+import { useAuth } from "../auth/AuthContext";
 function Product() {
     const [products, setProducts] = useState<productDetail[]>([])
     const [sorting, setSorting] = useState<SortingState>([])
@@ -35,18 +36,19 @@ function Product() {
     )
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
+    const { token } = useAuth();
 
     // fetch all products from the server
     useEffect(() => {
         fetch(`${host}/products`,{
             headers : {
-                "authorization" : document.cookie
+                "authorization" : `${token}`,
             }
         })
             .then(response => response.json())
             .then(data => setProducts(data))
             .catch(error => console.error(error.message))
-    },[]);
+    },[token]);
 
     const columns: ColumnDef<productDetail>[] = [
         {

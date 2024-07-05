@@ -29,7 +29,6 @@ function Signin() {
         setProfileImage(data.profileImage);
         setToken(data.token)
         setName(data.username)
-        // document.cookie = `token=${data.token}`;
         navigate("/");
       }else{
         toast.error(data.message);

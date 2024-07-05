@@ -14,19 +14,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useAuth } from '../auth/AuthContext';
 
 
 function Delete() {
     const [student] = useSearchParams();
     const navigate = useNavigate();
-    const [studentDetail, setStudentDetails] = useState<userDetail>({ username: "", email: "" });
+    const [studentDetail, setStudentDetails] = useState<userDetail>({ username: "", email: "", profileImage: null });
     const stud = student.get("studentId");
+    const { token } = useAuth();
     useEffect(() =>{
         if (stud) {
           fetch(`${host}/users/${stud}`,
             {
               headers: {
-                "authorization" : document.cookie
+                "authorization" : `${token}`,
               }
             }
           )
@@ -34,7 +36,7 @@ function Delete() {
             .then(data => setStudentDetails(data))
             .catch(error => console.error('Error fetching student details:', error));
         }
-      },[stud]);
+      },[stud, token]);
       const handleDelete = async (e: FormEvent) => {
         e.preventDefault();
         if (!stud) {
@@ -46,7 +48,7 @@ function Delete() {
           const response = await fetch(`${host}/delete/${stud}`, {
             method : "DELETE",
             headers : {
-              "authorization" : document.cookie
+              "authorization" : `${token}`,
             }
           });
     

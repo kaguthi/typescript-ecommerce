@@ -4,12 +4,14 @@ import toast from 'react-hot-toast'
 import { host } from '@/utils/constants'
 import { productSchema } from "@/utils/types"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "../auth/AuthContext"
 
 function EditProduct() {
   const [product, setProduct] = useState<productSchema>({name: "", price: 0, image: null, description: ""})
   const navigate = useNavigate();
   const [productId] = useSearchParams();
   const prodId = productId.get('productId')
+  const { token } = useAuth();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -32,7 +34,7 @@ function EditProduct() {
         method: 'PUT',
         body: formData,
         headers: {
-          "authorization" : document.cookie
+          "authorization" : `${token}`,
         }
       })
       if (!response.ok) {
@@ -52,14 +54,14 @@ function EditProduct() {
     if(prodId) {
       fetch(`${host}/products/${prodId}`, {
         headers : {
-          "authorization" : document.cookie
+          "authorization" : `${token}`,
         }
     })
     .then(response => response.json())
     .then(data => setProduct(data))
     }
     
-  },[prodId])
+  },[prodId, token])
 
   return (
     <div>

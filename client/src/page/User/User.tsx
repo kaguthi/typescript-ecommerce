@@ -26,6 +26,7 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 
 function User() {
@@ -36,19 +37,20 @@ function User() {
     )
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
+    const { token } = useAuth();
 
     // fetch the data from the server
 
     useEffect(() => {
         fetch(`${host}/users`, {
             headers :{
-                "authorization" : document.cookie
+                "authorization" : `${token}`,
             }
         })
             .then(response => response.json())
             .then(data => setStudent(data))
             .catch(error => console.error('Error fetching student details:', error));
-    },[]);
+    },[token]);
     const columns: ColumnDef<studentDetail>[] = [
         {
             id: "select",

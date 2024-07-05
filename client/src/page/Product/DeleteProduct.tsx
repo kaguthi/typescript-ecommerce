@@ -14,19 +14,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useAuth } from "../auth/AuthContext"
 
 
 function DeleteProduct() {
   const [product, setProduct] = useState<productSchema>({name: "", price: 0, image: null, description: ""})
   const navigate = useNavigate();
   const [productId] = useSearchParams();
-  const prodId = productId.get('productId')
+  const prodId = productId.get('productId');
+  const { token } = useAuth();
   const handleDelete = async () => {
     try {
       const response = await fetch(`${host}/products/delete/${prodId}`,{
         method: "DELETE",
         headers: {
-          "authorization": document.cookie,
+          "authorization": `${token}`,
         }
       })
       if(!response.ok) {
@@ -44,14 +46,14 @@ function DeleteProduct() {
     if (prodId) {
       fetch(`${host}/products/${prodId}`,{
         headers: {
-          "authorization" : document.cookie
+          "authorization" : `${token}`,
         }
       })
       .then(response => response.json())
       .then(data => setProduct(data))
       .catch(error => toast.error(error.message))
     }
-  },[prodId])
+  },[prodId, token])
 
   return (
     <div>

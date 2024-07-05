@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { productDetail } from "@/utils/types";
 import { host } from "@/utils/constants";
 import {
@@ -12,39 +11,28 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
-
+import { useAuth } from "./auth/AuthContext";
 
 function Home() {
-  const navigate = useNavigate();
   const [products, setproducts] = useState<productDetail[]>([]);
-
-  useEffect(() => {
-    const token = document.cookie;
-    if (!token) {
-      navigate("/signin");
-    }
-  }, [navigate]);
-
-  
+  const {token} = useAuth();
   useEffect(() => {
     fetch (`${host}/products`, {
       headers: {
-        "authorization": document.cookie
+        "authorization": `Bearer ${token}`
       }
     })
     .then(response => response.json())
     .then(data => setproducts(data))
     .catch(error => toast.error(error))
-  }, []);
-  
-  const token = document.cookie;
+  }, [token]);
 
   const addToCart = () => {
     toast.success("Product added to cart")
   }
 
-  return token ? (
-    <div className="sm:flex sm:flex-col sm:justify-center lg:flex lg:flex-row lg:flex-wrap w-full justify-center">
+  return(
+    <div className="sm:flex sm:flex-col sm:justify-center lg:flex lg:flex-row lg:flex-wrap w-full justify-center mt-3">
       <Toaster />
       {
         products && products.length >  0 ? 
@@ -67,7 +55,7 @@ function Home() {
         : <div className="text-center">No Products found</div>
       }
     </div>
-  ) : null;
+  )
 }
 
 export default Home;
