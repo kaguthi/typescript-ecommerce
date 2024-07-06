@@ -44,10 +44,10 @@ export interface productDetail {
 }
 
 export interface AuthContextType {
-    token: string | null;
+    token: string;
     name: string;
     profileImage: string;
-    setToken: (token: string | null) => void;
+    setToken: (token: string) => void;
     setName: (name: string) => void;
     setProfileImage: (profileImage: string) => void;
   }

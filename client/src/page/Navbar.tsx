@@ -3,12 +3,12 @@ import { ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { host } from "@/utils/constants";
 import { useAuth } from "./auth/AuthContext";
+import useLogout from "./auth/Logout";
+import { Button } from "@/components/ui/button";
 
 function Navbar() {
-  // const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-  // const name = localStorage.getItem("username");
-  // const profileImage = localStorage.getItem("profileImage")
   const { token, name, profileImage } = useAuth();
+  const logout = useLogout();
   return (
     <div className="bg-primary flex space-x-2 justify-between sticky top-0">
       <Link to="/" className="text-amber-600 text-2xl text-center py-4 px-4 font-semibold">E-Buy</Link>
@@ -40,6 +40,9 @@ function Navbar() {
                     <AvatarFallback>{name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 }
+              </li>
+              <li>
+                <Button onClick={logout} className="text-slate-200 text-xl" variant="secondary">Logout</Button>
               </li>
             </>
           ) : (

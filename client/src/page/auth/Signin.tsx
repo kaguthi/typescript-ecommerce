@@ -25,10 +25,11 @@ function Signin() {
       )
       const data = await response.json();
       if(data.success === true){
+        const { profileImage, token, username } = data;
         toast.success(data.message);
-        setProfileImage(data.profileImage);
-        setToken(data.token)
-        setName(data.username)
+        setProfileImage(profileImage);
+        setToken(token)
+        setName(username)
         navigate("/");
       }else{
         toast.error(data.message);
