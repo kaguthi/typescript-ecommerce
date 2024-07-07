@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { LogOut, ShoppingCart, User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { host } from "@/utils/constants";
 import { useAuth } from "./auth/AuthContext";
 import useLogout from "./auth/Logout";
-import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuGroup, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 function Navbar() {
   const { token, name, profileImage } = useAuth();
@@ -28,7 +29,25 @@ function Navbar() {
           {token ? (
             <>
               <li>
-                <h4 className="text-slate-200 text-xl">{name}</h4>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <h4 className="text-slate-200 text-xl">{name}</h4>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <User className="mr-2 h-4 w-4"/>
+                        <span>Profile</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span onClick={logout} className="cursor-pointer">Log out</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </li>
               <li>
                 {
@@ -40,9 +59,6 @@ function Navbar() {
                     <AvatarFallback>{name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 }
-              </li>
-              <li>
-                <Button onClick={logout} className="text-slate-200 text-xl" variant="secondary">Logout</Button>
               </li>
             </>
           ) : (

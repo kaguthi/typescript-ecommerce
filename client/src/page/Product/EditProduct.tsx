@@ -34,7 +34,7 @@ function EditProduct() {
         method: 'PUT',
         body: formData,
         headers: {
-          "authorization" : `${token}`,
+          "authorization" : `Bearer ${token}`,
         }
       })
       if (!response.ok) {
@@ -54,7 +54,7 @@ function EditProduct() {
     if(prodId) {
       fetch(`${host}/products/${prodId}`, {
         headers : {
-          "authorization" : `${token}`,
+          "authorization" : `Bearer ${token}`,
         }
     })
     .then(response => response.json())

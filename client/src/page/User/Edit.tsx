@@ -18,7 +18,7 @@ function Edit() {
         fetch(`${host}/users/${stud}`,
           {
             headers: {
-              "authorization": `${token}`,
+              "authorization": `Bearer ${token}`,
             }
           }
         )
@@ -45,7 +45,7 @@ function Edit() {
         const response = await fetch(`${host}/update/${stud}`, {
           method: "PUT",
           headers: {
-            'authorization': `${token}`,
+            'authorization': `Bearer ${token}`,
           },
           body: formData,
         });

@@ -28,7 +28,7 @@ function DeleteProduct() {
       const response = await fetch(`${host}/products/delete/${prodId}`,{
         method: "DELETE",
         headers: {
-          "authorization": `${token}`,
+          "authorization": `Bearer ${token}`,
         }
       })
       if(!response.ok) {
@@ -46,7 +46,7 @@ function DeleteProduct() {
     if (prodId) {
       fetch(`${host}/products/${prodId}`,{
         headers: {
-          "authorization" : `${token}`,
+          "authorization" : `Bearer ${token}`,
         }
       })
       .then(response => response.json())

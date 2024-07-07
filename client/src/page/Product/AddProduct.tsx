@@ -26,7 +26,7 @@ function AddProduct() {
         method: 'POST',
         body: formData,
         headers: {
-          "authorization": `${token}`
+          "authorization": `Bearer ${token}`
         }
       });
 

@@ -44,7 +44,7 @@ function User() {
     useEffect(() => {
         fetch(`${host}/users`, {
             headers :{
-                "authorization" : `${token}`,
+                "authorization" : `Bearer ${token}`,
             }
         })
             .then(response => response.json())

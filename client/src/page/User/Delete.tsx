@@ -28,7 +28,7 @@ function Delete() {
           fetch(`${host}/users/${stud}`,
             {
               headers: {
-                "authorization" : `${token}`,
+                "authorization" : `Bearer ${token}`,
               }
             }
           )
@@ -48,7 +48,7 @@ function Delete() {
           const response = await fetch(`${host}/delete/${stud}`, {
             method : "DELETE",
             headers : {
-              "authorization" : `${token}`,
+              "authorization" : `Bearer ${token}`,
             }
           });
     

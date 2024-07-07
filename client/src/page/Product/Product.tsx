@@ -42,7 +42,7 @@ function Product() {
     useEffect(() => {
         fetch(`${host}/products`,{
             headers : {
-                "authorization" : `${token}`,
+                "authorization" : `Bearer ${token}`,
             }
         })
             .then(response => response.json())
