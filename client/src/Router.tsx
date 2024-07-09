@@ -12,6 +12,7 @@ import AddProduct from './page/Product/AddProduct'
 import EditProduct from './page/Product/EditProduct'
 import DeleteProduct from './page/Product/DeleteProduct'
 import { useAuth } from './page/auth/AuthContext'
+import Profile from './page/Profile'
 
 function Router() {
 
@@ -22,6 +23,7 @@ function Router() {
       <Routes>
         <Route element={ <Layout /> }>
           <Route index element={ token ? <Home /> :<Navigate to="signin" /> } />
+          <Route path='profile' element={ token ? <Profile /> :<Navigate to="signin" /> } />
           <Route path='signin' element={ !token ? <Signin /> : < Navigate to="/" /> }/>
           <Route path='signup' element={ !token ? <SignUp /> : < Navigate to="/" /> }/>
           <Route path='product'>

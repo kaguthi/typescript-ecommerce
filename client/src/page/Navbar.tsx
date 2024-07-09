@@ -6,6 +6,15 @@ import { useAuth } from "./auth/AuthContext";
 import useLogout from "./auth/Logout";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuGroup, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Badge } from "@/components/ui/badge"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import Cart from "./Cart";
 
 function Navbar() {
   const { token, name, profileImage } = useAuth();
@@ -15,10 +24,19 @@ function Navbar() {
       <Link to="/" className="text-amber-600 text-2xl text-center py-4 px-4 font-semibold">E-Buy</Link>
       <nav className="py-4">
         <ul className="flex space-x-2 items-center">
-          <li>
-            <Link to="/cart" className="text-slate-200">
-              <ShoppingCart className="text-slate-200" aria-label="Shopping Cart" />
-            </Link>
+          <li className="relative">
+            <Sheet>
+              <SheetTrigger asChild>
+                <ShoppingCart className="text-slate-200 cursor-pointer" aria-label="Shopping Cart" />
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Cart</SheetTitle>
+                </SheetHeader>
+                <Cart />
+              </SheetContent>
+            </Sheet>
+            <Badge className="absolute top-0 right-0 size-4" variant="destructive">0</Badge>
           </li>
           <li>
             <Link to="/user" className="text-slate-200 text-xl">User</Link>
@@ -31,7 +49,7 @@ function Navbar() {
               <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <h4 className="text-slate-200 text-xl">{name}</h4>
+                    <h4 className="text-slate-200 text-xl cursor-pointer">{name}</h4>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -39,7 +57,7 @@ function Navbar() {
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
                         <User className="mr-2 h-4 w-4"/>
-                        <span>Profile</span>
+                        <span><Link to='profile'>Profile</Link></span>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <LogOut className="mr-2 h-4 w-4" />
