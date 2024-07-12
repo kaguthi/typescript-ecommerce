@@ -40,7 +40,8 @@ export interface productDetail {
     name: string,
     price: number,
     image: File | null,
-    description: string
+    description: string,
+    count: number
 }
 
 export interface AuthContextType {

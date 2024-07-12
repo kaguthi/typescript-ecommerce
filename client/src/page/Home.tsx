@@ -32,7 +32,7 @@ function Home() {
   }
 
   return(
-    <div className="sm:flex sm:flex-col sm:items-center lg:flex lg:flex-row lg:flex-wrap w-full justify-center mt-3">
+    <div className="xs:flex xs:flex-col xs:justify-center sm:flex sm:flex-col sm:items-center lg:flex lg:flex-row lg:flex-wrap w-full justify-center mt-3">
       <Toaster />
       {
         products && products.length >  0 ? 

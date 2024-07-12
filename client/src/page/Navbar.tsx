@@ -20,7 +20,7 @@ function Navbar() {
   const { token, name, profileImage } = useAuth();
   const logout = useLogout();
   return (
-    <div className="bg-primary flex space-x-2 justify-between sticky top-0">
+    <div className="bg-primary flex space-x-2 justify-between sticky top-0 z-10">
       <Link to="/" className="text-amber-600 text-2xl text-center py-4 px-4 font-semibold">E-Buy</Link>
       <nav className="py-4">
         <ul className="flex space-x-2 items-center">
@@ -36,7 +36,7 @@ function Navbar() {
                 <Cart />
               </SheetContent>
             </Sheet>
-            <Badge className="absolute top-0 right-0 size-4" variant="destructive">0</Badge>
+            <Badge className="absolute top-0 right-0 size-4" variant="destructive">{0}</Badge>
           </li>
           <li>
             <Link to="/user" className="text-slate-200 text-xl">User</Link>
