@@ -15,9 +15,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import Cart from "./Cart";
+import { useCartContext } from "@/context/cartContext";
 
 function Navbar() {
   const { token, name, profileImage } = useAuth();
+  const {numberOfProducts} = useCartContext();
   const logout = useLogout();
   return (
     <div className="bg-primary flex space-x-2 justify-between sticky top-0 z-10">
@@ -36,7 +38,7 @@ function Navbar() {
                 <Cart />
               </SheetContent>
             </Sheet>
-            <Badge className="absolute top-0 right-0 size-4" variant="destructive">{0}</Badge>
+            <Badge className="absolute top-0 right-0 size-3 text-xs text-center" variant="destructive">{numberOfProducts}</Badge>
           </li>
           <li>
             <Link to="/user" className="text-slate-200 text-xl">User</Link>

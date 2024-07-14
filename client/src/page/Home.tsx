@@ -12,10 +12,13 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { useAuth } from "./auth/AuthContext";
+import { useCartContext } from "@/context/cartContext";
 
 function Home() {
   const [products, setproducts] = useState<productDetail[]>([]);
   const {token} = useAuth();
+  const { addProductToCart } = useCartContext();
+  
   useEffect(() => {
     fetch (`${host}/products`, {
       headers: {
@@ -27,8 +30,10 @@ function Home() {
     .catch(error => toast.error(error))
   }, [token]);
 
-  const addToCart = () => {
-    toast.success("Product added to cart")
+  const addToCart = (index: number) => {
+    const productToAdd = products[index];
+    addProductToCart(productToAdd);
+    toast.success("Product added successfully.")
   }
 
   return(
@@ -48,7 +53,7 @@ function Home() {
                 </CardDescription>
               </CardContent>
               <CardFooter>
-                <Button onClick={addToCart}>Add to cart</Button>
+                <Button onClick={() => addToCart(index)}>Add to cart</Button>
               </CardFooter>
             </Card>
          ))

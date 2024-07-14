@@ -51,5 +51,14 @@ export interface AuthContextType {
     setToken: (token: string) => void;
     setName: (name: string) => void;
     setProfileImage: (profileImage: string) => void;
-  }
+}
+
+export interface CartContextType {
+    numberOfProducts: string;
+    setNumberOfProducts: (numberOfProducts: string) => void;
+    addProductToCart: (product: productDetail) => void;
+    cartProducts: productDetail[];
+    setCartProducts: (products: productDetail[]) => void;
+}
+
   
