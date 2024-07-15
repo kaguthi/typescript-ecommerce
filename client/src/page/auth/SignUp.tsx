@@ -41,8 +41,7 @@ function Signin() {
       toast.success(data.message);
       navigate('/signin');
     } catch (error: any) {
-      toast.error("Something went wrong");
-      console.log(error.message);
+      toast.error(error.message);
     }
   };
 

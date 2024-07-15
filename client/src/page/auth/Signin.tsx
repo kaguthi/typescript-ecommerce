@@ -38,8 +38,7 @@ function Signin() {
         toast.error(data.message);
       }
     } catch (error: any) {
-      toast.error("Something went wrong, Please try again");
-      console.log(error.message)
+      toast.error(error.message);
     }
    }
 
