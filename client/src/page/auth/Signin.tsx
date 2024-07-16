@@ -4,7 +4,7 @@ import { loginDetail } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function Signin() {
   const navigate = useNavigate();

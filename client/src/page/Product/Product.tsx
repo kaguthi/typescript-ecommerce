@@ -27,7 +27,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom";
 import { host } from "@/utils/constants";
 import { productDetail } from "@/utils/types";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 function Product() {
     const [products, setProducts] = useState<productDetail[]>([])
     const [sorting, setSorting] = useState<SortingState>([])

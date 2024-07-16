@@ -11,7 +11,7 @@ import Product from './page/Product/Product'
 import AddProduct from './page/Product/AddProduct'
 import EditProduct from './page/Product/EditProduct'
 import DeleteProduct from './page/Product/DeleteProduct'
-import { useAuth } from './page/auth/AuthContext'
+import { useAuth } from './context/AuthContext'
 import Profile from './page/Profile'
 import Checkout from './page/Checkout'
 

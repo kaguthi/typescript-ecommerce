@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { host } from '@/utils/constants'
 import { productSchema } from "@/utils/types"
 import { Button } from "@/components/ui/button"
-import { useAuth } from "../auth/AuthContext"
+import { useAuth } from "../../context/AuthContext"
 
 function EditProduct() {
   const [product, setProduct] = useState<productSchema>({name: "", price: 0, image: null, description: ""})

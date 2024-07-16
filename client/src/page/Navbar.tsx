@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { LogOut, ShoppingCart, User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { host } from "@/utils/constants";
-import { useAuth } from "./auth/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import useLogout from "./auth/Logout";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuGroup, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
@@ -31,7 +31,7 @@ function Navbar() {
               <SheetTrigger asChild>
                 <ShoppingCart className="text-slate-200 cursor-pointer" aria-label="Shopping Cart" />
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent className="overflow-y-scroll">
                 <SheetHeader>
                   <SheetTitle>Cart</SheetTitle>
                 </SheetHeader>

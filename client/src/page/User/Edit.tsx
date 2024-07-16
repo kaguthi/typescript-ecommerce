@@ -4,7 +4,7 @@ import { userDetail } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function Edit() {
     const [student] = useSearchParams();
