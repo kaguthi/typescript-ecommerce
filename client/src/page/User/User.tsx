@@ -26,9 +26,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from "@/context/AuthContext";
+import { Input } from "@/components/ui/input";
 
 function User() {
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -43,20 +44,14 @@ function User() {
         queryFn: () => 
             fetch(`${host}/users`, {
                 headers: {
-                    authorization: `Bearer ${token}`,
+                    "authorization": `Bearer ${token}`,
                 },
             }).then(res => { 
                 if (!res.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return res.json();
-            }),
-        onSuccess: (data) => {
-            console.log('Fetched data:', data);  // Log the fetched data
-        },
-        onError: (error) => {
-            console.error('Error fetching data:', error);  // Log any errors
-        }
+            })
     });
 
     const columns: ColumnDef<studentDetail>[] = useMemo(() => [
@@ -164,6 +159,16 @@ function User() {
 
     return (
         <div className="m-4">
+            <div>
+                <Input
+                placeholder="Filter email..."
+                value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                    table.getColumn("email")?.setFilterValue(event.target.value)
+                }
+                className="max-w-sm"
+                />
+            </div>
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

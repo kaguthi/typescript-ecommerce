@@ -12,9 +12,9 @@ import {
     getSortedRowModel,
     useReactTable,
   } from "@tanstack/react-table"
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input"
-import { MoreHorizontal } from "lucide-react"
+import { LoaderCircle, MoreHorizontal } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -28,8 +28,10 @@ import { Link } from "react-router-dom";
 import { host } from "@/utils/constants";
 import { productDetail } from "@/utils/types";
 import { useAuth } from "../../context/AuthContext";
+import { useQuery } from "@tanstack/react-query"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 function Product() {
-    const [products, setProducts] = useState<productDetail[]>([])
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
@@ -38,100 +40,105 @@ function Product() {
     const [rowSelection, setRowSelection] = useState({})
     const { token } = useAuth();
 
-    // fetch all products from the server
-    useEffect(() => {
-        fetch(`${host}/products`,{
-            headers : {
-                "authorization" : `Bearer ${token}`,
-            }
-        })
-            .then(response => response.json())
-            .then(data => setProducts(data))
-            .catch(error => console.error(error.message))
-    },[token]);
-
-    const columns: ColumnDef<productDetail>[] = [
-        {
-            id: "select",
-            header: ({ table }) => (
-                <Checkbox
-                    checked={
-                        table.getIsAllPageRowsSelected() || 
-                        (table.getIsSomePageRowsSelected() && "indeterminate")
-                    }
-                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                    aria-label="Select-all"
-                />
-            ),
-            cell: ({ row }) => (
-                <Checkbox 
-                    checked={row.getIsSelected()}
-                    onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label="Select-row"
-                />
-            ),
-            enableSorting: false,
-            enableHiding: false,
-        },
-        {
-            accessorKey: "name",
-            header: "Name",
-            cell: ({ row }) => (
-                <div className="capitalize">{row.getValue("name")}</div>
-            ),
-        },
-        {
-            accessorKey: "price",
-            header: "Price",
-            cell: ({ row }) => (
-                <div className="capitalize">{row.getValue("price")}</div>
-            )
-        },
-        {
-            accessorKey: "image",
-            header: 'Image',
-            cell: ({ row }) => (
-                <div>
-                    <img className="size-8" src={`${host}/uploads/${row.getValue("image")}`} alt="product image"/>
-                </div>
-            )
-        },
-        {
-            accessorKey: "description",
-            header: "Description",
-            cell: ({ row }) => (
-                <div className="capitalize">{row.getValue("description")}</div>
-            )
-        },
-        {
-            id: "actions",
-            enableHiding: false,
-            cell: ({ row }) => {
-                return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4"/>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <Link to={`editProduct?productId=${row.original._id}`}>Edit</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Link to={`deleteProduct?productId=${row.original._id}`}>Delete</Link>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+    const { isLoading, data, error } = useQuery<productDetail[], Error>({
+        queryKey: ["products"],
+        queryFn: () => 
+            fetch(`${host}/products`, {
+                headers: {
+                    "authorization" : `Bearer ${token}`
+                }
+            }).then(res => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return res.json()
+            })
+    })
+    const columns: ColumnDef<productDetail>[] = useMemo(() => 
+        [
+            {
+                id: "select",
+                header: ({ table }) => (
+                    <Checkbox
+                        checked={
+                            table.getIsAllPageRowsSelected() || 
+                            (table.getIsSomePageRowsSelected() && "indeterminate")
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select-all"
+                    />
+                ),
+                cell: ({ row }) => (
+                    <Checkbox 
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select-row"
+                    />
+                ),
+                enableSorting: false,
+                enableHiding: false,
+            },
+            {
+                accessorKey: "name",
+                header: "Name",
+                cell: ({ row }) => (
+                    <div className="capitalize">{row.getValue("name")}</div>
+                ),
+            },
+            {
+                accessorKey: "price",
+                header: "Price",
+                cell: ({ row }) => (
+                    <div className="capitalize">{row.getValue("price")}</div>
                 )
+            },
+            {
+                accessorKey: "image",
+                header: 'Image',
+                cell: ({ row }) => (
+                    <div>
+                        <img className="size-8" src={`${host}/uploads/${row.getValue("image")}`} alt="product image"/>
+                    </div>
+                )
+            },
+            {
+                accessorKey: "description",
+                header: "Description",
+                cell: ({ row }) => (
+                    <div className="capitalize">{row.getValue("description")}</div>
+                )
+            },
+            {
+                id: "actions",
+                enableHiding: false,
+                cell: ({ row }) => {
+                    return (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-4 w-4"/>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <Link to={`editProduct?productId=${row.original._id}`}>Edit</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link to={`deleteProduct?productId=${row.original._id}`}>Delete</Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )
+                }
             }
-        }
-    ]
+        ]
+        ,[])
+    
     const table = useReactTable({
-        data: products,
+        data: data ?? [],
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -146,7 +153,19 @@ function Product() {
           columnFilters,
           columnVisibility,
           rowSelection,
-    }})
+    }});
+
+    if (isLoading) return <div className="flex items-center justify-center mt-10"><LoaderCircle className="animate-spin size-14" /></div>;
+
+    if (error) return (
+        <Alert variant="destructive">
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+                {error.message}
+            </AlertDescription>
+        </Alert>
+    );
+
   return (
     <div className="m-4">
         <div className="flex items-center py-4 justify-between">
