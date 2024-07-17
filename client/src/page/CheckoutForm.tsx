@@ -61,7 +61,7 @@ export default function CheckoutForm() {
     });
 
     if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
+      setMessage(error.message as string);
     } else {
       setMessage("An unexpected error occurred.");
     }

@@ -56,7 +56,7 @@ function Home() {
   );
 
   return (
-    <div className="xs:flex xs:flex-col xs:justify-center sm:flex sm:flex-col sm:items-center lg:flex lg:flex-row lg:flex-wrap w-full justify-center mt-3">
+    <div className="grid gap-1 mt-3 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <Toaster />
       {data && data?.length > 0 ? (
         data.map((product, index) => (
