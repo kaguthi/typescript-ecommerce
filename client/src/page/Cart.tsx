@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCartContext } from "@/context/cartContext";
 
-
 function Cart() {
   const { setNumberOfProducts, cartProducts, setCartProducts } = useCartContext();
   const [price, setPrice] = useState(0);
