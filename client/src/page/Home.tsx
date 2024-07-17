@@ -44,7 +44,7 @@ function Home() {
     }
   };
 
-  if (isLoading) return <div className="flex items-center justify-center mt-10"><LoaderCircle className="animate-spin size-14"/></div>
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen"><LoaderCircle className="animate-spin size-20"/></div>
 
   if (error) return (
     <Alert variant="destructive">

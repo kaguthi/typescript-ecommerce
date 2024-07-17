@@ -85,6 +85,13 @@ function User() {
             ),
         },
         {
+            accessorKey: "profileImage",
+            header : "Profile Image",
+            cell: ({ row }) => (
+                <div><img className="rounded-full w-10 h-10" src={`${host}/uploads/${row.getValue("profileImage")}`} alt={row.getValue("username")} /></div>
+            )
+        },
+        {
             accessorKey: "email",
             header: ({ column }) => {
                 return (
@@ -146,7 +153,7 @@ function User() {
         },
     });
 
-    if (isLoading) return <div className="flex items-center justify-center mt-10"><LoaderCircle className="animate-spin size-14" /></div>;
+    if (isLoading) return <div className="flex items-center justify-center min-h-screen"><LoaderCircle className="animate-spin size-20"/></div>
 
     if (error) return (
         <Alert variant="destructive">

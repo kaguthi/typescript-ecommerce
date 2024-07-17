@@ -14,6 +14,8 @@ import DeleteProduct from './page/Product/DeleteProduct'
 import { useAuth } from './context/AuthContext'
 import Profile from './page/Profile'
 import Checkout from './page/Checkout'
+import Success from './page/Success'
+import Verify from './page/auth/Verify'
 
 function Router() {
 
@@ -27,7 +29,9 @@ function Router() {
           <Route path='profile' element={ token ? <Profile /> :<Navigate to="signin" /> } />
           <Route path='signin' element={ !token ? <Signin /> : < Navigate to="/" /> }/>
           <Route path='signup' element={ !token ? <SignUp /> : < Navigate to="/" /> }/>
-          <Route path='checkout' element={ token ? <Checkout /> : <Navigate to="signin" />} />
+          <Route path='checkout' element={ <Checkout />} />
+          <Route path='success' element={ <Success />} />
+          <Route path='verify' element={ <Verify />} />
           <Route path='product'>
             <Route index  element={ <Product />} />
             <Route path='addProduct' element={ token ? <AddProduct /> : <Navigate to="signin" /> } />
