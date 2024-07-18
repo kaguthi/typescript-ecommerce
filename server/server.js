@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const useRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute');
 const categoryRoute = require('./routes/categoryRoute');
+const paymentRoute = require('./routes/paymentRoute')
 const path = require('path');
 const app = express();
 const cors = require('cors')
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use("/", useRoute);
 app.use("/products", productRoute);
 app.use("/category", categoryRoute);
+app.use('/create-payment-intent', paymentRoute);
 
 // server
 app.listen(process.env.PORT, ()=>{

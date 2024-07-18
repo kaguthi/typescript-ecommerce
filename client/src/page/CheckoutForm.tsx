@@ -5,10 +5,13 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import './checkout.css';
+import { useCartContext } from "@/context/cartContext";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
+
+  const { setNumberOfProducts, setCartProducts }  = useCartContext()
 
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -66,6 +69,10 @@ export default function CheckoutForm() {
       setMessage("An unexpected error occurred.");
     }
 
+    localStorage.removeItem('cartProducts');
+    setNumberOfProducts("0")
+    setCartProducts([])
+
     setIsLoading(false);
   };
 
@@ -75,7 +82,7 @@ export default function CheckoutForm() {
 
   return (
     <div className="flex flex-col items-center justify-center mt-6 ">
-      <h3>Payment using Stripe</h3>
+      <h3 className="font-bold mb-2 text-xl">Payment using Stripe</h3>
       <form id="payment-form" onSubmit={handleSubmit} className="form">
         <PaymentElement id="payment-element" options={paymentElementOptions} />
         <button disabled={isLoading || !stripe || !elements} id="submit" className="button">
