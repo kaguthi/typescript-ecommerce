@@ -4,7 +4,7 @@ function calculateAmount (products) {
     const totalPrice = products.reduce((total, product) => total + product.price * product.count ,0);
     return totalPrice * 100;
 }
-
+// TODO: add the cart products to the database
 async function makePaymentStripe (req, res) {
     const products = req.body;
 

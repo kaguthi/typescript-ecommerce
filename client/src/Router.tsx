@@ -25,7 +25,7 @@ function Router() {
       <Routes>
         <Route element={ <Layout /> }>
           <Route index element={ token ? <Home /> :<Navigate to="signin" /> } />
-          <Route path='profile' element={ token ? <Profile /> :<Navigate to="signin" /> } />
+          <Route path='profile' element={ <Profile /> } />
           <Route path='signin' element={ !token ? <Signin /> : < Navigate to="/" /> }/>
           <Route path='signup' element={ !token ? <SignUp /> : < Navigate to="/" /> }/>
           <Route path='checkout' element={<Checkout />} />

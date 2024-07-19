@@ -11,6 +11,7 @@ export interface userDetail {
 }
 
 export interface studentDetail {
+    profileImage: File | null,
     username: string,
     email: string,
     _id: string
