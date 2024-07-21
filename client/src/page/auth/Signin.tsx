@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function Signin() {
   const navigate = useNavigate();
-  const { setToken, setName, setProfileImage } = useAuth();
+  const { setToken, setName, setProfileImage, setUserId } = useAuth();
 
   const [studentDetail, setStudentDetails] = useState<loginDetail>({ username: "", password: ""});
   const handleSubmit = async (e: FormEvent) => {
@@ -25,14 +25,16 @@ function Signin() {
       )
       const data = await response.json();
       if(data.success === true){
-        const { profileImage, token, username } = data;
+        const { profileImage, token, username, userId } = data;
         localStorage.setItem("profileImage", profileImage)
         localStorage.setItem("username", username);
         localStorage.setItem("token", token)
+        localStorage.setItem("userId", userId)
         toast.success(data.message);
         setProfileImage(profileImage);
         setToken(token)
         setName(username)
+        setUserId(userId)
         navigate("/");
       }else{
         toast.error(data.message);

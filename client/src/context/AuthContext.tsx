@@ -11,19 +11,22 @@ export const AuthProvider = ({ children } : AuthProviderProps) => {
     const [token, setToken] = useState<string>("");
     const [name, setName] = useState<string>("");
     const [profileImage, setProfileImage] = useState<string>("");
+    const [userId, setUserId] = useState<string>("")
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         const storedName = localStorage.getItem('username');
         const storedProfileImage = localStorage.getItem('profileImage');
+        const storedUserId = localStorage.getItem('userId');
     
         if (storedToken) setToken(storedToken);
         if (storedName) setName(storedName);
         if (storedProfileImage) setProfileImage(storedProfileImage);
+        if (storedUserId) setUserId(storedUserId)
       }, []);    
 
     return (
-        <AuthContext.Provider value={{ token, name, profileImage, setToken, setName, setProfileImage }}>
+        <AuthContext.Provider value={{ userId ,token, name, profileImage, setUserId, setToken, setName, setProfileImage }}>
             {children}
         </AuthContext.Provider>
     )

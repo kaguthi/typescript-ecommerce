@@ -46,9 +46,11 @@ export interface productDetail {
 }
 
 export interface AuthContextType {
+    userId : string;
     token: string;
     name: string;
     profileImage: string;
+    setUserId(userId: string) => void;
     setToken: (token: string) => void;
     setName: (name: string) => void;
     setProfileImage: (profileImage: string) => void;
