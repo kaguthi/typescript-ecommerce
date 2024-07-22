@@ -30,6 +30,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from "@/context/AuthContext";
 import { Input } from "@/components/ui/input";
+import { format } from 'date-fns'
 
 function User() {
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -85,6 +86,15 @@ function User() {
             ),
         },
         {
+            accessorKey: "profileImage",
+            header: "Profile Image",
+            cell: ({ row }) => (
+                <div>
+                    <img className="w-10 h-10 object-contain" src={`http://localhost:5000/uploads/${row.getValue("profileImage")}`} alt="profile image" />
+                </div>
+            )
+        },
+        {
             accessorKey: "email",
             header: ({ column }) => {
                 return (
@@ -98,6 +108,20 @@ function User() {
                 );
             },
             cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+        },
+        {
+            accessorKey: "createdAt",
+            header: "Created At",
+            cell: ({ row }) => (
+                <div>{format(new Date(row.getValue("createdAt")), 'yyyy-MM-dd HH:mm:ss')}</div>
+            )
+        },
+        {
+            accessorKey: "updatedAt",
+            header: "Updated At",
+            cell: ({ row }) => (
+                <div>{format(new Date(row.getValue("updatedAt")), 'yyyy-MM-dd HH:mm:ss')}</div>
+            )
         },
         {
             id: "actions",

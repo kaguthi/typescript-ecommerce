@@ -83,7 +83,7 @@ async function updateProduct(req, res) {
             if (!existingProduct) {
                 return res.status(404).json({ message: "Product not found." });
             }
-            const updateData = { ...req.body };
+            const updateData = { ...req.body, updatedAt: Date.now() };
             if (req.file) {
                 if (existingProduct.image) {
                     const oldImagePath = path.join(uploadDir, path.basename(existingProduct.image));

@@ -5,8 +5,8 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const uploadDir = path.join(__dirname, '../uploads');
+const validator = require('validator');
 
-// Ensure the uploads directory exists
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -55,6 +55,13 @@ async function createUser(req, res) {
             return res.status(400).json({ message: err.message });
         }
         try {
+            if (!validator.isEmail(req.body.email)) {
+                throw new Error("Email is in valid")
+            }
+
+            if (!validator.isStrongPassword(req.body.password)) {
+                throw new Error("Password is not strong 8-15 characters required")
+            }
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
             const user = {
                 username: req.body.username,
@@ -143,7 +150,7 @@ async function updateUser(req, res) {
                 if (!existingUser) {
                     return res.status(404).json({ message: "User not found."})
                 }
-                const updateData = { ...req.body };
+                const updateData = { ...req.body, updatedAt: Date.now() };
                 if (req.file) {
                     if (existingUser.profileImage) {
                         const oldImagePath = path.join(uploadDir, path.basename(existingUser.profileImage))

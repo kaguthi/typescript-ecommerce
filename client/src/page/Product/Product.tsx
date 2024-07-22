@@ -30,6 +30,7 @@ import { productDetail } from "@/utils/types";
 import { useAuth } from "../../context/AuthContext";
 import { useQuery } from "@tanstack/react-query"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { format } from "date-fns";
 
 function Product() {
     const [sorting, setSorting] = useState<SortingState>([])
@@ -106,6 +107,20 @@ function Product() {
                 header: "Description",
                 cell: ({ row }) => (
                     <div className="capitalize">{row.getValue("description")}</div>
+                )
+            },
+            {
+                accessorKey: "createdAt",
+                header: "Created At",
+                cell: ({ row }) => (
+                    <div>{format(new Date(row.getValue("createdAt")), 'yyyy-MM-dd HH:mm:ss')}</div>
+                )
+            },
+            {
+                accessorKey: "updatedAt",
+                header: "Updated At",
+                cell: ({ row }) => (
+                    <div>{format(new Date(row.getValue("updatedAt")), 'yyyy-MM-dd HH:mm:ss')}</div>
                 )
             },
             {
