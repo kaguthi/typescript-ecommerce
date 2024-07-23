@@ -1,16 +1,23 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
 import { host } from "@/utils/constants"
-import { studentDetail } from "@/utils/types"
+import { userSchema } from "@/utils/types"
 import { useQuery } from "@tanstack/react-query"
 import { LoaderCircle } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import Edit from "./Edit"
 
-
-function Profile() {
+function Profile () {
   const { token, userId } = useAuth()
 
-  const { isLoading, data, error } = useQuery<studentDetail[], Error>({
+  const { isLoading, data, error } = useQuery<userSchema, Error>({
     queryKey: ["user"],
     queryFn: () => 
       fetch(`${host}/users/${userId}`,{
@@ -45,9 +52,20 @@ function Profile() {
         <img className="size-36 rounded-full" src={`http://localhost:5000/uploads/${data?.profileImage}`} alt={data?.username} />
       </div>
       <div className="mt-4">
-        <p><span className="font-semibold">Username: </span>{data?.username}</p>
-        <p><span className="font-semibold">Email: </span>{data?.email}</p>
-        <Button>Edit</Button>
+        <p className="mt-2"><span className="font-semibold">Username: </span>{data?.username}</p>
+        <p className="mt-2"><span className="font-semibold">Email: </span>{data?.email}</p>
+        <Dialog>
+          <DialogTrigger className="bg-primary p-2 text-slate-100 rounded-md mt-2">Edit profile</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Profile</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              Make changes to your profile and click save once you're finished.
+            </DialogDescription>
+            {data && <Edit userdata={data} />}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )

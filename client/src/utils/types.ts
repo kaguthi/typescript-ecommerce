@@ -11,6 +11,7 @@ export interface userDetail {
 }
 
 export interface studentDetail {
+    password: string;
     profileImage: File | null,
     username: string,
     email: string,
@@ -50,7 +51,7 @@ export interface AuthContextType {
     token: string;
     name: string;
     profileImage: string;
-    setUserId(userId: string) => void;
+    setUserId: (userId: string) => void;
     setToken: (token: string) => void;
     setName: (name: string) => void;
     setProfileImage: (profileImage: string) => void;

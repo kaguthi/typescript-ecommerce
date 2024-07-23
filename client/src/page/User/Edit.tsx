@@ -31,7 +31,7 @@ function Edit() {
     const handleSubmit = async (e: FormEvent) => {
       e.preventDefault();
       if (!stud) {
-        toast.error("Student ID is missing");
+        toast.error("User ID is missing");
         return;
       }
   

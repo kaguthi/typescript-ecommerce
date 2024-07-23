@@ -4,6 +4,7 @@ import { userSchema } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
+import { Input } from "@/components/ui/input";
 
 function Signin() {
   const navigate = useNavigate();
@@ -53,8 +54,8 @@ function Signin() {
         </div>
         <div className="w-full mt-2">
           <label htmlFor="username">Username</label>
-          <input
-            className="p-2 border border-slate-900 rounded-md w-full"
+          <Input
+            className="w-full mt-1"
             type="text"
             name="username"
             required
@@ -64,8 +65,8 @@ function Signin() {
         </div>
         <div className="w-full mt-2">
           <label htmlFor="email">Email</label>
-          <input
-            className="p-2 mt-1 border border-slate-900 rounded-md w-full"
+          <Input
+            className="w-full mt-1"
             type="email"
             name="email"
             required
@@ -75,8 +76,8 @@ function Signin() {
         </div>
         <div className="w-full mt-2">
           <label htmlFor="password">Password</label>
-          <input
-            className="p-2 border border-slate-900 rounded-md w-full"
+          <Input
+            className="w-full mt-1"
             type="password"
             name="password"
             required
@@ -86,8 +87,8 @@ function Signin() {
         </div>
         <div className="w-full mt-2">
           <label htmlFor="profileImage">Profile Image</label>
-          <input
-            className="p-1 border border-slate-900 rounded-md w-full"
+          <Input
+            className="w-full mt-1"
             type="file"
             name="profileImage"
             required
