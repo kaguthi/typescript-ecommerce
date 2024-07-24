@@ -29,7 +29,7 @@ function Navbar() {
           <li className="relative">
             <Sheet>
               <SheetTrigger asChild>
-                <ShoppingCart className="text-slate-200 cursor-pointer" aria-label="Shopping Cart" />
+                <ShoppingCart className="text-slate-200 cursor-pointer size-7" aria-label="Shopping Cart" />
               </SheetTrigger>
               <SheetContent className="overflow-y-scroll">
                 <SheetHeader>
@@ -38,7 +38,7 @@ function Navbar() {
                 <Cart />
               </SheetContent>
             </Sheet>
-            <Badge className="absolute top-0 right-0 size-3 text-xs text-center" variant="destructive">{numberOfProducts}</Badge>
+            <Badge className="absolute top-0 right-0 w-4 h-4 text-xs text-center" variant="destructive">{numberOfProducts}</Badge>
           </li>
           <li>
             <Link to="/user" className="text-slate-200 text-xl">User</Link>

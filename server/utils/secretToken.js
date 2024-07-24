@@ -6,4 +6,8 @@ function createToken(id){
     return jwt.sign({id}, process.env.ACCESS_TOKEN_KEY)
 }
 
-module.exports = createToken;
+function generateNewToken (id) {
+    return jwt.sign({id}, process.env.REFRESH_TOKEN_KEY)
+}
+
+module.exports = {createToken, generateNewToken};

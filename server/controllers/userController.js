@@ -1,6 +1,6 @@
 const User = require("../model/userModel");
 const bcrypt = require('bcrypt');
-const createToken = require('../utils/secretToken');
+const {createToken, generateNewToken} = require('../utils/secretToken');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
@@ -94,12 +94,13 @@ async function loginUser(req, res) {
         const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
         if (isPasswordValid) {
             const token = createToken(user._id);
+            const refresh_token = generateNewToken(user._id)
             res.cookie("token", token, {
                 withCredentials: true,
                 httpOnly: true,
                 secure: true
             });
-            res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id });
+            res.status(200).json({ message: "Login successful", success: true, token: token, RefreshToken: refresh_token ,username: user.username, profileImage: user.profileImage, userId: user._id });
         } else {
             res.status(400).json({ message: "Invalid username or password.", success: false });
         }
@@ -141,36 +142,36 @@ async function updateUser(req, res) {
     if (!id) {
         return res.status(400).json({ message: "User ID is required." });
     }
-        upload.single('profileImage')(req, res, async (err) => {
-            if (err) {
-                return res.status(400).json({ message: err.message })
+    upload.single('profileImage')(req, res, async (err) => {
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        try {
+            const existingUser = await User.findById(id)
+            if (!existingUser) {
+                return res.status(404).json({ message: "User not found."})
             }
-            try {
-                const existingUser = await User.findById(id)
-                if (!existingUser) {
-                    return res.status(404).json({ message: "User not found."})
+            const updateData = { ...req.body, updatedAt: Date.now() };
+            if (req.file) {
+                if (existingUser.profileImage) {
+                    const oldImagePath = path.join(uploadDir, path.basename(existingUser.profileImage))
+                    fs.promises.unlink(oldImagePath)
+                        .then(() => console.log("Image file deleted successfully"))
+                        .catch(error => console.error(error.message))
                 }
-                const updateData = { ...req.body, updatedAt: Date.now() };
-                if (req.file) {
-                    if (existingUser.profileImage) {
-                        const oldImagePath = path.join(uploadDir, path.basename(existingUser.profileImage))
-                        fs.promises.unlink(oldImagePath)
-                            .then(() => console.log("Image file deleted successfully"))
-                            .catch(error => console.error(error.message))
-                    }
-                    updateData.profileImage = req.file.filename;
-                }
-                const user = await User.findByIdAndUpdate(id, updateData, { new: true });
-                if (!user) {
-                    return res.status(404).json({ message: "User not found." });
-                }
-                res.status(200).json({ message: "User updated successfully", user });
-            } catch (error) { 
-                res.status(500).json({ message: error.message })
+                updateData.profileImage = req.file.filename;
             }
-        })
-       
-       
+            const user = await User.findByIdAndUpdate(id, updateData, { new: true });
+            if (!user) {
+                return res.status(404).json({ message: "User not found." });
+            }
+            res.status(200).json({ message: "User updated successfully", user });
+        } catch (error) { 
+            res.status(500).json({ message: error.message })
+        }
+    })
 }
+
+// TODO: create refresh token route
 
 module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById};

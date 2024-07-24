@@ -91,17 +91,6 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
             onChange={handleInputChange}
         />
         </div>
-        {/* <div className='w-full mt-2'>
-        <label htmlFor="password">Password</label>
-        <Input
-            type='password'
-            name='password'
-            id='password'
-            className='w-full mt-1'
-            value={user.password}
-            onChange={handleInputChange}
-        />
-        </div> */}
         <div className='w-full mt-3'>
         <Button type='submit'>Update</Button>
         </div>
