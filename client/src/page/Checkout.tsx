@@ -4,6 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { useCartContext } from "@/context/cartContext";
 import { host } from "@/utils/constants";
+import { useAuth } from "@/context/AuthContext";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -11,6 +12,7 @@ function Checkout() {
 
   const [clientSecret, setClientSecret] = useState("");
   const { cartProducts } = useCartContext()
+  const { userId } = useAuth()
 
   useEffect(() => {
     fetch(`${host}/create-payment-intent`, {
@@ -18,11 +20,11 @@ function Checkout() {
       headers: {
         'Content-Type' : 'application/json'
       },
-      body: JSON.stringify(cartProducts)
+      body: JSON.stringify({products: cartProducts, userId: userId})
     })
     .then(res => res.json())
     .then(data => setClientSecret(data.clientSecret))
-  },[cartProducts])
+  },[cartProducts, userId])
 
   const appearance = {
     theme: 'stripe',

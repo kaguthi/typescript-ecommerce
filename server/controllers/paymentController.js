@@ -5,17 +5,17 @@ function calculateAmount (products) {
     const totalPrice = products.reduce((total, product) => total + product.price * product.count ,0);
     return totalPrice * 100;
 }
-// TODO: add the cart products to the database
+
 async function makePaymentStripe (req, res) {
   try {
-    const products = req.body;
-    if (!products) {
-        return res.send(404).json({ message: "Empty request"})
-    }
+    const { products, userId } = req.body;
+    if (!products || !userId) {
+      return res.status(400).json({ message: "Invalid request: Missing products or userId" });
+  }
 
     const customer = await stripe.customers.create({
-        name: 'Tom Keen',
-        email: 'tom@gmail.com',
+        name: 'Amelia Cooper',
+        email: 'amelia@gmail.com',
         phone: '+254712345678'
     });
 
@@ -27,6 +27,10 @@ async function makePaymentStripe (req, res) {
             enabled: true
         }
     });
+
+    const productId = products.map(product => product._id);
+    const quantity = products.map(product => product.count);
+    const orderList = await order.create({ userId, productId, quantity })
     
     res.send({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
@@ -34,5 +38,14 @@ async function makePaymentStripe (req, res) {
   }
 }
 
+async function getOrder(req, res) {
+  try {
+    const orderList = await order.find();
+    res.status(200).json(orderList)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
 
-module.exports = {makePaymentStripe};
+
+module.exports = {makePaymentStripe, getOrder};

@@ -120,7 +120,7 @@ function Product() {
                 accessorKey: "updatedAt",
                 header: "Updated At",
                 cell: ({ row }) => (
-                    <div>{row.getValue("updatedAt") ? format(new Date(row.getValue("updatedAt")), 'yyyy-MM-dd HH:mm:ss'): ""}</div>
+                    <div>{row.getValue("updatedAt") ? format(new Date(row.getValue("updatedAt")), 'yyyy-MM-dd HH:mm:ss'): "-"}</div>
                 )
             },
             {
