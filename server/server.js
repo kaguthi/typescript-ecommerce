@@ -12,7 +12,10 @@ const app = express();
 const cors = require('cors')
 
 dotenv.config();
-app.use(cors({ origin: ["http://localhost:5173"]}))
+app.use(cors({ 
+    origin: ["http://localhost:5173"],
+    credentials : true, 
+}))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -25,13 +28,11 @@ mongoose.connect(process.env.DATABASE_URL)
 
 app.use(cookieParser());
 
-// all routes
 app.use("/", useRoute);
 app.use("/products", productRoute);
 app.use("/category", categoryRoute);
 app.use('/create-payment-intent', paymentRoute);
 
-// server
 app.listen(process.env.PORT, ()=>{
     console.log("The server is running on Port http://localhost:5000")
 });

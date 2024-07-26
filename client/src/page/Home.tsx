@@ -15,6 +15,7 @@ import { useCartContext } from "@/context/cartContext";
 import { LoaderCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
 
 function Home() {
   const { token } = useAuth();
@@ -56,7 +57,12 @@ function Home() {
   );
 
   return (
-    <div className="sm:mx-auto grid gap-1 mt-3 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="flex items-center flex-wrap gap-2 justify-center">
+      <Input
+       type="text" 
+       className="mx-10 my-3"
+       placeholder="Search"
+       />
       <Toaster />
       {data && data?.length > 0 ? (
         data.map((product, index) => (

@@ -6,6 +6,9 @@ const fs = require('fs');
 const path = require('path');
 const uploadDir = path.join(__dirname, '../uploads');
 const validator = require('validator');
+const dotenv = require('dotenv')
+
+dotenv.config();
 
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -173,5 +176,28 @@ async function updateUser(req, res) {
 }
 
 // TODO: create refresh token route
+async function renewToken(req, res, next) {
+    const refreshToken = req.headers['authorization'] || req.cookies.refreshToken;
+    if(!refreshToken) {
+        return res.status(403).json({ message: "No Token found."})
+    } 
+
+    let actualToken = refreshToken;
+    if (refreshToken.startsWith('Bearer ')) {
+        actualToken = refreshToken.split(' ')[1];
+    }
+    try {
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return res.status(404).json({ message: "No user found by that id" });
+        }
+        req.user = user
+        next()
+    } catch (error) {
+        res.status(401).json({ message: error.message })
+    }
+
+}
 
 module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById};
