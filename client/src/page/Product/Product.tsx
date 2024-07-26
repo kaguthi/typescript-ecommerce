@@ -173,7 +173,7 @@ function Product() {
     if (isLoading) return <div className="flex items-center justify-center mt-10"><LoaderCircle className="animate-spin size-14" /></div>;
 
     if (error) return (
-        <Alert variant="destructive">
+        <Alert variant="destructive" className="mt-5">
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>
                 {error.message}
