@@ -15,6 +15,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useAuth } from "../../context/AuthContext"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
 
 function DeleteProduct() {
@@ -58,36 +60,44 @@ function DeleteProduct() {
   return (
     <div>
        <form className="flex items-center justify-center flex-col m-5">
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          className="p-3 border border-orange-500 rounded-md w-full" 
-          value={product.name} 
-          onChange={(e) => setProduct({ ...product, name: e.target.value })} 
-        />
-        <label htmlFor="price">Price</label>
-        <input 
-          type="number"
-          className="p-3 m-5 border border-orange-500 rounded-md w-full"
-          value={product.price} 
-          onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })} 
-        />
-        <label htmlFor="description">Description</label>
-        <textarea
-          className="p-3 border border-orange-500 rounded-md w-full"
-          value={product.description}
-          onChange={(e) => setProduct({ ...product, description: e.target.value })}
-        />
-        <label htmlFor="image">Image</label>
-        <input
-          type="file"
-          name="image"
-          className="p-3 border border-orange-500 rounded-md w-full"
-          onChange={(e) => {
-            const file = e.target.files?.[0] || null;
-            setProduct({ ...product, image: file})
-          }}
-        />
+        <div className="w-full mt-5">
+          <label htmlFor="name">Name</label>
+          <Input
+            type="text"
+            className="mt-1 w-full" 
+            value={product.name} 
+            onChange={(e) => setProduct({ ...product, name: e.target.value })} 
+          />
+        </div>
+        <div className="mt-5 w-full">
+          <label htmlFor="price">Price</label>
+          <Input 
+            type="number"
+            className="mt-1 w-full"
+            value={product.price} 
+            onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })} 
+          />
+        </div>
+        <div className="w-full mt-5">
+            <label htmlFor="description">Description</label>
+            <Textarea
+              className="mt-1 w-full"
+              value={product.description}
+              onChange={(e) => setProduct({ ...product, description: e.target.value })}
+            />
+        </div>
+        <div className="w-full mt-5">
+          <label htmlFor="image">Image</label>
+          <Input
+            type="file"
+            name="image"
+            className="mt-1 w-full"
+            onChange={(e) => {
+              const file = e.target.files?.[0] || null;
+              setProduct({ ...product, image: file})
+            }}
+          />
+        </div>
        <Dialog>
         <DialogTrigger className="bg-primary mt-10 p-3 w-full text-slate-50 rounded-md">Delete</DialogTrigger>
         <DialogContent>

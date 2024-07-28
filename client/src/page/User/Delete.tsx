@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useAuth } from '../../context/AuthContext';
+import { Input } from '@/components/ui/input';
 
 
 function Delete() {
@@ -66,35 +67,43 @@ function Delete() {
       };
   return (
     <div>
-        <form className="flex items-center justify-center flex-col m-5">
-        <input
-            className="p-3 border border-orange-500 rounded-md w-full" 
-            value={studentDetail.username} 
-            onChange={(e) => setStudentDetails({ ...studentDetail, username: e.target.value })} />
-        <input 
-            className="p-3 mt-5 border border-orange-500 rounded-md w-full"
+      <form className="flex items-center justify-center flex-col m-5">
+        <div className='w-full'>
+          <label htmlFor="username">Username</label>
+          <Input
+          className="mt-1 w-full" 
+          value={studentDetail.username} 
+          onChange={(e) => setStudentDetails({ ...studentDetail, username: e.target.value })} 
+          />
+        </div>
+        <div className='mt-5 w-full'>
+          <label htmlFor="email">Email</label>
+          <Input
+            className="mt-1 w-full"
             value={studentDetail.email} 
-            onChange={(e) => setStudentDetails({ ...studentDetail, email: e.target.value })} />
-            <Dialog>
-              <DialogTrigger className="bg-primary mt-10 p-3 w-full text-slate-50 rounded-md">Delete</DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Confirm Delete of User</DialogTitle>
-                  <DialogDescription>
-                    Are you sure you want to delete this user?
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className="sm:justify-start">
-                  <Button type='button' onClick={handleDelete}>Delete</Button>
-                  <DialogClose asChild>
-                    <Button type="button" variant="secondary">
-                      Cancel
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-        </form>
+            onChange={(e) => setStudentDetails({ ...studentDetail, email: e.target.value })} 
+          />
+        </div>
+        <Dialog>
+          <DialogTrigger className="bg-primary mt-10 p-3 w-full text-slate-50 rounded-md">Delete</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirm Delete of User</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this user?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="sm:justify-start">
+              <Button type='button' onClick={handleDelete}>Delete</Button>
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Cancel
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </form>
     </div>
   )
 }

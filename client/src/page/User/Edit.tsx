@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
+import { Input } from "@/components/ui/input";
 
 function Edit() {
     const [student] = useSearchParams();
@@ -65,30 +66,36 @@ function Edit() {
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex items-center justify-center flex-col m-5">
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          className="p-3 border border-orange-500 rounded-md w-full" 
-          value={studentDetail.username} 
-          onChange={(e) => setStudentDetails({ ...studentDetail, username: e.target.value })} 
-        />
-        <label htmlFor="email">Email</label>
-        <input 
-          type="email"
-          className="p-3 m-5 border border-orange-500 rounded-md w-full"
-          value={studentDetail.email} 
-          onChange={(e) => setStudentDetails({ ...studentDetail, email: e.target.value })} 
-        />
-        <label htmlFor="profileImage">Profile Image</label>
-        <input 
-          type="file" 
-          className="p-3 m-5 border border-orange-500 rounded-md w-full"
-          name="profileImage"
-          onChange={(e) => {
-            const file = e.target.files?.[0] || null;
-            setStudentDetails({ ...studentDetail, profileImage: file})
-          }}
-        />
+        <div className="w-full mt-3">
+          <label htmlFor="username">Username</label>
+            <Input
+              type="text"
+              className="mt-1 w-full" 
+              value={studentDetail.username} 
+              onChange={(e) => setStudentDetails({ ...studentDetail, username: e.target.value })} 
+            />
+        </div>
+        <div className="mt-3 w-full">
+          <label htmlFor="email">Email</label>
+          <Input 
+            type="email"
+            className="mt-1 w-full"
+            value={studentDetail.email} 
+            onChange={(e) => setStudentDetails({ ...studentDetail, email: e.target.value })} 
+          />
+          </div>
+          <div className="mt-3 w-full">
+            <label htmlFor="profileImage">Profile Image</label>
+            <Input 
+              type="file" 
+              className="mt-1 w-full"
+              name="profileImage"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                setStudentDetails({ ...studentDetail, profileImage: file})
+              }}
+              />
+          </div>
           <Button type="submit" className="mt-3 w-full">Update User</Button>
       </form>
   </div>
