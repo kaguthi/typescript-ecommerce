@@ -80,6 +80,11 @@ async function createUser(req, res) {
                 httpOnly: true,
                 secure: true
             });
+            res.cookie("refresh-token", refresh_token, {
+                withCredentials: true,
+                httpOnly: true,
+                secure: true
+            })
             res.status(201).json({ message: "User created successfully", user: createdUser });
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -103,6 +108,11 @@ async function loginUser(req, res) {
                 httpOnly: true,
                 secure: true
             });
+            res.cookie("refresh-token", refresh_token, {
+                withCredentials: true,
+                httpOnly: true,
+                secure: true
+            })
             res.status(200).json({ message: "Login successful", success: true, token: token, RefreshToken: refresh_token ,username: user.username, profileImage: user.profileImage, userId: user._id });
         } else {
             res.status(400).json({ message: "Invalid username or password.", success: false });
@@ -177,7 +187,7 @@ async function updateUser(req, res) {
 
 // TODO: create refresh token route
 async function renewToken(req, res, next) {
-    const refreshToken = req.headers['authorization'] || req.cookies.refreshToken;
+    const refreshToken = req.headers['authorization'] || req.cookies.refresh_token;
     if(!refreshToken) {
         return res.status(403).json({ message: "No Token found."})
     } 

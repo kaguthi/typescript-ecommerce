@@ -18,6 +18,7 @@ function Signin() {
       const response = await fetch (`${host}/login`,
         {
           method: "POST",
+          credentials : 'include',
           headers: {
             "Content-Type" : "application/json"
           },
