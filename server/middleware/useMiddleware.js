@@ -22,7 +22,6 @@ const verification = async (req, res, next) => {
             return res.status(404).json({ message: "No user found by that id" });
         }
 
-        // Attach user to request object
         req.user = user;
         next();
     } catch (err) {

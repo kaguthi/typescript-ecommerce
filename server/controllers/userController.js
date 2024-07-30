@@ -7,6 +7,7 @@ const path = require('path');
 const uploadDir = path.join(__dirname, '../uploads');
 const validator = require('validator');
 const dotenv = require('dotenv')
+const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
@@ -80,7 +81,7 @@ async function createUser(req, res) {
                 httpOnly: true,
                 secure: true
             });
-            res.cookie("refresh-token", refresh_token, {
+            res.cookie("refresh_token", refresh_token, {
                 withCredentials: true,
                 httpOnly: true,
                 secure: true
@@ -108,7 +109,7 @@ async function loginUser(req, res) {
                 httpOnly: true,
                 secure: true
             });
-            res.cookie("refresh-token", refresh_token, {
+            res.cookie("refresh_token", refresh_token, {
                 withCredentials: true,
                 httpOnly: true,
                 secure: true
@@ -186,7 +187,7 @@ async function updateUser(req, res) {
 }
 
 // TODO: create refresh token route
-async function renewToken(req, res, next) {
+async function renewToken(req, res) {
     const refreshToken = req.headers['authorization'] || req.cookies.refresh_token;
     if(!refreshToken) {
         return res.status(403).json({ message: "No Token found."})
@@ -197,17 +198,23 @@ async function renewToken(req, res, next) {
         actualToken = refreshToken.split(' ')[1];
     }
     try {
-        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
+        const decoded = jwt.verify(actualToken, process.env.REFRESH_TOKEN_KEY);
         const user = await User.findById(decoded.id);
         if (!user) {
             return res.status(404).json({ message: "No user found by that id" });
         }
         req.user = user
-        next()
+        const token = createToken(req.user._id)
+        res.cookie("token" , token, {
+            withCredentials: true,
+            httpOnly: true,
+            secure: true
+        })
+        res.status(200).json({ message: "token refreshed successfully"})
     } catch (error) {
         res.status(401).json({ message: error.message })
     }
 
 }
 
-module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById};
+module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken};

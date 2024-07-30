@@ -11,10 +11,10 @@ export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
 
-  const { setNumberOfProducts, setCartProducts }  = useCartContext()
+  const { setNumberOfProducts, setCartProducts } = useCartContext();
 
-  const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!stripe) {
@@ -33,6 +33,9 @@ export default function CheckoutForm() {
       switch (paymentIntent?.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
+          localStorage.removeItem('cartProducts');
+          setNumberOfProducts("0");
+          setCartProducts([]);
           break;
         case "processing":
           setMessage("Your payment is processing.");
@@ -45,7 +48,7 @@ export default function CheckoutForm() {
           break;
       }
     });
-  }, [stripe]);
+  }, [stripe, setNumberOfProducts, setCartProducts]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -63,22 +66,20 @@ export default function CheckoutForm() {
       },
     });
 
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message as string);
-    } else {
-      setMessage("An unexpected error occurred.");
+    if (error) {
+      if (error.type === "card_error" || error.type === "validation_error") {
+        setMessage(error.message || "An error occurred.");
+      } else {
+        setMessage("An unexpected error occurred.");
+      }
     }
-
-    localStorage.removeItem('cartProducts');
-    setNumberOfProducts("0")
-    setCartProducts([])
 
     setIsLoading(false);
   };
 
   const paymentElementOptions = {
     layout: "tabs"
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center mt-6 ">

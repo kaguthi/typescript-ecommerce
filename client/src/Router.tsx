@@ -15,6 +15,7 @@ import { useAuth } from './context/AuthContext'
 import Profile from './page/Profile'
 import Checkout from './page/Checkout'
 import Success from './page/Success'
+import Order from './page/Order'
 
 function Router() {
 
@@ -30,6 +31,7 @@ function Router() {
           <Route path='signup' element={ !token ? <SignUp /> : < Navigate to="/" /> }/>
           <Route path='checkout' element={<Checkout />} />
           <Route path='success' element={<Success />} />
+          <Route path='order' element={ <Order />}/>
           <Route path='product'>
             <Route index  element={ <Product />} />
             <Route path='addProduct' element={ token ? <AddProduct /> : <Navigate to="signin" /> } />

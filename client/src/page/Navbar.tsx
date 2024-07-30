@@ -26,28 +26,31 @@ function Navbar() {
       <Link to="/" className="text-amber-600 text-2xl text-center py-4 px-4 font-semibold">E-Buy</Link>
       <nav className="py-4">
         <ul className="flex space-x-2 items-center">
-          <li className="relative">
-            <Sheet>
-              <SheetTrigger asChild>
-                <ShoppingCart className="text-slate-200 cursor-pointer size-7" aria-label="Shopping Cart" />
-              </SheetTrigger>
-              <SheetContent className="overflow-y-scroll">
-                <SheetHeader>
-                  <SheetTitle>Cart</SheetTitle>
-                </SheetHeader>
-                <Cart />
-              </SheetContent>
-            </Sheet>
-            <Badge className="absolute top-0 right-0 w-4 h-4 text-xs text-center" variant="destructive">{numberOfProducts}</Badge>
-          </li>
-          <li>
-            <Link to="/user" className="text-slate-200 text-xl">User</Link>
-          </li>
-          <li>
-            <Link to="/product" className="text-slate-200 text-xl">Product</Link>
-          </li>
           {token ? (
             <>
+              <li className="relative">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <ShoppingCart className="text-slate-200 cursor-pointer size-7" aria-label="Shopping Cart" />
+                  </SheetTrigger>
+                  <SheetContent className="overflow-y-scroll">
+                    <SheetHeader>
+                      <SheetTitle>Cart</SheetTitle>
+                    </SheetHeader>
+                    <Cart />
+                  </SheetContent>
+                </Sheet>
+                <Badge className="absolute top-0 right-0 w-4 h-4 text-xs text-center" variant="destructive">{numberOfProducts}</Badge>
+              </li>
+              <li>
+                <Link to="user" className="text-slate-200 text-xl">User</Link>
+              </li>
+              <li>
+                <Link to="product" className="text-slate-200 text-xl">Product</Link>
+              </li>
+              <li>
+                <Link to="order" className="text-slate-200 text-xl">Order</Link>
+              </li>
               <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
