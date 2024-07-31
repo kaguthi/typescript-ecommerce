@@ -14,7 +14,7 @@ import {
   } from "@tanstack/react-table"
 import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input"
-import { LoaderCircle, MoreHorizontal } from "lucide-react"
+import { FilePenLine, LoaderCircle, MoreHorizontal, Trash2 } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -139,10 +139,10 @@ function Product() {
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>
-                                    <Link to={`editProduct?productId=${row.original._id}`}>Edit</Link>
+                                    <Link to={`editProduct?productId=${row.original._id}`}className="flex gap-2 items-center"><FilePenLine className="w-5 h-5"></FilePenLine>Edit</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Link to={`deleteProduct?productId=${row.original._id}`}>Delete</Link>
+                                    <Link to={`deleteProduct?productId=${row.original._id}`} className="flex gap-2 items-center"><Trash2 className="w-5 h-5"/>Delete</Link>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

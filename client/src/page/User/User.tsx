@@ -15,7 +15,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, LoaderCircle, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, FilePenLine, LoaderCircle, MoreHorizontal, Trash2 } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -139,10 +139,10 @@ function User() {
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
-                                <Link to={`edit?studentId=${row.original._id}`}>Edit</Link>
+                                <Link to={`edit?studentId=${row.original._id}`} className="flex gap-2 items-center"><FilePenLine className="w-5 h-5" />Edit</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                <Link to={`delete?studentId=${row.original._id}`}>Delete</Link>
+                                <Link to={`delete?studentId=${row.original._id}`} className="flex gap-2 items-center"><Trash2 className="w-5 h-5" />Delete</Link>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -170,7 +170,13 @@ function User() {
         },
     });
 
-    if (isLoading) return <div className="flex items-center justify-center mt-10"><LoaderCircle className="animate-spin size-14" /></div>;
+    if (isLoading)
+        return (
+          <div className="flex items-center justify-center mt-10">
+            <LoaderCircle className="animate-spin size-14" />
+          </div>
+        );
+    
 
     if (error) return (
         <Alert variant="destructive" className="mt-5">

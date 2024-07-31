@@ -65,4 +65,10 @@ export interface CartContextType {
     setCartProducts: (products: productDetail[]) => void;
 }
 
+export interface order {
+    _id: string
+    userId: userSchema[],
+    productId: productSchema[],
+    quantity: number[]
+}
   
