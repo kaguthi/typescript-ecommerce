@@ -38,14 +38,4 @@ async function makePaymentStripe (req, res) {
   }
 }
 
-async function getOrder(req, res) {
-  try {
-    const orderList = await order.find();
-    res.status(200).json(orderList)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
-}
-
-
-module.exports = {makePaymentStripe, getOrder};
+module.exports = {makePaymentStripe};
