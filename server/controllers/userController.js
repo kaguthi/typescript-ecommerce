@@ -81,11 +81,6 @@ async function createUser(req, res) {
                 httpOnly: true,
                 secure: true
             });
-            res.cookie("refresh_token", refresh_token, {
-                withCredentials: true,
-                httpOnly: true,
-                secure: true
-            })
             res.status(201).json({ message: "User created successfully", user: createdUser });
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -114,7 +109,7 @@ async function loginUser(req, res) {
                 httpOnly: true,
                 secure: true
             })
-            res.status(200).json({ message: "Login successful", success: true, token: token, RefreshToken: refresh_token ,username: user.username, profileImage: user.profileImage, userId: user._id });
+            res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id });
         } else {
             res.status(400).json({ message: "Invalid username or password.", success: false });
         }
