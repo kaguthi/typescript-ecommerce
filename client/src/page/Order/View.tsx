@@ -51,7 +51,7 @@ function ViewData() {
       borderWidth: 1,
       borderRightWidth: 0,
       borderBottomWidth: 0,
-      margin: 10,
+      margin: 15,
     },
     tableRow: {
       flexDirection: "row",
@@ -87,7 +87,7 @@ function ViewData() {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      margin: 10,
+      margin: 15,
       borderBottom: 2,
       padding: 5,
     },
@@ -96,12 +96,12 @@ function ViewData() {
       marginBottom: 10
     },
     details: {
-      margin: 10,
+      margin: 15,
       textDecoration: "underline"
     },
     note: {
       fontSize: 12,
-      margin: 10
+      margin: 15
     }
   })
   if (isLoading)
