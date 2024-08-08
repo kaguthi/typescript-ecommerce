@@ -69,6 +69,6 @@ export interface order {
     _id: string
     userId: userSchema[],
     productId: productSchema[],
-    quantity: number[]
+    quantity: number[],
 }
   
