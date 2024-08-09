@@ -64,6 +64,8 @@ function Order() {
             table.getIsAllPageRowsSelected() || 
             (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
+          onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
+          aria-label="select-all"
         />
       ),
       cell: ({ row }) => (
