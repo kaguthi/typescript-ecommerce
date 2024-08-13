@@ -10,7 +10,7 @@ const paymentRoute = require('./routes/paymentRoute');
 const orderRoute = require('./routes/orderRoute');
 const path = require('path');
 const app = express();
-const cors = require('cors')
+const cors = require('cors');
 
 dotenv.config();
 app.use(cors({ 

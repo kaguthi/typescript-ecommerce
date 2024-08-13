@@ -1,5 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const order = require('../model/orderModel')
+const { sendMessage } = require('../utils/sendSms');
 
 function calculateAmount (products) {
     const totalPrice = products.reduce((total, product) => total + product.price * product.count ,0);
@@ -31,7 +32,7 @@ async function makePaymentStripe (req, res) {
     const productId = products.map(product => product._id);
     const quantity = products.map(product => product.count);
     const orderList = await order.create({ userId, productId, quantity })
-    
+    sendMessage();
     res.send({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
     res.send(500).json({ message: error.message });
