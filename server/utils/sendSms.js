@@ -1,19 +1,24 @@
+const dotenv = require('dotenv');
+dotenv.config()
+
 const credentials = {
-    apiKey: '',
-    username: 'jellybeans'
+    apiKey: process.env.SMS_API_KEY,
+    username: process.env.SMS_APP_NAME
 }
 
 const AfricasTalking = require('africastalking')(credentials);
 
 const sms = AfricasTalking.SMS;
 
-export function sendMessage() {
+async function sendMessage() {
     const options = {
-        to: [''],
+        to: ['+2547xxxxxxxxx'],
         message: "Hi Peter from E-Buy platform"
     }
 
-    sms.send(options)
+    await sms.send(options)
     .then(console.log)
-    .catch(console.log)
+    .catch((err) => console.log(err))
 }
+
+module.exports = { sendMessage }
