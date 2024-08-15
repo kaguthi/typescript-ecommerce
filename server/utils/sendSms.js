@@ -1,24 +1,28 @@
 const dotenv = require('dotenv');
-dotenv.config()
+dotenv.config();
+
+const AfricasTalking = require('africastalking');
 
 const credentials = {
     apiKey: process.env.SMS_API_KEY,
     username: process.env.SMS_APP_NAME
-}
+};
 
-const AfricasTalking = require('africastalking')(credentials);
-
-const sms = AfricasTalking.SMS;
+const africasTalking = AfricasTalking(credentials);
+const sms = africasTalking.SMS;
 
 async function sendMessage() {
     const options = {
-        to: ['+2547xxxxxxxxx'],
+        to: ['+254795133505'],
         message: "Hi Peter from E-Buy platform"
-    }
+    };
 
-    await sms.send(options)
-    .then(console.log)
-    .catch((err) => console.log(err))
+    try {
+        const response = await sms.send(options);
+        console.log(response);
+    } catch (err) {
+        console.error('Error sending SMS:', err);
+    }
 }
 
-module.exports = { sendMessage }
+module.exports = { sendMessage };

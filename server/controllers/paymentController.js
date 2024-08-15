@@ -29,13 +29,13 @@ async function makePaymentStripe (req, res) {
         }
     });
 
+    sendMessage();
     const productId = products.map(product => product._id);
     const quantity = products.map(product => product.count);
     const orderList = await order.create({ userId, productId, quantity })
-    sendMessage();
     res.send({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
-    res.send(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 }
 

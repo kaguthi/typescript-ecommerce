@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 
 mongoose.connect(process.env.DATABASE_URL)
     .then(() => {
-        console.log("Connected successfully");
+        console.log("Connected to the database successfully");
     })
     .catch((err) => console.log(err.message));
 
