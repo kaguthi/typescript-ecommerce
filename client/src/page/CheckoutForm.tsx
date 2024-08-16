@@ -5,13 +5,10 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import './checkout.css';
-import { useCartContext } from "@/context/cartContext";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
-
-  const { setNumberOfProducts, setCartProducts } = useCartContext();
 
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,9 +30,6 @@ export default function CheckoutForm() {
       switch (paymentIntent?.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
-          localStorage.removeItem('cartProducts');
-          setNumberOfProducts("0");
-          setCartProducts([]);
           break;
         case "processing":
           setMessage("Your payment is processing.");
@@ -48,7 +42,7 @@ export default function CheckoutForm() {
           break;
       }
     });
-  }, [stripe, setNumberOfProducts, setCartProducts]);
+  }, [stripe]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
