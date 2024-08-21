@@ -14,7 +14,6 @@ const useLogout = () => {
     localStorage.removeItem('cartProducts');
     localStorage.removeItem('userId')
     localStorage.removeItem('numberOfProducts')
-          
 
     setToken('');
     setName('');
