@@ -18,6 +18,10 @@ const User = mongoose.Schema({
     profileImage: {
         type: String
     },
+    role: {
+        type: String,
+        required: true
+    },
     createdAt: Date,
     updatedAt: Date
 });
