@@ -28,6 +28,10 @@ const upload = multer({ storage: storage });
 
 // get alluser data from the database
 async function getUsers(req, res) {
+    const userRole = req.query.role;
+    if (userRole !== "admin") {
+        return res.status(403).json({ message : "Not Allowed"})
+    }
     try {
         const users = await User.find();
         res.status(200).json(users);
@@ -72,6 +76,7 @@ async function createUser(req, res) {
                 email: req.body.email,
                 password: hashedPassword,
                 profileImage: req.file ? req.file.filename : null,
+                role: req.body.role,
                 createdAt: Date.now()
             };
             const createdUser = await User.create(user);
