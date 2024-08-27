@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 
 function Signin() {
   const navigate = useNavigate();
-  const { setToken, setName, setProfileImage, setUserId } = useAuth();
+  const { setToken, setName, setProfileImage, setUserId, setRole } = useAuth();
 
   const [studentDetail, setStudentDetails] = useState<loginDetail>({ username: "", password: ""});
   const handleSubmit = async (e: FormEvent) => {
@@ -27,16 +27,18 @@ function Signin() {
       )
       const data = await response.json();
       if(data.success === true){
-        const { profileImage, token, username, userId } = data;
+        const { profileImage, token, username, userId, role } = data;
         localStorage.setItem("profileImage", profileImage)
         localStorage.setItem("username", username);
         localStorage.setItem("token", token)
         localStorage.setItem("userId", userId)
+        localStorage.setItem("role", role)
         toast.success(data.message);
         setProfileImage(profileImage);
         setToken(token)
         setName(username)
         setUserId(userId)
+        setRole(role)
         navigate("/");
       }else{
         toast.error(data.message);

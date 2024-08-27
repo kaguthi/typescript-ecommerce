@@ -18,7 +18,7 @@ import Cart from "./Cart";
 import { useCartContext } from "@/context/cartContext";
 
 function Navbar() {
-  const { token, name, profileImage } = useAuth();
+  const { token, name, profileImage, role } = useAuth();
   const {numberOfProducts} = useCartContext();
   const logout = useLogout();
   return (
@@ -28,7 +28,20 @@ function Navbar() {
         <ul className="flex space-x-2 items-center">
           {token ? (
             <>
-              <li className="relative">
+            {role === "admin" ? 
+              (
+                <>
+                  <li>
+                    <Link to="user" className="text-slate-200 text-xl">User</Link>
+                  </li>
+                  <li>
+                    <Link to="product" className="text-slate-200 text-xl">Product</Link>
+                  </li>
+                </>
+              )
+            : (
+              <>
+                <li className="relative">
                 <Sheet>
                   <SheetTrigger asChild>
                     <ShoppingCart className="text-slate-200 cursor-pointer size-7" aria-label="Shopping Cart" />
@@ -41,16 +54,12 @@ function Navbar() {
                   </SheetContent>
                 </Sheet>
                 <Badge className="absolute top-0 right-0 w-4 h-4 text-xs text-center" variant="destructive">{numberOfProducts}</Badge>
-              </li>
-              <li>
-                <Link to="user" className="text-slate-200 text-xl">User</Link>
-              </li>
-              <li>
-                <Link to="product" className="text-slate-200 text-xl">Product</Link>
-              </li>
-              <li>
-                <Link to="order" className="text-slate-200 text-xl">Order</Link>
-              </li>
+                </li>
+                <li>
+                  <Link to="order" className="text-slate-200 text-xl">Order</Link>
+                </li>
+              </>
+            )}
               <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

@@ -114,7 +114,7 @@ async function loginUser(req, res) {
                 httpOnly: true,
                 secure: true
             })
-            res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id });
+            res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id, role: user.role });
         } else {
             res.status(400).json({ message: "Invalid username or password.", success: false });
         }

@@ -51,10 +51,12 @@ export interface AuthContextType {
     token: string;
     name: string;
     profileImage: string;
+    role: string;
     setUserId: (userId: string) => void;
     setToken: (token: string) => void;
     setName: (name: string) => void;
     setProfileImage: (profileImage: string) => void;
+    setRole: (role: string) => void;
 }
 
 export interface CartContextType {
