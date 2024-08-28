@@ -28,8 +28,8 @@ const upload = multer({ storage: storage });
 
 // get alluser data from the database
 async function getUsers(req, res) {
-    const userRole = req.query.role;
-    if (userRole !== "admin") {
+    const userRole = req.user.role;
+    if (userRole !== "admin" || !userRole) {
         return res.status(403).json({ message : "Not Allowed"})
     }
     try {
