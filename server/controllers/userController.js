@@ -30,7 +30,7 @@ const upload = multer({ storage: storage });
 async function getUsers(req, res) {
     const userRole = req.user.role;
     if (userRole !== "admin" || !userRole) {
-        return res.status(403).json({ message : "Not Allowed"})
+        return res.status(403).json({ message : "Access Denied: Admin Only"})
     }
     try {
         const users = await User.find();
@@ -125,6 +125,10 @@ async function loginUser(req, res) {
 
 // delete user data
 async function deleteUser(req, res) {
+    const userRole = req.user.role;
+    if (userRole !== "admin" || !userRole) {
+        return res.status(403).json({ message: "Access Denied: Admin Only"});
+    }
     const id = req.params.id;
     if (!id) {
         return res.status(400).json({ message: "User ID is required." });
@@ -152,6 +156,10 @@ async function deleteUser(req, res) {
 
 // update user details
 async function updateUser(req, res) {
+    const userRole = req.user.role;
+    if (userRole !== "admin" || !userRole) {
+        return res.status(403).json({ message: "Access Denied: Admin Only"});
+    }
     const id = req.params.id;
     if (!id) {
         return res.status(400).json({ message: "User ID is required." });

@@ -21,7 +21,11 @@ const upload = multer({ storage: storage });
 
 // get all products from the database
 async function getAllProducts(req, res) {
-    try {
+    const userRole = req.user.role;
+    if(userRole !== "admin" || !userRole) {
+        return res.status(403).json({ messsage: "Access Denied: Admins Only"})
+    }
+    try { 
         const products = await productSchema.find();
         res.status(200).json(products);
     } catch (error) {
@@ -31,6 +35,10 @@ async function getAllProducts(req, res) {
 
 // get product by id
 async function getProductById(req, res){
+    const userRole = req.user.role;
+    if (userRole !== "admin" || !userRole) {
+        return res.status(403).json({ message: "Access Denied: Admin Only"});
+    }
     const id = req.params.id;
     if(!id) {
         return res.status(400).json({message: "Product Id is required."})
@@ -48,6 +56,10 @@ async function getProductById(req, res){
 
 // create products
 async function createProduct(req, res){
+    const userRole = req.user.role;
+    if (userRole !== "admin" || !userRole) {
+        return res.status(403).json({ message: "Access Denied: Admin Only"});
+    }
     upload.single('image')(req, res, async (err) => {
         if (err) {
             return res.status(400).json({ message: err.message });
@@ -70,6 +82,10 @@ async function createProduct(req, res){
 
 // update product
 async function updateProduct(req, res) {
+    const userRole = req.user.role;
+    if (userRole !== "admin" || !userRole) {
+        return res.status(403).json({ message: "Access Denied: Admin Only"});
+    }
     const id = req.params.id;
     if (!id) {
         return res.status(400).json({ message: "Product ID is required." });
@@ -105,6 +121,10 @@ async function updateProduct(req, res) {
 }
 
 async function deleteProduct(req, res) {
+    const userRole = req.user.role;
+    if (userRole !== "admin" || !userRole) {
+        return res.status(403).json({ message: "Access Denied: Admin Only"});
+    }
     const id = req.params.id;
     if(!id) {
         return res.status(400).json({ message: "Product id is required."})
