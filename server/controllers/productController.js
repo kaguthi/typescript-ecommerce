@@ -21,10 +21,6 @@ const upload = multer({ storage: storage });
 
 // get all products from the database
 async function getAllProducts(req, res) {
-    const userRole = req.user.role;
-    if(userRole !== "admin" || !userRole) {
-        return res.status(403).json({ messsage: "Access Denied: Admins Only"})
-    }
     try { 
         const products = await productSchema.find();
         res.status(200).json(products);

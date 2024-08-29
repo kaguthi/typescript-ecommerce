@@ -39,7 +39,14 @@ function Signin() {
         setName(username)
         setUserId(userId)
         setRole(role)
-        navigate("/");
+        switch (role) {
+          case "admin":
+            navigate("/admin")
+            break;
+          default:
+            navigate("/")
+            break;
+        }
       }else{
         toast.error(data.message);
       }
