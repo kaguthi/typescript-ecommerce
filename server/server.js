@@ -8,6 +8,7 @@ const productRoute = require('./routes/productRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const paymentRoute = require('./routes/paymentRoute');
 const orderRoute = require('./routes/orderRoute');
+const countRoute = require('./routes/countRoute');
 const path = require('path');
 const app = express();
 const cors = require('cors');
@@ -33,7 +34,8 @@ app.use("/", useRoute);
 app.use("/products", productRoute);
 app.use("/category", categoryRoute);
 app.use('/create-payment-intent', paymentRoute);
-app.use("/order", orderRoute)
+app.use("/order", orderRoute);
+app.use('/count', countRoute);
 
 app.listen(process.env.PORT, ()=>{
     console.log("The server is running on Port http://localhost:5000")
