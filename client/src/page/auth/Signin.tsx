@@ -43,7 +43,7 @@ function Signin() {
           case "admin":
             navigate("/admin")
             break;
-          default:
+          case "user":
             navigate("/")
             break;
         }

@@ -69,7 +69,7 @@ export interface CartContextType {
 
 export interface order {
     _id: string
-    userId: userSchema[],
+    userId: userSchema,
     productId: productSchema[],
     quantity: number[],
 }

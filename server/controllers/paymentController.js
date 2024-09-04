@@ -1,6 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const order = require('../model/orderModel')
 const { sendMessage } = require('../utils/sendSms');
+const User = require("../model/userModel");
 
 function calculateAmount (products) {
     const totalPrice = products.reduce((total, product) => total + product.price * product.count ,0);
@@ -14,10 +15,11 @@ async function makePaymentStripe (req, res) {
       return res.status(400).json({ message: "Invalid request: Missing products or userId" });
   }
 
+  const user = await User.findById(userId);
+
     const customer = await stripe.customers.create({
-        name: 'Amelia Cooper',
-        email: 'amelia@gmail.com',
-        phone: '+254712345678'
+        name: user.username,
+        email: user.email,
     });
 
     const paymentIntent = await stripe.paymentIntents.create({

@@ -1,7 +1,11 @@
-
+import Dashboard from "./Dashboard"
+import LatestOrder from "./LatestOrder"
 function Admin() {
   return (
-    <div>Admin</div>
+    <> 
+      <Dashboard />
+      <LatestOrder />
+    </>
   )
 }
 

@@ -28,28 +28,28 @@ function Router() {
       <Routes>
         <Route element={ <Layout /> }>
           <Route index element={ token ? <Home /> :<Navigate to="signin" /> } />
-          <Route path='profile' element={ <Profile /> } />
+          <Route path='profile' element={ token ? <Profile /> :  <Navigate to="/signin" /> } />
           <Route path='signin' element={ !token ? <Signin /> : < Navigate to="/" /> }/>
           <Route path='signup' element={ !token ? <SignUp /> : < Navigate to="/" /> }/>
-          <Route path='checkout' element={<Checkout />} />
-          <Route path='success' element={<Success />} />
+          <Route path='checkout' element={ token ? <Checkout /> : <Navigate to="/signin" />} />
+          <Route path='success' element={ <Success /> } />
           <Route path='order' >
-            <Route index element={ <Order />} />
-            <Route path='view' element={<View/>}/>
+            <Route index element={ token ? <Order /> : <Navigate to="/signin" /> } />
+            <Route path='view' element={ token ? <View/> : <Navigate to="/signin" /> }/>
           </Route> 
           <Route path='product'>
-            <Route index  element={ <Product />} />
-            <Route path='addProduct' element={ token ? <AddProduct /> : <Navigate to="signin" /> } />
-            <Route path='editProduct' element={ token ? <EditProduct /> : <Navigate to="signin" /> } />
-            <Route path='deleteProduct' element={ token ? <DeleteProduct /> : <Navigate to="signin" />} />
+            <Route index  element={ token ? <Product /> : <Navigate to="/signin" />} />
+            <Route path='addProduct' element={ token ? <AddProduct /> : <Navigate to="/signin" /> } />
+            <Route path='editProduct' element={ token ? <EditProduct /> : <Navigate to="/signin" /> } />
+            <Route path='deleteProduct' element={ token ? <DeleteProduct /> : <Navigate to="/signin" />} />
           </Route>
           <Route path='user'>
-            <Route index element={ <User /> } />
-            <Route path='edit' element={ token ? <Edit /> : <Navigate to="signin" />} />
-            <Route path='delete' element={ token ? <Delete /> : <Navigate to="signin" />} />
+            <Route index element={ token ? <User /> : <Navigate to="/signin" /> } />
+            <Route path='edit' element={ token ? <Edit /> : <Navigate to="/signin" />} />
+            <Route path='delete' element={ token ? <Delete /> : <Navigate to="/signin" />} />
           </Route>
           <Route path='*' element={ < NotFound/> }/>
-          <Route path='admin' element={ <Admin/>}/>
+          <Route path='admin' element={ token ? <Admin/> : <Navigate to="/signin" />}/>
         </Route>
       </Routes>
     </>

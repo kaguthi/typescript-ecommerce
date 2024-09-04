@@ -23,7 +23,7 @@ function Navbar() {
   const logout = useLogout();
   return (
     <div className="bg-primary flex space-x-2 justify-between sticky top-0 z-10">
-      <Link to="/" className="text-amber-600 text-2xl text-center py-4 px-4 font-semibold">E-Buy</Link>
+      <Link to={role === "admin" ? "/admin" : "/"} className="text-amber-600 text-2xl text-center py-4 px-4 font-semibold">E-Buy</Link>
       <nav className="py-4">
         <ul className="flex space-x-2 items-center">
           {token ? (
@@ -36,6 +36,9 @@ function Navbar() {
                   </li>
                   <li>
                     <Link to="product" className="text-slate-200 text-xl">Product</Link>
+                  </li>
+                  <li>
+                    <Link to="order" className="text-slate-200 text-xl">Order</Link>
                   </li>
                 </>
               )
