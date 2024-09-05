@@ -34,7 +34,7 @@ export interface productSchema {
     name: string,
     price: number,
     image: File | null,
-    description: string
+    description: string,
 }
 
 export interface productDetail {
@@ -72,5 +72,6 @@ export interface order {
     userId: userSchema,
     productId: productSchema[],
     quantity: number[],
+    totalPrice: number
 }
   

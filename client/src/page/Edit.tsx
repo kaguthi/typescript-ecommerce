@@ -47,7 +47,7 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
         );
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`Error updating student details: ${errorText}`);
+            throw new Error(errorText);
         }
         const data = await response.json();
         toast.success(data.message)

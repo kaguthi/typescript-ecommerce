@@ -15,6 +15,7 @@ function Dashboard() {
     const { token } = useAuth();
     const [productCount, setProductCount] = useState<string>("")
     const [userCount, setUserCount] = useState<string>("")
+    const [sales, setSales] = useState<string>("")
     const {isLoading, data, error} = useQuery({
         queryKey: ["count"],
         queryFn: () =>
@@ -34,6 +35,7 @@ function Dashboard() {
         if (data) {
             setProductCount(data["productCount"])
             setUserCount(data["userCount"])
+            setSales(data["sales"])
         }
     },[data])
     
@@ -87,7 +89,7 @@ function Dashboard() {
         <CardContent>
             <div className="flex justify-between">
             <BadgeDollarSign />
-            <p>$ 1000</p>
+            <p>$ {sales}</p>
             </div>
         </CardContent>
         </Card>

@@ -1,6 +1,6 @@
 const Product = require('../model/productModel');
 const User = require('../model/userModel');
-
+const Order = require('../model/orderModel');
 
 async function getDocumentCount (req, res) {
     const userRole = req.user?.role;
@@ -11,7 +11,15 @@ async function getDocumentCount (req, res) {
     try {
         const productCount = await Product.countDocuments();
         const userCount = await User.countDocuments();
-        res.status(200).json({ productCount: productCount, userCount: userCount })
+        const monthSales = await Order.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalPrice: {$sum: "$totalPrice"}
+                }
+            }
+        ])
+        res.status(200).json({ productCount: productCount, userCount: userCount, sales: monthSales[0].totalPrice /100 })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

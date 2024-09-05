@@ -33,7 +33,7 @@ async function getAllProducts(req, res) {
 async function getProductById(req, res){
     const userRole = req.user.role;
     if (userRole !== "admin" || !userRole) {
-        return res.status(403).json({ message: "Access Denied: Admin Only"});
+        return res.status(401).json({ message: "Access Denied: Admin Only"});
     }
     const id = req.params.id;
     if(!id) {
@@ -54,7 +54,7 @@ async function getProductById(req, res){
 async function createProduct(req, res){
     const userRole = req.user.role;
     if (userRole !== "admin" || !userRole) {
-        return res.status(403).json({ message: "Access Denied: Admin Only"});
+        return res.status(401).json({ message: "Access Denied: Admin Only"});
     }
     upload.single('image')(req, res, async (err) => {
         if (err) {
@@ -80,7 +80,7 @@ async function createProduct(req, res){
 async function updateProduct(req, res) {
     const userRole = req.user.role;
     if (userRole !== "admin" || !userRole) {
-        return res.status(403).json({ message: "Access Denied: Admin Only"});
+        return res.status(401).json({ message: "Access Denied: Admin Only"});
     }
     const id = req.params.id;
     if (!id) {
@@ -119,7 +119,7 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
     const userRole = req.user.role;
     if (userRole !== "admin" || !userRole) {
-        return res.status(403).json({ message: "Access Denied: Admin Only"});
+        return res.status(401).json({ message: "Access Denied: Admin Only"});
     }
     const id = req.params.id;
     if(!id) {

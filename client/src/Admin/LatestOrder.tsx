@@ -1,13 +1,15 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useAuth } from "@/context/AuthContext"
 import { host } from "@/utils/constants"
 import { order } from "@/utils/types"
 import { useQuery } from "@tanstack/react-query"
-import { LoaderCircle } from "lucide-react"
+import { Eye, LoaderCircle } from "lucide-react"
 function LatestOrder() {
   const { token } = useAuth()
-  const {isLoading, data: latestOrder, error} = useQuery< order, Error>({
+  const {isLoading, data: latestOrder, error} = useQuery<order[], Error>({
     queryKey: ["order"],
     queryFn: () => 
       fetch(`${host}/order/latestOrder`, {
@@ -34,7 +36,7 @@ function LatestOrder() {
         <AlertDescription>{error.message}</AlertDescription>
       </Alert>
     );
-    // const latestOrder = data;  
+
   return (
     <div className="flex flex-col m-5">
         <p className="font-bold underline">Latest Order</p>
@@ -46,6 +48,7 @@ function LatestOrder() {
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>profile Image</TableHead>
+                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -57,6 +60,43 @@ function LatestOrder() {
                       <TableCell>{order.userId.email}</TableCell>
                       <TableCell className="text-right">
                         <img className="w-10 h-10 object-contain rounded-full" src={`${host}/uploads/${order.userId.profileImage}`} alt="user image" />
+                      </TableCell>
+                      <TableCell>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline"><Eye /></Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Name</TableHead>
+                                  <TableHead>Price</TableHead>
+                                  <TableHead>Image</TableHead>
+                                  <TableHead>Quantity</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                               {order.productId.map((item, i) => (
+                                  <TableRow key={i}>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.price}</TableCell>
+                                    <TableCell>
+                                      <img className="w-10 h-10 object-contain rounded-full" src={`${host}/uploads/${item.image}`} alt="product image" />
+                                    </TableCell>
+                                    <TableCell>{order.quantity[i]}</TableCell>
+                                  </TableRow>
+                               ))}
+                              </TableBody>
+                              <TableFooter>
+                                <TableRow>
+                                  <TableCell colSpan={3}>Total</TableCell>
+                                  <TableCell className="text-right">${order.totalPrice / 100}</TableCell>
+                                </TableRow>
+                              </TableFooter>
+                            </Table>
+                          </DialogContent>
+                        </Dialog>
                       </TableCell>
                     </TableRow>
                   ))
