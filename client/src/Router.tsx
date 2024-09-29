@@ -18,6 +18,7 @@ import Success from './page/Success'
 import Order from './page/Order/Order'
 import View from './page/Order/View'
 import Admin from './Admin/Admin'
+import AllOrder from './Admin/Order/order'
 
 function Router() {
 
@@ -49,7 +50,10 @@ function Router() {
             <Route path='delete' element={ token ? <Delete /> : <Navigate to="/signin" />} />
           </Route>
           <Route path='*' element={ < NotFound/> }/>
-          <Route path='admin' element={ token ? <Admin/> : <Navigate to="/signin" />}/>
+          <Route path='admin'>
+            <Route index  element={ token ? <Admin/> : <Navigate to="/signin" />}/>
+          </Route> 
+          <Route path='allOrder' element={ token ? <AllOrder /> : <Navigate to="/signin" />} />
         </Route>
       </Routes>
     </>

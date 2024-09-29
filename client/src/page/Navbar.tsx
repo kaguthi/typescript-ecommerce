@@ -38,7 +38,7 @@ function Navbar() {
                     <Link to="product" className="text-slate-200 text-xl">Product</Link>
                   </li>
                   <li>
-                    <Link to="order" className="text-slate-200 text-xl">Order</Link>
+                    <Link to="allOrder" className="text-slate-200 text-xl">Order</Link>
                   </li>
                 </>
               )

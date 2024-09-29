@@ -19,7 +19,7 @@ async function getDocumentCount (req, res) {
                 }
             }
         ])
-        res.status(200).json({ productCount: productCount, userCount: userCount, sales: monthSales[0].totalPrice /100 })
+        res.status(200).json({ productCount: productCount, userCount: userCount, sales: monthSales[0].totalPrice / 200 })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

@@ -36,7 +36,7 @@ function Checkout() {
 
   return (
     <div className="App">
-      {clientSecret && (
+      {clientSecret && stripePromise && (
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm />
         </Elements>
