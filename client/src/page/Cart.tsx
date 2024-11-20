@@ -31,7 +31,6 @@ function Cart() {
     ));
   };
 
-  // TODO: fix the delete item
   const deleteItem = (index: number) => {
     setCartProducts(cartProducts.filter((_, i) => i !== index));
     toast.success("Deleted Successfully");
