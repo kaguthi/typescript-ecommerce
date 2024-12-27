@@ -11,15 +11,15 @@ const credentials = {
 const africasTalking = AfricasTalking(credentials);
 const sms = africasTalking.SMS;
 
-async function sendMessage() {
+async function sendMessage(phone, message) {
     const options = {
-        to: ['+254795133505'],
-        message: "Hi Peter from E-Buy platform"
+        to: [phone],
+        message: message
     };
 
     try {
         const response = await sms.send(options);
-        console.log(response);
+        console.log(JSON.stringify(response));
     } catch (err) {
         console.error('Error sending SMS:', err);
     }

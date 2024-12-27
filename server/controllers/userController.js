@@ -8,6 +8,7 @@ const uploadDir = path.join(__dirname, '../uploads');
 const validator = require('validator');
 const dotenv = require('dotenv')
 const jwt = require('jsonwebtoken');
+const { sendMessage } = require('../utils/sendSms');
 
 dotenv.config();
 
@@ -114,6 +115,9 @@ async function loginUser(req, res) {
                 httpOnly: true,
                 secure: true
             })
+            const message = "This is your OTP 0000";
+            const phone = 'phone number'
+            sendMessage(phone, message);
             res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id, role: user.role });
         } else {
             res.status(400).json({ message: "Invalid username or password.", success: false });

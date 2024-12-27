@@ -35,7 +35,7 @@ import { Link } from "react-router-dom";
 function Order() {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const  [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const { token } = useAuth();
     const {isLoading, data, error } = useQuery<order[], Error>({

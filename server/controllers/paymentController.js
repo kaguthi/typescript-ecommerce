@@ -31,7 +31,9 @@ async function makePaymentStripe (req, res) {
         }
     });
 
-    sendMessage();
+    const message = "Thank your for shopping with us";
+    const phone = 'phone number'
+    sendMessage(phone, message);
     const totalPrice = calculateAmount(products)
     const productId = products.map(product => product._id);
     const quantity = products.map(product => product.count);
