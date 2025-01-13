@@ -117,7 +117,7 @@ async function loginUser(req, res) {
             })
             const message = "This is your OTP 0000";
             const phone = 'phone number'
-            sendMessage(phone, message);
+            // sendMessage(phone, message);
             res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id, role: user.role });
         } else {
             res.status(400).json({ message: "Invalid username or password.", success: false });
@@ -194,7 +194,6 @@ async function updateUser(req, res) {
     })
 }
 
-// TODO: create refresh token route
 async function renewToken(req, res) {
     const refreshToken = req.headers['authorization'] || req.cookies.refresh_token;
     if(!refreshToken) {

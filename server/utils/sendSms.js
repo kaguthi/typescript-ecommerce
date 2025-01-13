@@ -13,7 +13,7 @@ const sms = africasTalking.SMS;
 
 async function sendMessage(phone, message) {
     const options = {
-        to: [phone],
+        to: ['+254750137744'],
         message: message
     };
 

@@ -110,6 +110,11 @@ function User() {
             cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
         },
         {
+            accessorKey: "role",
+            header: "Role",
+            cell: ({ row }) => <div className="lowercase">{row.getValue("role")}</div>
+        },
+        {
             accessorKey: "createdAt",
             header: "Created At",
             cell: ({ row }) => (

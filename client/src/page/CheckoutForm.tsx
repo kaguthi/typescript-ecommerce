@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import {
   PaymentElement,
   useStripe,
-  useElements
+  useElements,
 } from "@stripe/react-stripe-js";
 import './checkout.css';
 
@@ -54,39 +54,55 @@ export default function CheckoutForm() {
     setIsLoading(true);
     setMessage("");
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: "http://localhost:5173/success",
-      },
-    });
+    try {
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: "http://localhost:5173/success",
+        },
+      });
 
-    if (error) {
-      if (error.type === "card_error" || error.type === "validation_error") {
-        setMessage(error.message || "An error occurred.");
-      } else {
-        setMessage("An unexpected error occurred.");
+      if (error) {
+        const errorMsg =
+          error.type === "card_error" || error.type === "validation_error"
+            ? error.message || "An error occurred."
+            : "An unexpected error occurred.";
+        setMessage(errorMsg);
       }
+    } catch (err) {
+      setMessage("A network or unexpected error occurred.");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const paymentElementOptions = {
-    layout: "tabs"
+    layout: "tabs",
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-6 ">
+    <div className="flex flex-col items-center justify-center mt-6">
       <h3 className="font-bold mb-2 text-xl">Payment using Stripe</h3>
       <form id="payment-form" onSubmit={handleSubmit} className="form">
         <PaymentElement id="payment-element" options={paymentElementOptions} />
-        <button disabled={isLoading || !stripe || !elements} id="submit" className="button">
+        <button
+          disabled={isLoading || !stripe || !elements}
+          id="submit"
+          className={`button ${isLoading ? "button-disabled" : ""}`}
+        >
           <span id="button-text">
-            {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+            {isLoading ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now"
+            )}
           </span>
         </button>
-        {message && <div id="payment-message">{message}</div>}
+        {message && (
+          <div id="payment-message" role="alert" className="text-red-500 mt-2">
+            {message}
+          </div>
+        )}
       </form>
     </div>
   );

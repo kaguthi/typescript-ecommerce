@@ -1,14 +1,29 @@
-import { Link } from "react-router-dom"
-import confetti from 'canvas-confetti';
+import { Link } from "react-router-dom";
+import confetti from "canvas-confetti";
+import { useEffect } from "react";
 
 function Success() {
-  confetti();
+  useEffect(() => {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-        <p className="font-bold text-[50px]">Thank You for shopping with us.</p>
-        <Link to='/' className="bg-primary p-2 text-slate-100 rounded-md mt-4">Return to home Page</Link>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+      <p className="font-bold text-[50px] text-center text-green-600">
+        Thank You for shopping with us!
+      </p>
+      <Link
+        to="/"
+        className="bg-primary p-3 text-white rounded-md mt-4 hover:bg-primary-dark transition"
+      >
+        Return to Home Page
+      </Link>
     </div>
-  )
+  );
 }
 
-export default Success
+export default Success;
