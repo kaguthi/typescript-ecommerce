@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 
 function Signin() {
   const navigate = useNavigate();
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const [studentDetail, setStudentDetails] = useState<userSchema>({
     username: "",
@@ -18,6 +19,7 @@ function Signin() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -44,11 +46,14 @@ function Signin() {
     } catch (error: any) {
       toast.error(error.message);
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center flex-col h-screen">
-      <form onSubmit={handleSubmit} className="h-[430px] w-[500px] flex items-center justify-center flex-col rounded-lg p-5 shadow-md">
+    <div className="flex items-center justify-center flex-col min-h-screen p-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col items-center rounded-lg p-5 shadow-md bg-white">
         <div className="w-full">
           <h3 className="font-bold text-2xl">SignUp</h3>
         </div>
@@ -99,7 +104,7 @@ function Signin() {
           />
         </div>
         <div className="w-full mt-3">
-          <Button type="submit" className="p-3">Sign in</Button>
+          <Button type="submit" className="p-3" disabled={isLoading}>{isLoading ? "Signing Up...": "Sign Up"}</Button>
         </div>  
       </form>
     </div>

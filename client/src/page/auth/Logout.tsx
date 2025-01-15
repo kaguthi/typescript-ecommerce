@@ -8,11 +8,11 @@ const useLogout = () => {
   const { setNumberOfProducts, setCartProducts } = useCartContext();
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('userId')
     localStorage.removeItem('profileImage');
     localStorage.removeItem('cartProducts');
-    localStorage.removeItem('userId')
     localStorage.removeItem('numberOfProducts')
 
     setToken('');

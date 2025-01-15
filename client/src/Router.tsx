@@ -8,10 +8,10 @@ import NotFound from './page/NotFound'
 import User from './Admin/User/User'
 import Edit from './Admin/User/Edit'
 import Delete from './Admin/User/Delete'
-import Product from './page/Product/Product'
-import AddProduct from './page/Product/AddProduct'
-import EditProduct from './page/Product/EditProduct'
-import DeleteProduct from './page/Product/DeleteProduct'
+import Product from './Admin/Product/Product'
+import AddProduct from './Admin/Product/AddProduct'
+import EditProduct from './Admin/Product/EditProduct'
+import DeleteProduct from './Admin/Product/DeleteProduct'
 import Profile from './page/Profile'
 import Checkout from './page/Checkout'
 import Success from './page/Success'
@@ -21,6 +21,7 @@ import Admin from './Admin/Admin'
 import AllOrder from './Admin/Order/order'
 import { PrivateRoute } from './PrivateRoute'
 import AdminRoute from './AdminRoute'
+import Otp from './page/Otp'
 
 function Router() {
 
@@ -33,6 +34,7 @@ function Router() {
           <Route path='signin' element={ <Signin />}/>
           <Route path='signup' element={ <SignUp /> }/>
           <Route path='checkout' element={ <PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route path='verify' element={ <PrivateRoute><Otp/></PrivateRoute>}/>
           <Route path='success' element={ <Success /> } />
           <Route path='order' >
             <Route index element={ <PrivateRoute><Order /></PrivateRoute> } />

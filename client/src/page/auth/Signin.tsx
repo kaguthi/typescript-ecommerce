@@ -10,9 +10,11 @@ import { Input } from "@/components/ui/input";
 function Signin() {
   const navigate = useNavigate();
   const { setToken, setName, setProfileImage, setUserId, setRole } = useAuth();
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const [studentDetail, setStudentDetails] = useState<loginDetail>({ username: "", password: ""});
   const handleSubmit = async (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault()
     try {
       const response = await fetch (`${host}/login`,
@@ -30,9 +32,9 @@ function Signin() {
         const { profileImage, token, username, userId, role } = data;
         localStorage.setItem("profileImage", profileImage)
         localStorage.setItem("username", username);
-        localStorage.setItem("token", token)
-        localStorage.setItem("userId", userId)
-        localStorage.setItem("role", role)
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem("role", role);
         toast.success(data.message);
         setProfileImage(profileImage);
         setToken(token)
@@ -46,6 +48,9 @@ function Signin() {
           case "user":
             navigate("/")
             break;
+          default:
+            toast.error("Unknown role. Please contact support.")
+            break;
         }
       }else{
         toast.error(data.message);
@@ -53,11 +58,14 @@ function Signin() {
     } catch (error: any) {
       toast.error(error.message);
     }
-   }
+    finally {
+      setStudentDetails({ username: "", password: ""})
+      setLoading(false); 
+   }}
 
   return (
-    <div className="flex items-center justify-center flex-col h-screen">
-      <form onSubmit={handleSubmit} className="h-[300px] w-[500px] flex items-center justify-center flex-col rounded-sm p-5 shadow-md">
+    <div className="flex items-center justify-center flex-col min-h-screen">
+      <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col items-center rounded-lg p-5 shadow-md bg-white">
         <div className="w-full m-2 text-2xl">
           <h3 className="font-semibold">SignIn</h3>
         </div>
@@ -84,7 +92,7 @@ function Signin() {
           />
         </div>
         <div className="w-full mt-5">
-          <Button type="submit" className="p-3">Sign up</Button>
+          <Button type="submit" className="p-3" disabled={isLoading}>{isLoading ? "Signing In..." : "Sign In"}</Button>
         </div>
       </form>
   </div>
