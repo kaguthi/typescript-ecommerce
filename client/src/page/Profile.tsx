@@ -45,11 +45,11 @@ function Profile () {
   );
   
   return (
-    <div className="flex flex-col items-center justify-center mt-3">
+    <div className="flex flex-col items-center justify-center mt-3 p-4">
       <h3 className="my-3 text-2xl font-semibold">User Profile</h3>
 
-      <div>
-        <img className="size-36 rounded-full" src={`http://localhost:5000/uploads/${data?.profileImage}`} alt={data?.username} />
+      <div className="w-full max-w-xs">
+        <img className="w-full h-auto rounded-full" src={`${host}/uploads/${data?.profileImage}`} alt={data?.username} />
       </div>
       <div className="mt-4">
         <p className="mt-2"><span className="font-semibold">Username: </span>{data?.username}</p>

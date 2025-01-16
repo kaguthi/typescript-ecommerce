@@ -23,6 +23,7 @@
     "@tanstack/react-table": "^8.17.3",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
+    "client": "file:",
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
@@ -32,6 +33,7 @@
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.23.1",
+    "recharts": "^2.15.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
   },

@@ -13,6 +13,7 @@ type EditProps = {
 const Edit: React.FC<EditProps> = ({ userdata }) => {
   const [user, setUser] = useState<userSchema>(userdata);
   const { token, userId} = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
@@ -24,6 +25,7 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!userId) {
         toast.error("User id is missing")
         return;
@@ -53,6 +55,9 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
         toast.success(data.message)
     } catch (error: any) {
         toast.error(error.message)
+    }
+    finally{
+        setIsLoading(false);
     }
   }
 
@@ -92,7 +97,7 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
         />
         </div>
         <div className='w-full mt-3'>
-        <Button type='submit'>Update</Button>
+        <Button type='submit' disabled={isLoading}>{isLoading ? "Updating ..." : "Update Now"}</Button>
         </div>
      </form>
     </div>
