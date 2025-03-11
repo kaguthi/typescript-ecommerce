@@ -32,13 +32,13 @@ function Navbar() {
               (
                 <>
                   <li>
-                    <Link to="user" className="text-slate-200 text-xl">User</Link>
+                    <Link to="user" className="text-slate-200 text-xl cursor-pointer">User</Link>
                   </li>
                   <li>
-                    <Link to="product" className="text-slate-200 text-xl">Product</Link>
+                    <Link to="product" className="text-slate-200 text-xl cursor-pointer">Product</Link>
                   </li>
                   <li>
-                    <Link to="allOrder" className="text-slate-200 text-xl">Order</Link>
+                    <Link to="allOrder" className="text-slate-200 text-xl cursor-pointer">Order</Link>
                   </li>
                 </>
               )
@@ -59,7 +59,7 @@ function Navbar() {
                 <Badge className="absolute top-0 right-0 w-4 h-4 text-xs text-center" variant="destructive">{numberOfProducts}</Badge>
                 </li>
                 <li>
-                  <Link to="order" className="text-slate-200 text-xl">Order</Link>
+                  <Link to="order" className="text-slate-200 text-xl cursor-pointer">Order</Link>
                 </li>
               </>
             )}

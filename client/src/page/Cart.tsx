@@ -84,7 +84,7 @@ function Cart() {
             <span className="font-bold text-lg">Total price:</span>
             <span className="text-lg font-semibold">${price.toFixed(2)}</span>
           </div>
-          <Link to="checkout">
+          <Link to="paymentMethod">
             <Button className="w-full" disabled={cartProducts.length === 0}>
               Checkout
             </Button>

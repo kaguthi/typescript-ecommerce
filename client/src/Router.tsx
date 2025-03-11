@@ -22,6 +22,8 @@ import AllOrder from './Admin/Order/order'
 import { PrivateRoute } from './PrivateRoute'
 import AdminRoute from './AdminRoute'
 import Otp from './page/Otp'
+import PaymentMethod from './page/PaymentMethod'
+import Mpesa from './page/Mpesa'
 
 function Router() {
 
@@ -34,6 +36,8 @@ function Router() {
           <Route path='signin' element={ <Signin />}/>
           <Route path='signup' element={ <SignUp /> }/>
           <Route path='checkout' element={ <PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route path='mpesa' element={ <PrivateRoute><Mpesa /></PrivateRoute> } />
+          <Route path='paymentMethod' element={ <PrivateRoute><PaymentMethod /></PrivateRoute> } />
           <Route path='verify' element={ <PrivateRoute><Otp/></PrivateRoute>}/>
           <Route path='success' element={ <Success /> } />
           <Route path='order' >
