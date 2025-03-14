@@ -11,6 +11,7 @@ async function mpesa(req, res) {
     const password = Buffer.from(`${process.env.MPESA_SHORTCODE}${process.env.MPESA_PASSKEY}${timestamp}`).toString('base64');
 
     const auth = `Bearer ${token}`;
+    const CallBackURL = "https://e498-102-215-13-119.ngrok-free.app/payment/callback";
     const amount = 1
 
     const payload = {
@@ -22,21 +23,25 @@ async function mpesa(req, res) {
         "PartyA": phone,
         "PartyB": process.env.MPESA_SHORTCODE,
         "PhoneNumber": phone,
-        "CallBackURL": process.env.CALLBACK_URL,
+        "CallBackURL": CallBackURL
+        ,
         "AccountReference": "E-buy Store",
         "TransactionDesc": "Payment for goods purchased"
     }
 
     try {
-        const response = await fetch(url, payload,{
+        const response = await fetch(url,{
+            method: "POST",
             headers: {
-                'Authorization': token,
+                'Authorization': auth,
                 'Content-Type' : 'application/json'
-            }
-        })
+            },
+            body: JSON.stringify(payload),
+        });
+        const responseData = await response.json();
         res.status(201).json({
             message: "Request sent successfully.",
-            data: response.data,
+            data: responseData,
             status: "success"
         });
         

@@ -37,7 +37,7 @@ app.use("/category", categoryRoute);
 app.use('/create-payment-intent', paymentRoute);
 app.use("/order", orderRoute);
 app.use('/count', countRoute);
-app.use('/mpesa', mpesaRoute);
+app.use('/payment', mpesaRoute);
 
 app.listen(process.env.PORT, ()=>{
     console.log("The server is running on Port http://localhost:5000")
