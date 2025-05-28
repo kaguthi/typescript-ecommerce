@@ -11,7 +11,7 @@ async function mpesa(req, res) {
     const password = Buffer.from(`${process.env.MPESA_SHORTCODE}${process.env.MPESA_PASSKEY}${timestamp}`).toString('base64');
 
     const auth = `Bearer ${token}`;
-    const CallBackURL = "https://e498-102-215-13-119.ngrok-free.app/payment/callback";
+    const CallBackURL = "https://6f35-197-237-75-84.ngrok-free.app/payment/callback";
     const amount = 1
 
     const payload = {

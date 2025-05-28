@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { useState, useMemo } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function Home() {
   const { token } = useAuth();
@@ -55,9 +56,17 @@ function Home() {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center mt-10">
-        <LoaderCircle className="animate-spin size-14" />
+      <div className="flex flex-wrap justify-center gap-4 mt-10">
+        {[...Array(6)].map((_, i) => (
+          <Skeleton key={i} className="size-72 p-4">
+            <Skeleton className="h-32 mb-4" />
+            <Skeleton className="h-4 w-3/4 mb-2" />
+            <Skeleton className="h-4 w-1/2" />
+          </Skeleton>
+        ))}
+        <LoaderCircle className="animate-spin size-14 mt-4" />
       </div>
+
     );
 
   if (error)
@@ -74,6 +83,7 @@ function Home() {
         type="text"
         className="mx-10 my-3"
         placeholder="Search"
+        value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <Toaster />
@@ -85,6 +95,7 @@ function Home() {
                 src={`${host}/uploads/${product.image}`}
                 alt={product.name}
                 className="size-28"
+                loading="lazy"
               />
             </CardHeader>
             <CardContent>

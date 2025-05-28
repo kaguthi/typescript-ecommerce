@@ -1,25 +1,52 @@
-function callBack(req, res) {
-    try {
-        const result_code = req.body?.Body?.stkCallback?.ResultCode;
+const paymentSchema = require('../model/paymentModel');
 
-        if (result_code === undefined) {
+async function callBack(req, res) {
+    try {
+        const stkCallback = req.body?.Body?.stkCallback;
+        const resultCode = stkCallback?.ResultCode;
+
+        if (resultCode === undefined) {
             console.error('Invalid callback structure:', req.body);
             return res.status(400).json({ message: 'Invalid callback structure', error: 'Missing ResultCode' });
         }
 
-        if (result_code !== 0) {
-            console.error('STK Push failed:', req.body.Body.stkCallback.ResultDesc);
-            return res.status(400).json({ 
-                message: 'STK Push failed', 
-                error: req.body.Body.stkCallback.ResultDesc 
+        if (resultCode !== 0) {
+            console.error('STK Push failed:', stkCallback?.ResultDesc);
+            return res.status(400).json({
+                message: 'STK Push failed',
+                error: stkCallback?.ResultDesc
             });
         }
 
-        const data = req.body?.Body?.stkCallback?.CallbackMetadata?.Item || [];
+        const items = stkCallback?.CallbackMetadata?.Item || [];
+        const amount = items.find(item => item.Name === 'Amount')?.Value;
+        const receiptNumber = items.find(item => item.Name === 'MpesaReceiptNumber')?.Value;
+        const transactionDate = items.find(item => item.Name === 'TransactionDate')?.Value;
+        const phoneNumber = items.find(item => item.Name === 'PhoneNumber')?.Value;
 
-        res.status(200).json({ 
-            message: 'Callback received successfully.', 
-            data 
+        if (!amount || !receiptNumber || !transactionDate || !phoneNumber) {
+            return res.status(400).json({
+                message: 'Missing transaction metadata',
+                error: { amount, receiptNumber, transactionDate, phoneNumber }
+            });
+        }
+
+        // Optional: Prevent duplicate transactions
+        const existing = await paymentSchema.findOne({ ReceiptNumber: receiptNumber });
+        if (existing) {
+            return res.status(200).json({ message: 'Duplicate transaction ignored.' });
+        }
+
+        await paymentSchema.create({
+            amount,
+            ReceiptNumber: receiptNumber,
+            TransactionDate: transactionDate,
+            phoneNumber
+        });
+
+        res.status(200).json({
+            message: 'Callback received successfully.',
+            data: { amount, receiptNumber, transactionDate, phoneNumber }
         });
 
     } catch (error) {
