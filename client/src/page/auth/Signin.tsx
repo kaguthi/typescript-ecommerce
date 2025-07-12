@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, FormEvent } from "react"
-import {useNavigate } from "react-router-dom"
+import {Link, useNavigate } from "react-router-dom"
 import { loginDetail } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import { host } from "@/utils/constants";
@@ -90,6 +91,9 @@ function Signin() {
             value={studentDetail.password} 
             onChange={(e) => setStudentDetails({ ...studentDetail, password: e.target.value })} 
           />
+        </div>
+        <div className="w-full mt-2">
+          <p className="text-sm"><Link to="/confirm-email">Forgot Password?</Link></p>
         </div>
         <div className="w-full mt-5">
           <Button type="submit" className="p-3" disabled={isLoading}>{isLoading ? "Signing In..." : "Sign In"}</Button>

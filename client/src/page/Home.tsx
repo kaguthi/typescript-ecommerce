@@ -1,6 +1,6 @@
 import toast, { Toaster } from "react-hot-toast";
 import { productDetail } from "@/utils/types";
-import { host } from "@/utils/constants";
+import { formatPrice, host } from "@/utils/constants";
 import {
   Card,
   CardContent,
@@ -17,7 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { useState, useMemo } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import defaultImage from "../assets/default-image.jpg";
 
 function Home() {
   const { token } = useAuth();
@@ -26,6 +26,7 @@ function Home() {
 
   const { isLoading, data, error } = useQuery<productDetail[], Error>({
     queryKey: ["products"],
+    enabled: !!token,
     queryFn: () =>
       fetch(`${host}/products`, {
         headers: {
@@ -38,7 +39,7 @@ function Home() {
         return res.json();
       }),
   });
-
+  
   const filteredProducts = useMemo(() => {
     if (!data) return [];
     return data.filter((product) =>
@@ -56,14 +57,7 @@ function Home() {
 
   if (isLoading)
     return (
-      <div className="flex flex-wrap justify-center gap-4 mt-10">
-        {[...Array(6)].map((_, i) => (
-          <Skeleton key={i} className="size-72 p-4">
-            <Skeleton className="h-32 mb-4" />
-            <Skeleton className="h-4 w-3/4 mb-2" />
-            <Skeleton className="h-4 w-1/2" />
-          </Skeleton>
-        ))}
+      <div className="flex justify-center gap-4 mt-10">
         <LoaderCircle className="animate-spin size-14 mt-4" />
       </div>
 
@@ -83,6 +77,7 @@ function Home() {
         type="text"
         className="mx-10 my-3"
         placeholder="Search"
+        aria-label="Search products"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
@@ -94,13 +89,16 @@ function Home() {
               <img
                 src={`${host}/uploads/${product.image}`}
                 alt={product.name}
+                onError={(e) => {
+                  e.currentTarget.src = defaultImage;
+                }}
                 className="size-28"
                 loading="lazy"
               />
             </CardHeader>
             <CardContent>
               <CardTitle>{product.name}</CardTitle>
-              <CardDescription>${product.price}</CardDescription>
+              <CardDescription>{formatPrice(product.price)}</CardDescription>
             </CardContent>
             <CardFooter>
               <Button onClick={() => addToCart(index)}>Add to cart</Button>
@@ -108,7 +106,14 @@ function Home() {
           </Card>
         ))
       ) : (
-        <div className="text-center">No Products found</div>
+          <>
+            {data?.length === 0 ? (
+              <div>No products available.</div>
+            ) : (
+              filteredProducts.length === 0 && <div>No matching products found.</div>
+            )}
+          </>
+
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { host } from "@/utils/constants";
@@ -23,6 +24,7 @@ function Mpesa() {
                 throw new Error(data.message || 'Payment failed');
             }
             toast.success(data.message);
+            setPhone(0);
         } catch (error: any) {
             toast.error(error.message)
         }
@@ -32,7 +34,7 @@ function Mpesa() {
     }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-        <form method="post" onSubmit={handleSubmit} >
+        <form method="post" onSubmit={handleSubmit} className="w-full max-w-md p-5 bg-white rounded-lg shadow-md">
             <div className="mb-4">
                 <h3 className="text-center font-bold">Lipa Na Mpesa</h3>
             </div>
@@ -48,8 +50,8 @@ function Mpesa() {
                     value={phone}
                 />
             </div>
-            <div>
-                <Button className="bg-green-700 text-white w-full mt-3" disabled={isLoading}>{isLoading ? "Loading ...": "Pay Now"}</Button>
+            <div className="w-full mt-3">
+                <Button className="bg-green-700 text-white w-full" disabled={isLoading}>{isLoading ? "Loading ...": "Pay Now"}</Button>
             </div>
         </form>
     </div>

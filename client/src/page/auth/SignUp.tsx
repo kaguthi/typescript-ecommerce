@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { userSchema } from "@/utils/types";
@@ -42,7 +43,7 @@ function Signin() {
 
       const data = await response.json();
       toast.success(data.message);
-      navigate('/signin');
+      navigate('/verify');
     } catch (error: any) {
       toast.error(error.message);
     }

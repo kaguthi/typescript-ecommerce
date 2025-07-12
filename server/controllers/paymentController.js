@@ -37,7 +37,7 @@ async function makePaymentStripe (req, res) {
     const productId = products.map(product => product._id);
     const quantity = products.map(product => product.count);
     const orderList = await order.create({ userId, productId, quantity, totalPrice })
-    sendMessage(phone, message);
+    // sendMessage(phone, message);
     res.send({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
     res.status(500).json({ message: error.message });

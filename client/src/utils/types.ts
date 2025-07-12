@@ -52,6 +52,7 @@ export interface AuthContextType {
     name: string;
     profileImage: string;
     role: string;
+    loading: boolean;
     setUserId: (userId: string) => void;
     setToken: (token: string) => void;
     setName: (name: string) => void;

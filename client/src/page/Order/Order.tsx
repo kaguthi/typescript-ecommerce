@@ -41,6 +41,7 @@ function Order() {
 
   const { isLoading, data, error } = useQuery<order[], Error>({
     queryKey: ['orders'],
+    enabled: !!token && !!userId,
     queryFn: () => 
       fetch(`${host}/order/${userId}`,{
         headers: {
@@ -114,8 +115,10 @@ function Order() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    <Link to={`view?orderId=${row.original._id}`} className="flex gap-2 items-center"><Eye className="w-5 h-5"/>View</Link>
+                <DropdownMenuItem asChild>
+                    <Link to={`view?orderId=${row.original._id}`} className="flex gap-2 items-center">
+                      <Eye className="w-5 h-5"/>View
+                    </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
           </DropdownMenu>
@@ -159,7 +162,7 @@ function Order() {
     );
   return (
     <div className="m-4">
-    <div>
+    <div className="mb-4">
         <Input
         placeholder="Filter id..."
         value={(table.getColumn("_id")?.getFilterValue() as string) ?? ""}

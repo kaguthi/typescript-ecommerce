@@ -41,6 +41,7 @@ function Product() {
 
     const { isLoading, data, error } = useQuery<productDetail[], Error>({
         queryKey: ["products"],
+        enabled: !!token,
         queryFn: () => 
             fetch(`${host}/products`, {
                 headers: {

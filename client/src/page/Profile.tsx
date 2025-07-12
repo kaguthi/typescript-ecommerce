@@ -13,12 +13,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Edit from "./Edit"
+import defaultImage from "../assets/default-image.jpg"
 
 function Profile () {
   const { token, userId } = useAuth()
 
   const { isLoading, data, error } = useQuery<userSchema, Error>({
     queryKey: ["user"],
+    enabled: !!token && !!userId,
     queryFn: () => 
       fetch(`${host}/users/${userId}`,{
         headers: {
@@ -49,14 +51,14 @@ function Profile () {
       <h3 className="my-3 text-2xl font-semibold">User Profile</h3>
 
       <div className="w-full max-w-xs">
-        <img className="w-full h-auto rounded-full" src={`${host}/uploads/${data?.profileImage}`} alt={data?.username} />
+        <img className="w-full h-auto rounded-full" src={`${host}/uploads/${data?.profileImage || defaultImage}`} alt={data?.username} />
       </div>
       <div className="mt-4">
         <p className="mt-2"><span className="font-semibold">Username: </span>{data?.username}</p>
         <p className="mt-2"><span className="font-semibold">Email: </span>{data?.email}</p>
         <Dialog>
           <DialogTrigger className="bg-primary p-2 text-slate-100 rounded-md mt-2">Edit profile</DialogTrigger>
-          <DialogContent>
+          <DialogContent className="overflow-y-auto max-h-[90vh]">
             <DialogHeader>
               <DialogTitle>Edit Profile</DialogTitle>
             </DialogHeader>

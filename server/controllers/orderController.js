@@ -26,7 +26,7 @@ async function getLatestOrder(req, res) {
             .populate("userId", "username email profileImage")
             .populate("productId", "name price image")
             .sort({ createdAt : -1})
-            .limit(5);
+            .limit(1);
         res.status(200).json(lastetOrder);
    } catch (error) {
         res.status(500).json({ message: error.message })

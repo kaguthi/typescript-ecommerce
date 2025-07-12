@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -59,7 +60,10 @@ function Checkout() {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-lg font-medium text-gray-700">Preparing Checkout...</span>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
       ) : clientSecret ? (
         stripePromise && (
           <Elements options={options} stripe={stripePromise}>

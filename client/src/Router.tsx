@@ -24,6 +24,10 @@ import AdminRoute from './AdminRoute'
 import Otp from './page/Otp'
 import PaymentMethod from './page/PaymentMethod'
 import Mpesa from './page/Mpesa'
+import ConfirmEmail from './page/ConfirmEmail'
+import ResetPassword from './page/ResetPassword'
+import ResetOtp from './page/auth/Otp'
+import Upload from './page/Upload'
 
 function Router() {
 
@@ -35,11 +39,15 @@ function Router() {
           <Route path='profile' element={ <PrivateRoute><Profile /></PrivateRoute> } />
           <Route path='signin' element={ <Signin />}/>
           <Route path='signup' element={ <SignUp /> }/>
+          <Route path='confirm-email' element={ <ConfirmEmail/> }/>
+          <Route path='reset-password' element={ <ResetPassword/> }/>
+          <Route path='reset-otp' element={ <ResetOtp/> }/>
+          <Route path='upload' element={ <Upload/> }/>
           <Route path='checkout' element={ <PrivateRoute><Checkout /></PrivateRoute>} />
           <Route path='mpesa' element={ <PrivateRoute><Mpesa /></PrivateRoute> } />
           <Route path='paymentMethod' element={ <PrivateRoute><PaymentMethod /></PrivateRoute> } />
           <Route path='verify' element={ <PrivateRoute><Otp/></PrivateRoute>}/>
-          <Route path='success' element={ <Success /> } />
+          <Route path='success' element={ <PrivateRoute><Success /></PrivateRoute> } />
           <Route path='order' >
             <Route index element={ <PrivateRoute><Order /></PrivateRoute> } />
             <Route path='view' element={ <PrivateRoute><View/></PrivateRoute> }/>

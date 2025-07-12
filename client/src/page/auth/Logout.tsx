@@ -4,19 +4,21 @@ import { useCartContext } from '@/context/cartContext';
 
 const useLogout = () => {
   const navigate = useNavigate();
-  const { setToken, setName, setProfileImage, setUserId } = useAuth();
+  const { setToken, setName, setProfileImage, setUserId, setRole } = useAuth();
   const { setNumberOfProducts, setCartProducts } = useCartContext();
 
   const logout = () => {
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('username');
     sessionStorage.removeItem('userId')
+    sessionStorage.removeItem('role');
+    localStorage.removeItem('username');
     localStorage.removeItem('profileImage');
     localStorage.removeItem('cartProducts');
-    localStorage.removeItem('numberOfProducts')
+    localStorage.removeItem('numberofProducts')
 
     setToken('');
     setName('');
+    setRole('');
     setProfileImage('');
     setNumberOfProducts('0');
     setCartProducts([]);

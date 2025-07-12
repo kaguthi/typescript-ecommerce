@@ -13,23 +13,25 @@ export const AuthProvider = ({ children } : AuthProviderProps) => {
     const [profileImage, setProfileImage] = useState<string>("");
     const [userId, setUserId] = useState<string>("");
     const [role, setRole] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
+        const storedToken = sessionStorage.getItem('token');
         const storedName = localStorage.getItem('username');
         const storedProfileImage = localStorage.getItem('profileImage');
-        const storedUserId = localStorage.getItem('userId');
-        const StoredRole = localStorage.getItem('role')
+        const storedUserId = sessionStorage.getItem('userId');
+        const storedRole = sessionStorage.getItem('role')
     
         if (storedToken) setToken(storedToken);
         if (storedName) setName(storedName);
         if (storedProfileImage) setProfileImage(storedProfileImage);
         if (storedUserId) setUserId(storedUserId);
-        if (StoredRole) setRole(role);
+        if (storedRole) setRole(storedRole);
+        setLoading(false);
       }, []);    
 
     return (
-        <AuthContext.Provider value={{ userId ,token, name, profileImage, role, setUserId, setToken, setName, setProfileImage, setRole }}>
+        <AuthContext.Provider value={{ userId ,token, name, profileImage, role, setUserId, setToken, setName, setProfileImage, setRole, loading }}>
             {children}
         </AuthContext.Provider>
     )

@@ -1,6 +1,6 @@
 const User = require("../model/userModel");
 const bcrypt = require('bcrypt');
-const {createToken, generateNewToken} = require('../utils/secretToken');
+const {createToken} = require('../utils/secretToken');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
@@ -8,7 +8,7 @@ const uploadDir = path.join(__dirname, '../uploads');
 const validator = require('validator');
 const dotenv = require('dotenv')
 const jwt = require('jsonwebtoken');
-const { sendMessage } = require('../utils/sendSms');
+const { mail } = require("../utils/sendMail");
 
 dotenv.config();
 
@@ -27,19 +27,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// get alluser data from the database
+// Get all user data - Admin only
 async function getUsers(req, res) {
-    const userRole = req.user.role;
-    if (userRole !== "admin" || !userRole) {
-        return res.status(401).json({ message : "Access Denied: Admin Only"})
+  try {
+    const userRole = req.user?.role;
+    if (!userRole || userRole !== "admin") {
+      return res.status(403).json({ message: "Access denied: Admins only" });
     }
-    try {
-        const users = await User.find();
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+
+    // Optionally exclude sensitive fields like password & OTP
+    const users = await User.find({}, "-password -otp");
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch users", error: error.message });
+  }
 }
+
 
 // get use by Id
 async function getUserById(req, res) {
@@ -72,21 +75,24 @@ async function createUser(req, res) {
                 throw new Error("Password is not strong 8-15 characters required")
             }
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const otp = Math.floor(1000 + Math.random() * 900000);
+            const mailOption = {
+                from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
+                to: process.env.EMAIL_TO,
+                subject: "Your OTP Code",
+                text: `Your OTP code is ${otp}`,
+            };
+            mail(mailOption);
             const user = {
                 username: req.body.username,
                 email: req.body.email,
                 password: hashedPassword,
                 profileImage: req.file ? req.file.filename : null,
                 role: req.body.role,
-                createdAt: Date.now()
+                createdAt: Date.now(),
+                otp: otp
             };
             const createdUser = await User.create(user);
-            const token = createToken(user.username);
-            res.cookie("token", token, {
-                withCredentials: true,
-                httpOnly: true,
-                secure: true
-            });
             res.status(201).json({ message: "User created successfully", user: createdUser });
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -104,20 +110,12 @@ async function loginUser(req, res) {
         const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
         if (isPasswordValid) {
             const token = createToken(user._id);
-            const refresh_token = generateNewToken(user._id)
             res.cookie("token", token, {
                 withCredentials: true,
                 httpOnly: true,
                 secure: true
             });
-            res.cookie("refresh_token", refresh_token, {
-                withCredentials: true,
-                httpOnly: true,
-                secure: true
-            })
-            const message = "This is your OTP 0000";
-            const phone = 'phone number'
-            // sendMessage(phone, message);
+
             res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id, role: user.role });
         } else {
             res.status(400).json({ message: "Invalid username or password.", success: false });
@@ -130,7 +128,7 @@ async function loginUser(req, res) {
 // delete user data
 async function deleteUser(req, res) {
     const userRole = req.user.role;
-    if (userRole !== "admin" || !userRole) {
+    if (userRole != "admin" || !userRole) {
         return res.status(401).json({ message: "Access Denied: Admin Only"});
     }
     const id = req.params.id;
@@ -224,4 +222,123 @@ async function renewToken(req, res) {
 
 }
 
-module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken};
+async function verifyOtp(req, res) {
+    const { otp, userId } = req.body;
+
+    if (!otp || !userId) {
+        return res.status(400).json({ message: "OTP and User ID are required", success: false });
+    }
+
+    try {
+        const user = await User.findOne({ _id: userId, otp });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found or OTP is invalid", success: false });
+        }
+
+        const otpExpiryTime = 5 * 60 * 1000; // 5 minutes
+        const timeElapsed = Date.now() - user.otpCreatedAt;
+
+        if (timeElapsed > otpExpiryTime) {
+            return res.status(400).json({ message: "OTP has expired", success: false });
+        }
+
+        user.isVerified = true;
+        user.otp = null;
+        user.otpCreatedAt = null;
+        await user.save();
+
+        res.status(200).json({ message: "OTP verified successfully", success: true });
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+    }
+};
+
+async function confirmEmail(req, res){
+    const {email} = req.body;
+    if (!email) {  
+        return res.status(400).json({ message: "Email is required", success: false });
+    }
+
+    try {
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found", success: false });
+        }
+        const otp = Math.floor(1000 + Math.random() * 900000);
+        const mailOption = {
+            from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
+            to: process.env.EMAIL_TO,
+            subject: "Your OTP Code",
+            text: `Your OTP code is ${otp}`,
+        };
+        mail(mailOption);
+        user.resetOtp = otp; 
+        user.resetOtpCreatedAt = Date.now();
+        await user.save();
+        res.status(200).json({ message: "OTP sent to your email", success: true }); 
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });   
+    }
+}
+
+async function verifyResetOtp(req, res) {
+    const { otp, email } = req.body;
+
+    if (!otp || !email) {
+        return res.status(400).json({ message: "OTP and Email are required", success: false });
+    }
+
+    try {
+        const user = await User.findOne({ email: email, resetOtp: otp });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found or OTP is invalid", success: false });
+        }
+
+         if (!user.resetOtpCreatedAt) {
+            return res.status(400).json({ message: "OTP timestamp missing. Please request a new OTP.", success: false });
+        }
+
+        const otpExpiryTime = 5 * 60 * 1000; // 5 minutes
+        const timeElapsed = Date.now() - user.resetOtpCreatedAt;
+
+        if (timeElapsed > otpExpiryTime) {
+            return res.status(400).json({ message: "OTP has expired", success: false });
+        }
+
+        user.resetOtp = null;
+        user.resetOtpCreatedAt = null;
+        await user.save();
+
+        res.status(200).json({ message: "OTP verified successfully", success: true });
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+    }
+}
+
+async function resetPassword(req, res) {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+        return res.status(400).json({ message: "Email and new password are required", success: false });
+    }
+
+    try {
+        const user = await User.findOne({ email: email });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found", success: false });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json({ message: "Password reset successfully", success: true });
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+    }
+}
+
+module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken, verifyOtp, confirmEmail, verifyResetOtp, resetPassword};

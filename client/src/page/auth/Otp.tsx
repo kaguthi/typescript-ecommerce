@@ -1,22 +1,20 @@
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input";
 import {
     InputOTP,
     InputOTPGroup,
     InputOTPSlot,
   } from "@/components/ui/input-otp"
-import { useAuth } from "@/context/AuthContext";
 import { host } from "@/utils/constants";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-
 function Otp() {
   const [otp, setOtp] = useState<string>("");
-  const { userId} = useAuth();
+  const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     if (!otp || otp.length < 6) {
@@ -24,28 +22,27 @@ function Otp() {
       setIsLoading(false);
       return;
     }
-    if (!userId) {
-      toast.error("User ID is missing");
+
+    if (!email) {
+      toast.error("Please enter your email");
       setIsLoading(false);
       return;
     }
 
-    const url = `${host}/verifyotp`;
+    const url = `${host}/verify-reset-otp`;
 
-    const sendData = async () => {
       try {
         const response = await fetch(url, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ otp, userId }),
+          body: JSON.stringify({ otp, email }),
         });
 
         const data = await response.json();
         if (data.success) {
           toast.success("OTP verified successfully");
-          navigate("/signin");
         } else {
           toast.error(data.message || "Failed to verify OTP");
         }
@@ -55,8 +52,6 @@ function Otp() {
       } finally {
         setIsLoading(false);
       }
-    }
-    sendData();
   }
 
   return (
@@ -65,7 +60,18 @@ function Otp() {
         <div className="text-2xl font-semibold mb-4">
           <h3>Verify OTP</h3>
         </div>
-        <div>
+        <div className="w-full mb-4">
+          <label htmlFor="email">Email</label>
+          <Input
+            className="w-full mt-2"
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="w-full mb-4">
             <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)} className="w-full">
               <InputOTPGroup>
                 <InputOTPSlot index={0} />

@@ -5,6 +5,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import './checkout.css';
+import type { StripePaymentElementOptions } from "@stripe/stripe-js";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -30,6 +31,10 @@ export default function CheckoutForm() {
       switch (paymentIntent?.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
+          setTimeout(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            window.location.replace("/success");
+          }, 1000);
           break;
         case "processing":
           setMessage("Your payment is processing.");
@@ -58,7 +63,7 @@ export default function CheckoutForm() {
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:5173/success",
+          return_url: `${window.location.origin}/success`,
         },
       });
 
@@ -70,13 +75,14 @@ export default function CheckoutForm() {
         setMessage(errorMsg);
       }
     } catch (err) {
+      console.error("Payment confirmation error:", err);
       setMessage("A network or unexpected error occurred.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const paymentElementOptions = {
+  const paymentElementOptions: StripePaymentElementOptions = {
     layout: "tabs",
   };
 

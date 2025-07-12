@@ -40,6 +40,7 @@ function Order() {
     const { token } = useAuth();
     const {isLoading, data, error } = useQuery<order[], Error>({
         queryKey: ["order"],
+        enabled: !!token,
         queryFn: () => 
             fetch(`${host}/order`, {
                 headers: {

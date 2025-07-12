@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/AuthContext';
@@ -5,6 +6,8 @@ import { host } from '@/utils/constants';
 import { userSchema } from '@/utils/types';
 import { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 type EditProps = {
   userdata: userSchema;
@@ -12,8 +15,10 @@ type EditProps = {
 
 const Edit: React.FC<EditProps> = ({ userdata }) => {
   const [user, setUser] = useState<userSchema>(userdata);
-  const { token, userId} = useAuth();
+  const { token, userId, setName, setProfileImage} = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
@@ -25,11 +30,11 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     if (!userId) {
-        toast.error("User id is missing")
-        return;
+      toast.error("User id is missing")
+      return;
     }
+    setIsLoading(true);
     try {
         const formData = new FormData()
         formData.append('username', user.username)
@@ -37,7 +42,6 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
         if (user.profileImage) {
             formData.append("profileImage", user.profileImage)
         }
-        formData.append("password", user.password)
         const response = await fetch(`${host}/update/${userId}`,
         {
             headers: {
@@ -52,12 +56,16 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
             throw new Error(errorText);
         }
         const data = await response.json();
-        toast.success(data.message)
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+        setName(data.user.username);
+        setProfileImage(data.user.profileImage);
+        navigate("/profile");
     } catch (error: any) {
         toast.error(error.message)
     }
     finally{
-        setIsLoading(false);
+        setIsLoading(false);  
     }
   }
 
@@ -92,6 +100,7 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
             type='file'
             name='profileImage'
             id='profileImage'
+            accept='image/*'
             className='w-full mt-1'
             onChange={handleInputChange}
         />
