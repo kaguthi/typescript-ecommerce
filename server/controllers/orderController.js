@@ -1,5 +1,5 @@
-const Order = require('../model/orderModel');
-const mongoose = require('mongoose')
+import Order from '../models/orderModel.js';
+import mongoose from 'mongoose';
 
 async function getOrder(req, res) {
     const userRole = req.user?.role;
@@ -69,4 +69,4 @@ async function getOrderById(req, res) {
     }
 }
 
-module.exports = { getOrder, getOrderByUserId, getOrderById, getLatestOrder };
+export { getOrder, getOrderByUserId, getOrderById, getLatestOrder };

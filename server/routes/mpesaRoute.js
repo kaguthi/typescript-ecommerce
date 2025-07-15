@@ -1,10 +1,10 @@
-const express = require('express');
-const { mpesaMiddleware } = require('../middleware/mpesaMiddleware');
-const { mpesa }= require('../controllers/mpesaController');
-const { callBack } = require('../controllers/callBack');
+import { Router } from 'express';
+import mpesaMiddleware from '../middleware/mpesaMiddleware.js';
+import { mpesa } from '../controllers/mpesaController.js';
+import callBack from '../controllers/callBack.js';
 
-const router = express.Router();
+const router = Router();
 router.post('/mpesa', mpesaMiddleware, mpesa);
 router.post('/callback', callBack)
 
-module.exports = router;
+export default router;

@@ -15,4 +15,4 @@ async function mpesaMiddleware(req, res, next){
     }
 }
 
-module.exports = { mpesaMiddleware}
+export default mpesaMiddleware;

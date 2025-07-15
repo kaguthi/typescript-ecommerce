@@ -1,11 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const useMiddleware = require("../middleware/useMiddleware");
-const { getOrder, getOrderByUserId, getOrderById, getLatestOrder } = require("../controllers/orderController")
+import { Router } from 'express';
+import useMiddleware from "../middleware/useMiddleware.js";
+import { getOrder, getOrderByUserId, getOrderById, getLatestOrder } from "../controllers/orderController.js";
+const router = Router();
 
 router.get('/', useMiddleware ,getOrder);
 router.get('/latestOrder', useMiddleware, getLatestOrder)
 router.get('/:id', useMiddleware, getOrderByUserId) 
 router.get('/orderById/:id', useMiddleware, getOrderById) 
 
-module.exports = router;
+export default router;

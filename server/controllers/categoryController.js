@@ -1,7 +1,4 @@
-const categorySchema = require("../model/categoryModel");
-
-// get all categorys
-
+import categorySchema from '../models/categoryModel.js';
 async function getAllCategory(req, res) {
     try {
         const category = await categorySchema.find();
@@ -71,5 +68,4 @@ async function deleteCategory(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
-
-module.exports = {getAllCategory, getCategoryById, createCategory, updateCategory, deleteCategory};
+export { getAllCategory, getCategoryById, createCategory, updateCategory, deleteCategory };

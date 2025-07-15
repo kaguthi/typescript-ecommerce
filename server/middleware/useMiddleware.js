@@ -1,7 +1,6 @@
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-const User = require('../model/userModel');
-dotenv.config();
+import jwt from 'jsonwebtoken';
+import 'dotenv/config'; 
+import User from '../models/userModel.js';
 
 const verification = async (req, res, next) => {
     const token = req.cookies.token || req.headers['authorization'];
@@ -29,4 +28,4 @@ const verification = async (req, res, next) => {
     }
 };
 
-module.exports = verification;
+export default verification;

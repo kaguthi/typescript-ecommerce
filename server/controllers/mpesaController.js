@@ -1,4 +1,4 @@
-const { timestamp } = require("../utils/timeStamp");
+import timestamp from '../utils/timestamp.js';
 async function mpesa(req, res) {
     const phone = req.body.phone;
     if(!phone) {
@@ -23,8 +23,7 @@ async function mpesa(req, res) {
         "PartyA": phone,
         "PartyB": process.env.MPESA_SHORTCODE,
         "PhoneNumber": phone,
-        "CallBackURL": CallBackURL
-        ,
+        "CallBackURL": CallBackURL,
         "AccountReference": "E-buy Store",
         "TransactionDesc": "Payment for goods purchased"
     }
@@ -50,4 +49,4 @@ async function mpesa(req, res) {
     }
 }
 
-module.exports = { mpesa }
+export { mpesa }

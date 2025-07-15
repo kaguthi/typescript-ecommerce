@@ -1,7 +1,5 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
-const AfricasTalking = require('africastalking');
+import 'dotenv/config';
+import AfricasTalking from 'africastalking';
 
 const credentials = {
     apiKey: process.env.SMS_API_KEY,
@@ -25,4 +23,4 @@ async function sendMessage(phone, message) {
     }
 }
 
-module.exports = { sendMessage };
+export { sendMessage };

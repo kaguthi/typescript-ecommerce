@@ -1,13 +1,12 @@
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-dotenv.config()
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 
 function createToken(id){
     return jwt.sign({id}, process.env.ACCESS_TOKEN_KEY)
 }
 
 function generateNewToken (id) {
-    return jwt.sign({id}, process.env.REFRESH_TOKEN_KEY)
+    return sign({id}, process.env.REFRESH_TOKEN_KEY)
 }
 
-module.exports = {createToken, generateNewToken};
+export {createToken, generateNewToken};

@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-
+import mongoose from 'mongoose';
 const paymentSchema = mongoose.Schema({
     amount: {
         type: Number,
@@ -19,4 +18,4 @@ const paymentSchema = mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('Payment', paymentSchema)
+export default mongoose.model('Payment', paymentSchema)

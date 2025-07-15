@@ -1,8 +1,8 @@
-const express = require('express');
-const {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken, verifyOtp, confirmEmail, resetPassword, verifyResetOtp} = require("../controllers/userController");
-const useMiddleware = require('../middleware/useMiddleware')
+import { Router } from 'express';
+import { getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken, verifyOtp, confirmEmail, resetPassword, verifyResetOtp } from "../controllers/userController.js";
+import useMiddleware from '../middleware/useMiddleware.js';
 
-const router = express.Router();
+const router = Router();
 
 router.get("/users", useMiddleware, getUsers);
 router.get("/users/:id", useMiddleware, getUserById);
@@ -16,4 +16,4 @@ router.post("/confirm-email", confirmEmail);
 router.post("/reset-password", resetPassword);
 router.post("/verify-reset-otp", verifyResetOtp);
 
-module.exports = router;
+export default router;

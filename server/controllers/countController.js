@@ -1,6 +1,6 @@
-const Product = require('../model/productModel');
-const User = require('../model/userModel');
-const Order = require('../model/orderModel');
+import Product from '../models/productModel.js';
+import User from '../models/userModel.js';
+import Order from '../models/orderModel.js';
 
 async function getDocumentCount (req, res) {
     const userRole = req.user?.role;
@@ -25,4 +25,4 @@ async function getDocumentCount (req, res) {
     }
 }
 
-module.exports = getDocumentCount;
+export default getDocumentCount;

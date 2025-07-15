@@ -1,8 +1,8 @@
-const getDocumentCount = require('../controllers/countController')
-const express = require('express')
-const useMiddleware = require("../middleware/useMiddleware");
-const router = express.Router();
+import getDocumentCount from '../controllers/countController.js';
+import { Router } from 'express';
+import useMiddleware from "../middleware/useMiddleware.js";
+const router = Router();
 
 router.get('/', useMiddleware, getDocumentCount);
 
-module.exports = router;
+export default router;

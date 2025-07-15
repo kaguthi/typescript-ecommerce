@@ -1,10 +1,8 @@
-const express = require('express');
-const { makePaymentStripe } = require('../controllers/paymentController');
+import { Router } from 'express';
+import { makePaymentStripe } from '../controllers/paymentController.js';
 
-const router = express.Router()
+const router = Router()
 
 router.post('/', makePaymentStripe);
 
-
-
-module.exports = router;
+export default router;

@@ -1,12 +1,13 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const order = require('../model/orderModel')
-const { sendMessage } = require('../utils/sendSms');
-const User = require("../model/userModel");
+import Stripe from 'stripe';
+import 'dotenv/config';               
+import order from '../models/orderModel.js';
+import User  from '../models/userModel.js';
 
 function calculateAmount (products) {
     const totalPrice = products.reduce((total, product) => total + product.price * product.count ,0);
     return totalPrice * 100;
 }
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 async function makePaymentStripe (req, res) {
   try {
@@ -44,4 +45,4 @@ async function makePaymentStripe (req, res) {
   }
 }
 
-module.exports = {makePaymentStripe};
+export {makePaymentStripe};

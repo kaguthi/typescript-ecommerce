@@ -1,4 +1,4 @@
-const paymentSchema = require('../model/paymentModel');
+import paymentSchema from '../models/paymentModel.js';
 
 async function callBack(req, res) {
     try {
@@ -55,4 +55,4 @@ async function callBack(req, res) {
     }
 }
 
-module.exports = { callBack };
+export default callBack;

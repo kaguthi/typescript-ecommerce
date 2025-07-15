@@ -1,16 +1,19 @@
-const User = require("../model/userModel");
-const bcrypt = require('bcrypt');
-const {createToken} = require('../utils/secretToken');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
-const uploadDir = path.join(__dirname, '../uploads');
-const validator = require('validator');
-const dotenv = require('dotenv')
-const jwt = require('jsonwebtoken');
-const { mail } = require("../utils/sendMail");
+import User from '../models/userModel.js';
+import { createToken } from '../utils/secretToken.js';
+import bcrypt from 'bcrypt';
+import validator from 'validator';
+import multer from 'multer';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
 
-dotenv.config();
+import 'dotenv/config';
+import jwt from 'jsonwebtoken'
+import { mail } from '../utils/mail.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const uploadDir = path.join(__dirname, '../uploads');
 
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -71,7 +74,7 @@ async function createUser(req, res) {
                 throw new Error("Email is in valid")
             }
 
-            if (!validator.isStrongPassword(req.body.password)) {
+            if (!validator.isStrongPassword(req.body.password, {minLength: 8, minUppercase: 1, minLowercase: 1, minNumbers: 1, minSymbols: 1})) {
                 throw new Error("Password is not strong 8-15 characters required")
             }
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -341,4 +344,4 @@ async function resetPassword(req, res) {
     }
 }
 
-module.exports = {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken, verifyOtp, confirmEmail, verifyResetOtp, resetPassword};
+export {getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken, verifyOtp, confirmEmail, verifyResetOtp, resetPassword};
