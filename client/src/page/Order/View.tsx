@@ -110,7 +110,7 @@ function ViewData() {
         <View>
           <Text style={styles.details}>Order Receipt: {`${orderId}`}</Text>
           <Text style={styles.note}>
-            This receipt was generated on {format(new Date(data?.createdAt), 'yyyy-MM-dd HH:mm:ss')}
+            This receipt was generated on {format(new Date(data?.createdAt ?? ""), 'yyyy-MM-dd HH:mm:ss')}
           </Text>
           <Text style={styles.note}>The Total Price is ${data?.totalPrice}</Text>
         </View>

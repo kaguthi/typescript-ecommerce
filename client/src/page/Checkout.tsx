@@ -52,10 +52,13 @@ function Checkout() {
   const appearance = {
     theme: "stripe",
   };
-  const options = {
-    clientSecret,
-    appearance,
-  };
+  const options = clientSecret
+  ? {
+      clientSecret,
+      appearance,
+    }
+  : undefined;
+
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">

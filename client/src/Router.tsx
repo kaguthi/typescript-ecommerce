@@ -27,7 +27,6 @@ import Mpesa from './page/Mpesa'
 import ConfirmEmail from './page/ConfirmEmail'
 import ResetPassword from './page/ResetPassword'
 import ResetOtp from './page/auth/Otp'
-import Upload from './page/Upload'
 
 function Router() {
 
