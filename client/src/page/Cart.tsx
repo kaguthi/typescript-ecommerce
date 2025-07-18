@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
 import { CircleMinus, CirclePlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,7 +45,7 @@ function Cart() {
           >
             <div>
               <img
-                src={`${host}/uploads/${product.image}`}
+                src={`${product.image}`}
                 alt={product.name}
                 className="w-24 h-24 object-cover"
               />

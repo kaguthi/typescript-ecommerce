@@ -78,7 +78,7 @@ function Signin() {
             <div className="w-full">
               <label htmlFor="username">Username</label>
               <Input
-                className="w-full mt-1" 
+                className="mt-1" 
                 type="text"
                 name="username"
                 required
@@ -89,12 +89,12 @@ function Signin() {
             <div className="w-full mt-2">
               <label htmlFor="password">Password</label>
               <Input 
-                className="w-full mt-1"
+                className="mt-1"
                 type="password"
                 name="password"
                 required
-                value={studentDetail.password} 
-                onChange={(e) => setStudentDetails({ ...studentDetail, password: e.target.value })} 
+                value={studentDetail.password}
+                onChange={(e) => setStudentDetails({ ...studentDetail, password: e.target.value })}
               />
             </div>
             <div className="w-full mt-2">

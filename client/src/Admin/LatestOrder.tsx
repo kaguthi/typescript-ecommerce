@@ -83,7 +83,7 @@ function LatestOrder() {
                                     <TableCell>{item.name}</TableCell>
                                     <TableCell>{item.price}</TableCell>
                                     <TableCell>
-                                      <img className="w-10 h-10 object-contain rounded-full" src={`${host}/uploads/${item.image}`} alt="product image" />
+                                      <img className="w-10 h-10 object-contain rounded-full" src={`${item.image}`} alt="product image" />
                                     </TableCell>
                                     <TableCell>{order.quantity[i]}</TableCell>
                                   </TableRow>
