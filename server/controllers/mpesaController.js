@@ -1,4 +1,4 @@
-import timestamp from '../utils/timestamp.js';
+import timestamp from '../utils/timeStamp.js';
 import 'dotenv/config';
 async function mpesa(req, res) {
     const phone = req.body.phone;
