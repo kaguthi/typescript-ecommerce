@@ -1,4 +1,4 @@
-export const host: string = "http://localhost:5000"; 
+export const host: string = "https://ecommerce-backend-x85q.onrender.com"; 
 
 export const formatPrice = (price: number) =>
   new Intl.NumberFormat("en-US", {
