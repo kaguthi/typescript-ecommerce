@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import type { Apperance, StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
+import type { Apperance, StripeElementsOption } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { useCartContext } from "@/context/cartContext";
