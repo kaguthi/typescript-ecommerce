@@ -74,6 +74,6 @@ export interface order {
     productId: productSchema[],
     quantity: number[],
     totalPrice: number,
-    createdAt: Date,
+    createdAt: string,
 }
   
