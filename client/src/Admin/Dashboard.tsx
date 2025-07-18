@@ -57,7 +57,7 @@ function Dashboard() {
           </Alert>
     );
   return (
-    <div className="grid gap-6 m-5 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex items-center md:flex-col gap-5 mt-5">
         <Card className="w-2/6">
         <CardHeader>
             <CardTitle>
