@@ -42,7 +42,6 @@ function Router() {
           <Route path='confirm-email' element={ <ConfirmEmail/> }/>
           <Route path='reset-password' element={ <ResetPassword/> }/>
           <Route path='reset-otp' element={ <ResetOtp/> }/>
-          <Route path='upload' element={ <Upload/> }/>
           <Route path='checkout' element={ <PrivateRoute><Checkout /></PrivateRoute>} />
           <Route path='mpesa' element={ <PrivateRoute><Mpesa /></PrivateRoute> } />
           <Route path='paymentMethod' element={ <PrivateRoute><PaymentMethod /></PrivateRoute> } />
