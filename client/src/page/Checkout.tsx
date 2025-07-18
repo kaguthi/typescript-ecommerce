@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import type { Apperance, StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { useCartContext } from "@/context/cartContext";
@@ -49,10 +49,10 @@ function Checkout() {
     fetchClientSecret();
   }, [cartProducts, userId]);
 
-  const appearance = {
+  const appearance: Apperance = {
     theme: "stripe",
   };
-  const options = clientSecret
+  const options: StripeElementsOptions | undefined = clientSecret
   ? {
       clientSecret,
       appearance,
