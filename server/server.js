@@ -15,9 +15,18 @@ import orderRoute from './routes/orderRoute.js';
 import countRoute from './routes/countRoute.js';
 import mpesaRoute from './routes/mpesaRoute.js';
 import fs from 'fs';
+import { createStream } from 'rotating-file-stream';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 
 
 const app = express();
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+}); 
+const helmet = helmet();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,25 +45,26 @@ const devFormat = (tokens, req, res) => {
 };
 
 const format =
-  process.env.NODE_ENV === 'production'
-    ? 'combined'
-    : devFormat;
+process.env.NODE_ENV === 'production'
+? 'combined'
+: devFormat;
 
 app.use(morgan(format));  
 
 if (process.env.NODE_ENV === 'production') {
-  const rfs = (await import('rotating-file-stream')).default;
   const logDirectory = path.join(__dirname, 'logs');
-
+  
   fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
-
-  const accessLogStream = rfs.createStream('access.log', {
+  
+  const accessLogStream = createStream('access.log', {
     interval: '1d', 
     path: logDirectory
   });
-
+  
   app.use(morgan(format, { stream: accessLogStream }));
 }
+app.use(helmet());
+app.use(limiter);
 
 app.use(cors({ 
   origin: [process.env.FRONTEND_URL || 'http://localhost:5173'],
