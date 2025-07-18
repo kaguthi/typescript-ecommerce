@@ -51,7 +51,7 @@ function Profile () {
       <h3 className="my-3 text-2xl font-semibold">User Profile</h3>
 
       <div className="w-full max-w-xs">
-        <img className="w-full h-auto rounded-full" src={`${host}/uploads/${data?.profileImage || defaultImage}`} alt={data?.username} />
+        <img className="w-full h-auto rounded-full" src={`${data?.profileImage || defaultImage}`} alt={data?.username} />
       </div>
       <div className="mt-4">
         <p className="mt-2"><span className="font-semibold">Username: </span>{data?.username}</p>

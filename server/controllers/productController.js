@@ -1,28 +1,8 @@
 import productSchema from '../models/productModel.js';
 import multer from 'multer';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { uploadImage, deleteImage } from '../utils/cloudinary.js';
 
-// ESM __dirname reconstruction
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const uploadDir = path.join(__dirname, '../uploads');
-
-// Ensure uploads directory exists
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Multer configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
-});
-const upload = multer({ storage });
-
-// ─────── Controller Functions ───────
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB limit
 
 // GET all products
 async function getAllProducts(req, res) {
@@ -68,10 +48,16 @@ async function createProduct(req, res) {
     if (err) return res.status(400).json({ message: err.message });
 
     try {
+      const file = await uploadImage(req.file.buffer, {
+        folder: 'uploads',
+        resource_type: 'auto'
+      });
+
       const product = {
         name: req.body.name,
         price: req.body.price,
-        image: req.file?.filename || null,
+        image: req.file ? file.secure_url : null,
+        publicId: req.file ? file.public_id : null,
         description: req.body.description,
         createdAt: new Date()
       };
@@ -109,10 +95,17 @@ async function updateProduct(req, res) {
 
       if (req.file) {
         if (existingProduct.image) {
-          const oldImagePath = path.join(uploadDir, path.basename(existingProduct.image));
-          fs.promises.unlink(oldImagePath).catch(err => console.error(err.message));
+          const oldImage = await deleteImage(existingProduct.publicId);
+          if(oldImage.result !== 'ok') {
+            return res.status(500).json({ message: "Failed to delete old image from Cloudinary" });
+          }
+          const newImage = await uploadImage(req.file.buffer, {
+            folder: 'uploads',
+            resource_type: 'auto'
+          });
+          updateData.image = newImage.secure_url;
+          updateData.publicId = newImage.public_id;
         }
-        updateData.image = req.file.filename;
       }
 
       const updatedProduct = await productSchema.findByIdAndUpdate(id, updateData, { new: true });
@@ -140,8 +133,10 @@ async function deleteProduct(req, res) {
     }
 
     if (existingProduct.image) {
-      const filePath = path.join(uploadDir, path.basename(existingProduct.image));
-      fs.promises.unlink(filePath).catch(err => console.error('Error deleting file:', err.message));
+      const deleteImageResult = await deleteImage(existingProduct.publicId);
+      if (deleteImageResult.result !== 'ok') {
+        return res.status(500).json({ message: "Failed to delete image from Cloudinary" });
+      }
     }
 
     await productSchema.findByIdAndDelete(id);

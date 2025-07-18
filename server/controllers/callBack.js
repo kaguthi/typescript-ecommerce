@@ -31,7 +31,6 @@ async function callBack(req, res) {
             });
         }
 
-        // Optional: Prevent duplicate transactions
         const existing = await paymentSchema.findOne({ ReceiptNumber: receiptNumber });
         if (existing) {
             return res.status(200).json({ message: 'Duplicate transaction ignored.' });

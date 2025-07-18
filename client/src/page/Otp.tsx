@@ -6,6 +6,7 @@ import {
   } from "@/components/ui/input-otp"
 import { useAuth } from "@/context/AuthContext";
 import { host } from "@/utils/constants";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -78,7 +79,7 @@ function Otp() {
             </InputOTP>
         </div>
         <div className="mt-4 w-full">
-          <Button type="submit" disabled={isLoading}>{isLoading ? "Verifying..." : "Verify"}</Button>
+          <Button type="submit" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Verifying...</div> : "Verify"}</Button>
         </div>
       </form>
     </div>

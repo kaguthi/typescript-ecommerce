@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { LogOut, Menu, ShoppingCart, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { host } from "@/utils/constants";
 import { useAuth } from "../context/AuthContext";
 import useLogout from "./auth/Logout";
 import {
@@ -96,7 +95,7 @@ function Navbar() {
             <li>
               <Avatar className="size-8">
                 {profileImage && profileImage !== "undefined" ? (
-                  <AvatarImage src={`${host}/uploads/${profileImage}`} />
+                  <AvatarImage src={`${profileImage}`} />
                 ) : (
                   <AvatarFallback>{name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                 )}

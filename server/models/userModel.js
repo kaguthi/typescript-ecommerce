@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema(
     profileImage: {
       type: String,
     },
+    publicId: {
+      type: String,
+    },
     role: {
       type: String,
       required: true,

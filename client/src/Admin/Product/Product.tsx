@@ -97,7 +97,7 @@ function Product() {
                 header: 'Image',
                 cell: ({ row }) => (
                     <div>
-                        <img className="size-8" src={`${host}/uploads/${row.getValue("image")}`} alt="product image"/>
+                        <img className="size-8" src={`${row.getValue("image")}`} alt="product image"/>
                     </div>
                 )
             },

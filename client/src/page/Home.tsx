@@ -87,7 +87,7 @@ function Home() {
           <Card key={index} className="size-72 m-4">
             <CardHeader className="flex items-center">
               <img
-                src={`${host}/uploads/${product.image}`}
+                src={`${product.image}`}
                 alt={product.name}
                 onError={(e) => {
                   e.currentTarget.src = defaultImage;

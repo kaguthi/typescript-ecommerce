@@ -10,14 +10,17 @@ import { host } from "@/utils/constants"
 import { useAuth } from "@/context/AuthContext"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useEffect, useState } from "react"
+import {formatPrice} from "@/utils/constants"
 
 function Dashboard() {
     const { token } = useAuth();
-    const [productCount, setProductCount] = useState<string>("")
-    const [userCount, setUserCount] = useState<string>("")
-    const [sales, setSales] = useState<string>("")
+    const [productCount, setProductCount] = useState<number | null>(null);
+    const [userCount, setUserCount] = useState<number | null>(null);
+    const [sales, setSales] = useState<number | null>(null);
+
     const {isLoading, data, error} = useQuery({
         queryKey: ["count"],
+        enabled: !!token,
         queryFn: () =>
             fetch(`${host}/count`, {
                 headers: {
@@ -33,11 +36,12 @@ function Dashboard() {
 
     useEffect(() => {
         if (data) {
-            setProductCount(data["productCount"])
-            setUserCount(data["userCount"])
-            setSales(data["sales"])
+            setProductCount(data?.productCount ?? 0);
+            setUserCount(data?.userCount ?? 0);
+            setSales(data?.sales ?? 0);
         }
-    },[data])
+    }, [data]);
+
     
     if (isLoading)
         return (
@@ -53,7 +57,7 @@ function Dashboard() {
           </Alert>
     );
   return (
-    <div className="flex justify-center m-5 gap-7">
+    <div className="grid gap-6 m-5 md:grid-cols-2 lg:grid-cols-3">
         <Card className="w-2/6">
         <CardHeader>
             <CardTitle>
@@ -63,7 +67,7 @@ function Dashboard() {
         <CardContent>
             <div className="flex justify-between">
             <Users />
-            <p>{userCount}</p>
+            <p>{userCount ?? '-'}</p>
             </div>
         </CardContent>
         </Card>
@@ -76,7 +80,7 @@ function Dashboard() {
         <CardContent>
             <div className="flex justify-between">
             <ShoppingBasket />
-            <p>{productCount}</p>
+            <p>{productCount ?? '-'}</p>
             </div>
         </CardContent>
         </Card>
@@ -89,7 +93,7 @@ function Dashboard() {
         <CardContent>
             <div className="flex justify-between">
             <BadgeDollarSign />
-            <p>$ {sales}</p>
+            <p>{formatPrice(Number(sales)) ?? 0}</p>
             </div>
         </CardContent>
         </Card>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useState, useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import toast from 'react-hot-toast'
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { useAuth } from "../../context/AuthContext"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Loader2 } from "lucide-react"
 
 function EditProduct() {
   const [product, setProduct] = useState<productSchema>({name: "", price: 0, image: null, description: ""})
@@ -14,9 +16,11 @@ function EditProduct() {
   const [productId] = useSearchParams();
   const prodId = productId.get('productId')
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append('name', product.name);
@@ -48,6 +52,9 @@ function EditProduct() {
       navigate("/product")
     } catch (error: any) {
       toast.error(error.message);
+    }
+    finally {
+      setIsLoading(false);
     }
   } 
 
@@ -106,7 +113,7 @@ function EditProduct() {
             }}
           />
         </div>
-        <Button type="submit" className="mt-3 w-full">Update Product</Button>
+        <Button type="submit" className="mt-3 w-full">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-1" /> Updating</div> : "Update Product"}</Button>
       </form>
     </div>
   )

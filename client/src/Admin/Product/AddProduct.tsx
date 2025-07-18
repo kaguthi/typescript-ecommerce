@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,14 +8,17 @@ import { productSchema } from "@/utils/types";
 import { useAuth } from "../../context/AuthContext";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Loader2 } from "lucide-react";
 
 function AddProduct() {
   const [product, setProduct] = useState<productSchema>({ name: "", price: 0, image: null, description: "" });
   const navigate = useNavigate();
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('name', product.name);
     formData.append('price', product.price.toString());
@@ -43,6 +47,7 @@ function AddProduct() {
     } catch (error: any) {
       toast.error(error.message);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -86,7 +91,7 @@ function AddProduct() {
             }}
           />
         </div>
-        <Button type="submit" className="mt-3 w-full">Add Product</Button>
+        <Button type="submit" className="mt-3 w-full">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-1" /> Adding</div> : "Add Product"}</Button>
       </form>
     </div>
   );

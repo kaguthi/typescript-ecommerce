@@ -90,7 +90,7 @@ function User() {
             header: "Profile Image",
             cell: ({ row }) => (
                 <div>
-                    <img className="w-10 h-10 object-contain" src={`http://localhost:5000/uploads/${row.getValue("profileImage")}`} alt="profile image" />
+                    <img className="w-10 h-10 object-contain" src={`${row.getValue("profileImage")}`} alt="profile image" />
                 </div>
             )
         },

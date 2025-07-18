@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate, useSearchParams } from "react-router-dom"
 import toast from 'react-hot-toast'
 import { useState, useEffect } from "react"

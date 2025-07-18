@@ -71,7 +71,7 @@ function ViewData() {
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}>
                 <Image
-                  src={`${host}/uploads/${item.image}`}
+                  src={`${item.image}`}
                   style={{ width: 50, height: 50 }}
                 />
               </Text>

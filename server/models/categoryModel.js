@@ -4,6 +4,14 @@ const categorySchema = mongoose.Schema({
         type: String,
         required: true
     },
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    publicId: {
+        type: String,
+        required: true
+    }
 },
 {
     timestamps: true

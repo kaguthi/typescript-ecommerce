@@ -11,6 +11,7 @@ function LatestOrder() {
   const { token } = useAuth()
   const {isLoading, data: latestOrder, error} = useQuery<order[], Error>({
     queryKey: ["order"],
+    enabled: !!token,
     queryFn: () => 
       fetch(`${host}/order/latestOrder`, {
         headers: {
@@ -59,7 +60,7 @@ function LatestOrder() {
                       <TableCell>{order.userId.username}</TableCell>
                       <TableCell>{order.userId.email}</TableCell>
                       <TableCell className="text-right">
-                        <img className="w-10 h-10 object-contain rounded-full" src={`${host}/uploads/${order.userId.profileImage}`} alt="user image" />
+                        <img className="w-10 h-10 object-contain rounded-full" src={`${order.userId.profileImage}`} alt="user image" />
                       </TableCell>
                       <TableCell>
                         <Dialog>

@@ -3,32 +3,13 @@ import { createToken } from '../utils/secretToken.js';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
 import multer from 'multer';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
-
 import 'dotenv/config';
 import jwt from 'jsonwebtoken'
 import { mail } from '../utils/mail.js';
+import { uploadImage, deleteImage } from '../utils/cloudinary.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const uploadDir = path.join(__dirname, '../uploads');
 
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-
-const upload = multer({ storage: storage });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } }); // 10 MB limit
 
 // Get all user data - Admin only
 async function getUsers(req, res) {
@@ -77,11 +58,15 @@ async function createUser(req, res) {
             if (!validator.isStrongPassword(req.body.password, {minLength: 8, minUppercase: 1, minLowercase: 1, minNumbers: 1, minSymbols: 1})) {
                 throw new Error("Password is not strong 8-15 characters required")
             }
+            const result = await uploadImage(req.file.buffer, {
+                folder: 'uploads',
+                resource_type: 'auto'
+            });
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
             const otp = Math.floor(1000 + Math.random() * 900000);
             const mailOption = {
                 from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
-                to: process.env.EMAIL_TO,
+                to: req.body.email,
                 subject: "Your OTP Code",
                 text: `Your OTP code is ${otp}`,
             };
@@ -90,7 +75,8 @@ async function createUser(req, res) {
                 username: req.body.username,
                 email: req.body.email,
                 password: hashedPassword,
-                profileImage: req.file ? req.file.filename : null,
+                profileImage: req.file ? result.secure_url : null,
+                publicId: req.file ? result.public_id : null,
                 role: req.body.role,
                 createdAt: Date.now(),
                 otp: otp
@@ -144,10 +130,10 @@ async function deleteUser(req, res) {
             return res.status(404).json({ message: "User not found"})
         }
         if (existingUser.profileImage) {
-            const filePath = path.join(uploadDir, path.basename(existingUser.profileImage))
-            fs.promises.unlink(filePath)
-                .then(() => console.log("Image file deleted successfully"))
-                .catch(error => console.error(error.message))
+            const deleteImageResult = await deleteImage(existingUser.publicId);
+            if (deleteImageResult.result !== 'ok') {
+                return res.status(500).json({ message: "Failed to delete image from Cloudinary" });
+            }
         }
         const user = await User.findByIdAndDelete(id);
         if (!user) {
@@ -177,12 +163,17 @@ async function updateUser(req, res) {
             const updateData = { ...req.body, updatedAt: Date.now() };
             if (req.file) {
                 if (existingUser.profileImage) {
-                    const oldImagePath = path.join(uploadDir, path.basename(existingUser.profileImage))
-                    fs.promises.unlink(oldImagePath)
-                        .then(() => console.log("Image file deleted successfully"))
-                        .catch(error => console.error(error.message))
+                    const deleteImageResult = await deleteImage(existingUser.publicId);
+                    if (deleteImageResult.result !== 'ok') {
+                        return res.status(500).json({ message: "Failed to delete image from Cloudinary" });
+                    }
+                    const result = await uploadImage(req.file.buffer, {
+                        folder: 'uploads',
+                        resource_type: 'auto'
+                    });
+                    updateData.profileImage = result.secure_url;
+                    updateData.publicId = result.public_id;
                 }
-                updateData.profileImage = req.file.filename;
             }
             const user = await User.findByIdAndUpdate(id, updateData, { new: true });
             if (!user) {

@@ -8,6 +8,7 @@ import { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
 
 type EditProps = {
   userdata: userSchema;
@@ -106,7 +107,7 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
         />
         </div>
         <div className='w-full mt-3'>
-        <Button type='submit' disabled={isLoading}>{isLoading ? "Updating ..." : "Update Now"}</Button>
+        <Button type='submit' disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin" /> Updating...</div> : "Update Now"}</Button>
         </div>
      </form>
     </div>

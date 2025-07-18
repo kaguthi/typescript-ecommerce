@@ -6,6 +6,7 @@ import {
     InputOTPSlot,
   } from "@/components/ui/input-otp"
 import { host } from "@/utils/constants";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 function Otp() {
@@ -84,7 +85,7 @@ function Otp() {
             </InputOTP>
         </div>
         <div className="mt-4 w-full">
-          <Button type="submit" disabled={isLoading}>{isLoading ? "Verifying..." : "Verify"}</Button>
+          <Button type="submit" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin" /> Verify</div> : "Verify"}</Button>
         </div>
       </form>
     </div>
