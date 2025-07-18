@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'production') {
 
   fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
 
-  const accessLogStream = rfs.createStream('access.log', {
+  const accessLogStream = fs.createStream('access.log', {
     interval: '1d', 
     path: logDirectory
   });
