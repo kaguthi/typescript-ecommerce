@@ -51,17 +51,30 @@ async function createUser(req, res) {
             return res.status(400).json({ message: err.message });
         }
         try {
-            if (!validator.isEmail(req.body.email)) {
+             const { username, email, password } = req.body;
+
+            if (!username || !email || !password) {
+                return res.status(400).json({ message: "All fields are required" });
+            }
+            if (!validator.isEmail(email)) {
                 throw new Error("Email is in valid")
             }
 
-            if (!validator.isStrongPassword(req.body.password, {minLength: 8, minUppercase: 1, minLowercase: 1, minNumbers: 1, minSymbols: 1})) {
+            if (!validator.isStrongPassword(password, {minLength: 8, minUppercase: 1, minLowercase: 1, minNumbers: 1, minSymbols: 1})) {
                 throw new Error("Password is not strong 8-15 characters required")
             }
-            const result = await uploadImage(req.file.buffer, {
-                folder: 'uploads',
-                resource_type: 'auto'
-            });
+            const existingUser = await User.findOne({ email: email });
+            if (existingUser) {
+                return res.status(409).json({ message: "Email already in use", success: false });
+            }
+
+            const imageUploadResult = req.file
+                ? await uploadImage(req.file.buffer, {
+                    folder: 'uploads',
+                    resource_type: 'auto',
+                    })
+                : { secure_url: null, public_id: null };
+
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
             const otp = Math.floor(1000 + Math.random() * 900000);
             const mailOption = {
@@ -70,21 +83,21 @@ async function createUser(req, res) {
                 subject: "Your OTP Code",
                 text: `Your OTP code is ${otp}`,
             };
-            mail(mailOption);
+            await mail(mailOption);
             const user = {
-                username: req.body.username,
-                email: req.body.email,
+                username,
+                email,
                 password: hashedPassword,
-                profileImage: req.file ? result.secure_url : null,
-                publicId: req.file ? result.public_id : null,
-                role: req.body.role,
+                profileImage: imageUploadResult.secure_url,
+                publicId: imageUploadResult.public_id,
+                role,
                 createdAt: Date.now(),
-                otp: otp
+                otp
             };
-            const createdUser = await User.create(user);
-            res.status(201).json({ message: "User created successfully", user: createdUser });
+            await User.create(user);
+            res.status(201).json({ message: "User created successfully", success: true });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message, success: false });
         }
     });
 }
@@ -262,11 +275,11 @@ async function confirmEmail(req, res){
         const otp = Math.floor(1000 + Math.random() * 900000);
         const mailOption = {
             from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
-            to: process.env.EMAIL_TO,
+            to: email,
             subject: "Your OTP Code",
             text: `Your OTP code is ${otp}`,
         };
-        mail(mailOption);
+        await mail(mailOption);
         user.resetOtp = otp; 
         user.resetOtpCreatedAt = Date.now();
         await user.save();

@@ -6,9 +6,6 @@ function PaymentMethod() {
         <div className="border border-solid rounded-md p-5 hover:bg-green-700 hover:text-white cursor-pointer">
             <Link to="/mpesa">Mpesa</Link>
         </div>
-        <div className="border border-solid rounded-md p-5 hover:bg-purple-600 hover:text-white cursor-pointer">
-            <Link to="/checkout">Stripe</Link>
-        </div>
     </div>
   )
 }

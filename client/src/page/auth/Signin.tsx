@@ -67,8 +67,8 @@ function Signin() {
    }}
 
   return (
-    <div className="flex items-center justify-center flex-col min-h-screen">
-      <Card className="w-full max-w-sm shadow-lg">
+    <div className="flex items-center justify-center flex-col min-h-screen p-2">
+      <Card className="w-full max-w-md">
         <CardHeader className="flex">
           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
           <CardDescription className="text-sm text-gray-500 mb-2">Please enter your credentials to continue.</CardDescription>
@@ -100,8 +100,8 @@ function Signin() {
             <div className="w-full mt-2">
               <p className="text-sm"><Link to="/confirm-email" className="hover:underline">Forgot Password?</Link></p>
             </div>
-            <div className="w-full mt-5">
-              <Button type="submit" className="p-3" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin" /> Sign In</div> : "Sign In"}</Button>
+            <div className="w-full mt-3">
+              <Button type="submit" className="p-3" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Sign In</div> : "Sign In"}</Button>
             </div>
           </form>
         </CardContent>

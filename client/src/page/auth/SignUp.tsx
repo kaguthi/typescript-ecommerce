@@ -55,7 +55,7 @@ function Signin() {
   };
 
   return (
-    <div className="flex items-center justify-center flex-col min-h-screen p-4">
+    <div className="flex items-center justify-center flex-col min-h-screen p-2">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
@@ -66,7 +66,7 @@ function Signin() {
             <div className="w-full">
               <label htmlFor="username">Username</label>
               <Input
-                className="w-full mt-1"
+                className="mt-1"
                 type="text"
                 name="username"
                 required
@@ -77,7 +77,7 @@ function Signin() {
             <div className="w-full mt-2">
               <label htmlFor="email">Email</label>
               <Input
-                className="w-full mt-1"
+                className="mt-1"
                 type="email"
                 name="email"
                 required
@@ -88,7 +88,7 @@ function Signin() {
             <div className="w-full mt-2">
               <label htmlFor="password">Password</label>
               <Input
-                className="w-full mt-1"
+                className="mt-1"
                 type="password"
                 name="password"
                 required
@@ -99,7 +99,7 @@ function Signin() {
             <div className="w-full mt-2">
               <label htmlFor="profileImage">Profile Image</label>
               <Input
-                className="w-full mt-1"
+                className="mt-1"
                 type="file"
                 name="profileImage"
                 required
@@ -110,7 +110,7 @@ function Signin() {
               />
             </div>
             <div className="w-full mt-3">
-              <Button type="submit" className="p-3" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin" />Sign Up</div> : "Sign Up"}</Button>
+              <Button type="submit" className="p-3" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" />Sign Up</div> : "Sign Up"}</Button>
             </div>
           </form>
         </CardContent>

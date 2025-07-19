@@ -1,37 +1,37 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 const Home = lazy(() => import ('./page/Home'))
-import Signin from './page/auth/Signin'
-import Layout from './page/Layout'
-import SignUp from './page/auth/SignUp'
-import NotFound from './page/NotFound'
-import User from './Admin/User/User'
-import Edit from './Admin/User/Edit'
-import Delete from './Admin/User/Delete'
-import Product from './Admin/Product/Product'
-import AddProduct from './Admin/Product/AddProduct'
-import EditProduct from './Admin/Product/EditProduct'
-import DeleteProduct from './Admin/Product/DeleteProduct'
-import Profile from './page/Profile'
-import Checkout from './page/Checkout'
-import Success from './page/Success'
-import Order from './page/Order/Order'
-import View from './page/Order/View'
-import Admin from './Admin/Admin'
-import AllOrder from './Admin/Order/order'
+const Otp = lazy(() => import ('./page/Otp'))
+const Signin = lazy(() => import ('./page/auth/Signin'))
+const Layout = lazy(() => import ('./page/Layout'))
+const SignUp = lazy(() => import ('./page/auth/SignUp'))
+const NotFound = lazy(() => import ('./page/NotFound'))
+const User = lazy(() => import ('./Admin/User/User'))
+const Edit = lazy(() => import ('./Admin/User/Edit'))
+const Delete = lazy(() => import ('./Admin/User/Delete'))
+const Product = lazy(() => import ('./Admin/Product/Product'))
+const AddProduct = lazy(() => import ('./Admin/Product/AddProduct'))
+const EditProduct = lazy(() => import ('./Admin/Product/EditProduct'))
+const DeleteProduct = lazy(() => import ('./Admin/Product/DeleteProduct'))
+const Profile = lazy(() => import ('./page/Profile'))
+const Success = lazy(() => import ('./page/Success'))
+const Order = lazy(() => import ('./page/Order/Order'))
+const View = lazy(() => import ('./page/Order/View'))
+const Admin = lazy(() => import ('./Admin/Admin'))
+const AllOrder = lazy(() => import ('./Admin/Order/order'))
+const Mpesa = lazy(() => import ('./page/Mpesa'))
+const PaymentMethod = lazy(() => import ('./page/PaymentMethod'))
+const ConfirmEmail = lazy(() => import ('./page/ConfirmEmail'))
+const ResetPassword = lazy(() => import ('./page/ResetPassword'))
+const ResetOtp = lazy(() => import ('./page/auth/Otp'))
 import { PrivateRoute } from './PrivateRoute'
-import AdminRoute from './AdminRoute'
-import Otp from './page/Otp'
-import PaymentMethod from './page/PaymentMethod'
-import Mpesa from './page/Mpesa'
-import ConfirmEmail from './page/ConfirmEmail'
-import ResetPassword from './page/ResetPassword'
-import ResetOtp from './page/auth/Otp'
+import { LoaderCircle } from 'lucide-react'
+import  AdminRoute  from './AdminRoute'
 
 function Router() {
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className='flex items-center justify-center h-screen'><LoaderCircle className='animate-spin size-28 ' /></div>}>
       <Routes>
         <Route element={ <Layout /> }>
           <Route index element={ <PrivateRoute><Home /></PrivateRoute>} />
@@ -41,7 +41,6 @@ function Router() {
           <Route path='confirm-email' element={ <ConfirmEmail/> }/>
           <Route path='reset-password' element={ <ResetPassword/> }/>
           <Route path='reset-otp' element={ <ResetOtp/> }/>
-          <Route path='checkout' element={ <PrivateRoute><Checkout /></PrivateRoute>} />
           <Route path='mpesa' element={ <PrivateRoute><Mpesa /></PrivateRoute> } />
           <Route path='paymentMethod' element={ <PrivateRoute><PaymentMethod /></PrivateRoute> } />
           <Route path='verify' element={ <PrivateRoute><Otp/></PrivateRoute>}/>

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input"
 import { host } from "@/utils/constants";
+import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react"
 import { toast } from "react-hot-toast";
 
@@ -32,26 +34,33 @@ function ConfirmEmail() {
         }
     }
   return (
-    <div className="flex items-center justify-center min-h-screen">
-        <form onSubmit={handleSubmit} className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-            <div className="text-center">
-                <h3 className="text-2xl font-semibold">Confirm Email</h3>
-            </div>
-            <div className="mt-4 w-full">
-                <label htmlFor="email">Email</label>
-                <Input 
-                    type="email" 
-                    name="email" 
-                    className="w-full mt-1 p-2 border rounded" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required 
-                />
-            </div>
-            <div>
-                <Button type="submit" className="w-full mt-4 p-2 text-white rounded">{isLoading ? "Loading..." : "Confirm Email"}</Button>
-            </div>
-        </form>
+    <div className="flex items-center justify-center min-h-screen p-2">
+        <Card>
+            <CardHeader>
+                <CardTitle>Confirm Email</CardTitle>
+                <CardDescription>
+                    Please enter your email to confirm your account.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={handleSubmit}>
+                    <div className="mt-4 w-full">
+                        <label htmlFor="email">Email</label>
+                        <Input 
+                            type="email" 
+                            name="email" 
+                            className="mt-1d" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required 
+                        />
+                    </div>
+                    <div>
+                        <Button type="submit" className="w-full mt-4 p-2 text-white rounded">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Loading</div> : "Confirm Email"}</Button>
+                    </div>
+                </form>
+            </CardContent>
+        </Card>
     </div>
   )
 }

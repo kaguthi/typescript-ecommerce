@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
     InputOTP,
@@ -57,37 +58,42 @@ function Otp() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <div className="text-2xl font-semibold mb-4">
-          <h3>Verify OTP</h3>
-        </div>
-        <div className="w-full mb-4">
-          <label htmlFor="email">Email</label>
-          <Input
-            className="w-full mt-2"
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="w-full mb-4">
-            <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)} className="w-full">
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-        </div>
-        <div className="mt-4 w-full">
-          <Button type="submit" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin" /> Verify</div> : "Verify"}</Button>
-        </div>
-      </form>
+      <Card>
+        <CardHeader>
+          <CardTitle>Verify OTP</CardTitle>
+          <CardDescription>Please enter the OTP sent to your email.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="w-full mb-4">
+              <label htmlFor="email">Email</label>
+              <Input
+                className="mt-2"
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="w-full mb-4">
+                <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)}>
+                  <InputOTPGroup className="grid grid-cols-6 gap-2">
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} className="border-l-2 border-gray-200" />
+                    <InputOTPSlot index={2} className="border-l-2 border-gray-200" />
+                    <InputOTPSlot index={3} className="border-l-2 border-gray-200" />
+                    <InputOTPSlot index={4} className="border-l-2 border-gray-200" />
+                    <InputOTPSlot index={5} className="border-l-2 border-gray-200" />
+                  </InputOTPGroup>
+                </InputOTP>
+            </div>
+            <div className="mt-4 w-full">
+              <Button type="submit" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Verify</div> : "Verify"}</Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }

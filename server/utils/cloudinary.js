@@ -18,8 +18,11 @@ export function uploadImage(src, options = {}) {
       stream.end(src);
     });
   }
+  if (typeof src === 'string') {
+      return cloudinary.uploader.upload(src, options);
+    }
 
-  return cloudinary.uploader.upload(src, options);
+  throw new Error("Invalid image source. Must be a Buffer or a file path/URL string.");
 }
 
 export const deleteImage = (publicId, options = {}) =>

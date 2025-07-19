@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input"
 import { host } from "@/utils/constants";
 import { useState } from "react"
@@ -48,31 +49,36 @@ function Mpesa() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <form onSubmit={handleSubmit} className="w-full max-w-md p-5 bg-white rounded-lg shadow-md">
-        <div className="mb-4">
-          <h3 className="text-center font-bold text-lg">Lipa Na Mpesa</h3>
-        </div>
-        <div className="w-full mt-2">
-          <label htmlFor="phone">Phone number</label>
-          <Input
-            id="phone"
-            type="tel"
-            name="phone"
-            placeholder="2547xxxxxxxx"
-            required
-            pattern="^2547\d{8}$"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            disabled={isLoading}
-            autoFocus
-          />
-        </div>
-        <div className="w-full mt-3">
-          <Button className="bg-green-700 text-white w-full" disabled={isLoading}>
-            {isLoading ? "Processing..." : "Pay Now"}
-          </Button>
-        </div>
-      </form>
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Lipa Na Mpesa</CardTitle>
+          <CardDescription>Enter your phone number to proceed with the payment</CardDescription>
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+              <div className="w-full mt-2">
+                <Input
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  placeholder="2547xxxxxxxx"
+                  required
+                  pattern="^2547\d{8}$"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  disabled={isLoading}
+                  autoFocus
+                  className="mt-1"
+                />
+              </div>
+              <div className="w-full mt-3">
+                <Button disabled={isLoading}>
+                  {isLoading ? "Processing..." : "Pay Now"}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </CardHeader>
+      </Card>
     </div>
   );
 }

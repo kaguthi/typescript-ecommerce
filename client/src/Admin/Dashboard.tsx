@@ -57,7 +57,7 @@ function Dashboard() {
           </Alert>
     );
   return (
-    <div className="flex items-center md:flex-col gap-5 mt-5">
+    <div className="flex item-center justify-center gap-9 mt-5 p-5">
         <Card className="w-2/6">
         <CardHeader>
             <CardTitle>
