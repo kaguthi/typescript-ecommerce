@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
     InputOTP,
     InputOTPGroup,
@@ -8,11 +7,18 @@ import {
   } from "@/components/ui/input-otp"
 import { host } from "@/utils/constants";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 function Otp() {
   const [otp, setOtp] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setEmail(params.get("email") || "");
+    }
+  }, []);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   
@@ -26,7 +32,7 @@ function Otp() {
     }
 
     if (!email) {
-      toast.error("Please enter your email");
+      toast.error("something went wrong, please try again");
       setIsLoading(false);
       return;
     }
@@ -65,17 +71,6 @@ function Otp() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <div className="w-full mb-4">
-              <label htmlFor="email">Email</label>
-              <Input
-                className="mt-2"
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
             <div className="w-full mb-4">
                 <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)}>
                   <InputOTPGroup className="grid grid-cols-6 gap-2">

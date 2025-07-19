@@ -278,6 +278,7 @@ async function confirmEmail(req, res){
             to: email,
             subject: "Your OTP Code",
             text: `Your OTP code is ${otp}`,
+            html: `<a href="https://typescript-ecommerce-x9zf.onrender.com/reset-otp?email=${email}">Click here to verify your email</a>`
         };
         await mail(mailOption);
         user.resetOtp = otp; 

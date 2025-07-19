@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { host } from "@/utils/constants";
+import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react"
 import toast from "react-hot-toast";
 
@@ -89,7 +90,9 @@ function ResetPassword() {
             />
         </div>
         <div className="mt-4">
-          <Button type="submit" className="w-full p-2 text-white rounded" disabled={isLoading}>{isLoading ? "Resetting..." : "Reset Password"}</Button>
+          <Button type="submit" className="w-full p-2 text-white rounded" disabled={isLoading}>{isLoading ? <div>
+            <Loader2 className="animate-spin mr-2" /> resetting
+          </div> : "Reset Password"}</Button>
         </div>
       </form>
     </div>
