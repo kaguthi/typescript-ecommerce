@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input"
 import { host } from "@/utils/constants";
 import { Loader2 } from "lucide-react";
@@ -52,49 +53,57 @@ function ResetPassword() {
   }
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <form onSubmit={handleSubmit} className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <div className="text-center mb-6">
-          <h3 className="text-lg font-semibold">Reset Password</h3>
-        </div>
-        <div className="mb-4 w-full">
-          <label htmlFor="email">Email</label>
-          <Input 
-            type="email" 
-            id="email"
-            name="email" 
-            required 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            />
-        </div>
-        <div className="mb-4 w-full">
-          <label htmlFor="new-password">New Password</label>
-          <Input 
-            type="password" 
-            id="newPassword" 
-            name="newPassword" 
-            required 
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            />
-        </div>
-        <div className="mb-4 w-full">
-          <label htmlFor="confirm-password">Confirm Password</label>
-          <Input 
-            type="password" 
-            id="confirmPassword" 
-            name="confirmPassword" 
-            required 
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-        </div>
-        <div className="mt-4">
-          <Button type="submit" className="w-full p-2 text-white rounded" disabled={isLoading}>{isLoading ? <div>
-            <Loader2 className="animate-spin mr-2" /> resetting
-          </div> : "Reset Password"}</Button>
-        </div>
-      </form>
+      <Card className="w-full max-w-md p-2">
+        <CardHeader>
+          <CardTitle>Reset Password</CardTitle>
+          <CardDescription>Enter your email and new password</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="text-center mb-6">
+              <h3 className="text-lg font-semibold">Reset Password</h3>
+            </div>
+            <div className="mb-4 w-full">
+              <label htmlFor="email">Email</label>
+              <Input 
+                type="email" 
+                id="email"
+                name="email" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
+            <div className="mb-4 w-full">
+              <label htmlFor="new-password">New Password</label>
+              <Input 
+                type="password" 
+                id="newPassword" 
+                name="newPassword" 
+                required 
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                />
+            </div>
+            <div className="mb-4 w-full">
+              <label htmlFor="confirm-password">Confirm Password</label>
+              <Input 
+                type="password" 
+                id="confirmPassword" 
+                name="confirmPassword" 
+                required 
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+            </div>
+            <div className="mt-4">
+              <Button type="submit" className="w-full p-2 text-white rounded" disabled={isLoading}>{isLoading ? <div>
+                <Loader2 className="animate-spin mr-2" /> resetting
+              </div> : "Reset Password"}</Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }
