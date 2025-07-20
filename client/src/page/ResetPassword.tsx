@@ -60,9 +60,6 @@ function ResetPassword() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <div className="text-center mb-6">
-              <h3 className="text-lg font-semibold">Reset Password</h3>
-            </div>
             <div className="mb-4 w-full">
               <label htmlFor="email">Email</label>
               <Input 
