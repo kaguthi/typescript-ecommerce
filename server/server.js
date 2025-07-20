@@ -63,6 +63,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan(format, { stream: accessLogStream }));
 }
 app.use(helmet());
+app.set('trust proxy', 1);
 app.use(limiter);
 
 app.use(cors({ 
