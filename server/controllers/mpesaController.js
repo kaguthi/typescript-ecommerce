@@ -1,5 +1,6 @@
 import timestamp from '../utils/timeStamp.js';
 import 'dotenv/config';
+
 async function mpesa(req, res) {
     const phone = req.body.phone;
     if(!phone) {
@@ -12,7 +13,6 @@ async function mpesa(req, res) {
     const password = Buffer.from(`${process.env.MPESA_SHORTCODE}${process.env.MPESA_PASSKEY}${timestamp}`).toString('base64');
 
     const auth = `Bearer ${token}`;
-    // const CallBackURL = "https://6f35-197-237-75-84.ngrok-free.app/payment/callback";
     const amount = 1
 
     const payload = {

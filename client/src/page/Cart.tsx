@@ -4,6 +4,7 @@ import { CircleMinus, CirclePlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCartContext } from "@/context/cartContext";
+import { formatPrice } from "@/utils/constants";
 
 function Cart() {
   const { setNumberOfProducts, cartProducts, setCartProducts } = useCartContext();
@@ -36,7 +37,7 @@ function Cart() {
   };
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-2">
       {cartProducts && cartProducts.length > 0 ? (
         cartProducts.map((product, index) => (
           <div
@@ -52,7 +53,7 @@ function Cart() {
             </div>
             <div className="flex flex-col ml-4 flex-grow">
               <div className="font-bold text-lg">{product.name}</div>
-              <h6 className="text-gray-600">Price: ${product.price}</h6>
+              <h6 className="text-gray-600">{formatPrice(product.price)}</h6>
               <div className="flex items-center mt-2">
                 <CircleMinus
                   className={`w-5 h-5 cursor-pointer ${

@@ -157,9 +157,9 @@ function Navbar() {
                 ) : (
                   <>
                     <li><Link to="order" onClick={() => setMenuOpen(false)}>Orders</Link></li>
-                    <li><Link to="profile" onClick={() => setMenuOpen(false)}>Profile</Link></li>
                   </>
                 )}
+                <li><Link to="profile" onClick={() => setMenuOpen(false)}>Profile</Link></li>
                 <li onClick={() => { logout(); setMenuOpen(false); }}>Logout</li>
               </>
             ) : (

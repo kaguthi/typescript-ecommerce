@@ -63,7 +63,9 @@ function Router() {
           <Route path='admin'>
             <Route index  element={ <AdminRoute><Admin/></AdminRoute>}/>
           </Route> 
-          <Route path='allOrder' element={ <AdminRoute><AllOrder /></AdminRoute>} />
+          <Route path='allOrder'> 
+            <Route index element={ <AdminRoute><AllOrder /></AdminRoute> } />
+          </Route>
         </Route>
         <Route path='*' element={ < NotFound/> }/>
       </Routes>

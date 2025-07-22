@@ -19,8 +19,6 @@ function Mpesa() {
       setLoading(false);
       return;
     }
-    const mpesaPhone = Number(phone);
-    console.log(typeof mpesaPhone)
 
     try {
       const sendData = await fetch(`${host}/payment/mpesa`, {
@@ -28,7 +26,7 @@ function Mpesa() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ phone: mpesaPhone })
+        body: JSON.stringify({ phone })
       });
 
       const data = await sendData.json();
@@ -51,36 +49,36 @@ function Mpesa() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <Card className="w-full max-w-md p-2">
-        <CardHeader>
-          <CardTitle>Lipa Na Mpesa</CardTitle>
-          <CardDescription>Enter your phone number to proceed with the payment</CardDescription>
-          <CardContent>
-            <form onSubmit={handleSubmit}>
-              <div className="w-full mt-2">
-                <Input
-                  id="phone"
-                  type="tel"
-                  name="phone"
-                  placeholder="2547xxxxxxxx"
-                  required
-                  pattern="^2547\d{8}$"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  disabled={isLoading}
-                  autoFocus
-                  className="mt-1"
-                />
-              </div>
-              <div className="w-full mt-3">
-                <Button disabled={isLoading}>
-                  {isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Processing</div> : "Pay Now"}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
+    <div className="flex flex-col items-center justify-center min-h-screen p-2">
+      <Card className="w-full max-w-md">
+        <CardHeader className="flex">
+          <CardTitle className="text-2xl font-bold">Lipa Na Mpesa</CardTitle>
+          <CardDescription className="text-xs text-gray-500 mb-2">Enter your phone number to proceed with the payment</CardDescription>
         </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="w-full">
+              <Input
+                id="phone"
+                type="tel"
+                name="phone"
+                placeholder="2547xxxxxxxx"
+                required
+                pattern="^2547\d{8}$"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                disabled={isLoading}
+                autoFocus
+                className="mt-1"
+              />
+            </div>
+            <div className="w-full mt-3">
+              <Button disabled={isLoading}>
+                {isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Processing</div> : "Pay Now"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
       </Card>
     </div>
   );

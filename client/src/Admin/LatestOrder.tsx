@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useAuth } from "@/context/AuthContext"
-import { host } from "@/utils/constants"
+import { formatPrice, host } from "@/utils/constants"
 import { order } from "@/utils/types"
 import { useQuery } from "@tanstack/react-query"
 import { Eye, LoaderCircle } from "lucide-react"
@@ -92,7 +92,7 @@ function LatestOrder() {
                               <TableFooter>
                                 <TableRow>
                                   <TableCell colSpan={3}>Total</TableCell>
-                                  <TableCell className="text-right">${order.totalPrice / 100}</TableCell>
+                                  <TableCell className="text-right">{formatPrice(order.totalPrice / 100)}</TableCell>
                                 </TableRow>
                               </TableFooter>
                             </Table>
