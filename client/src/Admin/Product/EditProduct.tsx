@@ -113,7 +113,7 @@ function EditProduct() {
             }}
           />
         </div>
-        <Button type="submit" className="mt-3 w-full">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-1" /> Updating</div> : "Update Product"}</Button>
+        <Button type="submit" className="mt-3 w-full">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-1" /> Update</div> : "Update Product"}</Button>
       </form>
     </div>
   )

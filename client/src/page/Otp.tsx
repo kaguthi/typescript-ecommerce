@@ -83,7 +83,7 @@ function Otp() {
                 </InputOTP>
             </div>
             <div className="mt-4 w-full">
-              <Button type="submit" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Verifying...</div> : "Verify"}</Button>
+              <Button type="submit" disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Verify</div> : "Verify"}</Button>
             </div>
           </form>
         </CardContent>

@@ -65,7 +65,7 @@ function Home() {
 
   if (error)
     return (
-      <Alert variant="destructive" className="mt-5">
+      <Alert variant="destructive" className="mt-5 p-3">
         <AlertTitle>Error</AlertTitle>
         <AlertDescription>{error.message}</AlertDescription>
       </Alert>

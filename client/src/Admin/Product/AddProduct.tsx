@@ -91,7 +91,7 @@ function AddProduct() {
             }}
           />
         </div>
-        <Button type="submit" className="mt-3 w-full">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-1" /> Adding</div> : "Add Product"}</Button>
+        <Button type="submit" className="mt-3 w-full">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-1" /> Add</div> : "Add Product"}</Button>
       </form>
     </div>
   );

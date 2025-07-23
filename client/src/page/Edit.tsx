@@ -107,7 +107,7 @@ const Edit: React.FC<EditProps> = ({ userdata }) => {
         />
         </div>
         <div className='w-full mt-3'>
-        <Button type='submit' disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin" /> Updating...</div> : "Update Now"}</Button>
+        <Button type='submit' disabled={isLoading}>{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin" /> Update</div> : "Update Now"}</Button>
         </div>
      </form>
     </div>

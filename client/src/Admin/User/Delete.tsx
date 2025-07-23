@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState, FormEvent } from "react";
 import { userDetail } from "@/utils/types";

@@ -17,6 +17,12 @@ const orderSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    status: {
+        type: String,
+        required: true,
+        default: 'processing',
+        enum: ['processing', 'transit', 'delivered']
+    }
 }, {
     timestamps: true 
 });

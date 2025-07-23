@@ -56,7 +56,10 @@ function ConfirmEmail() {
                         />
                     </div>
                     <div>
-                        <Button type="submit" className="w-full mt-4 p-2 text-white rounded">{isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Loading</div> : "Confirm Email"}</Button>
+                        <Button type="submit" className="w-full mt-4 p-2 text-white rounded">{isLoading ?
+                            <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Load</div>
+                            : "Confirm Email"}
+                        </Button>
                     </div>
                 </form>
             </CardContent>

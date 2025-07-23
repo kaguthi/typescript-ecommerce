@@ -90,7 +90,6 @@ async function createUser(req, res) {
                 password: hashedPassword,
                 profileImage: imageUploadResult.secure_url,
                 publicId: imageUploadResult.public_id,
-                role,
                 createdAt: Date.now(),
                 otp
             };

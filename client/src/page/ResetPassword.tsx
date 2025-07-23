@@ -94,9 +94,9 @@ function ResetPassword() {
                 />
             </div>
             <div className="mt-4">
-              <Button type="submit" className="w-full p-2 text-white rounded" disabled={isLoading}>{isLoading ? <div>
-                <Loader2 className="animate-spin mr-2" /> resetting
-              </div> : "Reset Password"}</Button>
+              <Button type="submit" className="w-full p-2 text-white rounded" disabled={isLoading}>{isLoading ? 
+                <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Reset</div> : "Reset Password"}
+              </Button>
             </div>
           </form>
         </CardContent>

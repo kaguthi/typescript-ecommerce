@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, FormEvent } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { userDetail } from "@/utils/types";
@@ -6,6 +7,7 @@ import { host } from "@/utils/constants";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 function Edit() {
   const [searchParams] = useSearchParams();
@@ -139,7 +141,7 @@ function Edit() {
           />
         </div>
         <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
-          {isLoading ? "Updating..." : "Update User"}
+          {isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2"/>Update</div> : "Update User"}
         </Button>
       </form>
     </div>

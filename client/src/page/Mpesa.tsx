@@ -74,7 +74,7 @@ function Mpesa() {
             </div>
             <div className="w-full mt-3">
               <Button disabled={isLoading}>
-                {isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Processing</div> : "Pay Now"}
+                {isLoading ? <div className="flex items-center"><Loader2 className="animate-spin mr-2" /> Pay</div> : "Pay Now"}
               </Button>
             </div>
           </form>
