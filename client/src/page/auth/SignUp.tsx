@@ -38,14 +38,14 @@ function Signin() {
         body: formData
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Error occurred due to: ${errorText}`);
-      }
-
       const data = await response.json();
-      toast.success(data.message);
-      navigate('/verify');
+      if(data.success === true){
+        toast.success(data.message);
+        navigate('/verify');
+      }
+      else {
+        toast.error(data.message)
+      }
     } catch (error: any) {
       toast.error(error.message);
     }

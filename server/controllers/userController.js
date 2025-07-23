@@ -79,7 +79,7 @@ async function createUser(req, res) {
             const otp = Math.floor(1000 + Math.random() * 900000);
             const mailOption = {
                 from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
-                to: req.body.email,
+                to: email,
                 subject: "Your OTP Code",
                 text: `Your OTP code is ${otp}`,
             };
