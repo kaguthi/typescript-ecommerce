@@ -41,7 +41,7 @@ function Signin() {
       const data = await response.json();
       if(data.success === true){
         toast.success(data.message);
-        navigate('/verify');
+        navigate('/signin');
       }
       else {
         toast.error(data.message)

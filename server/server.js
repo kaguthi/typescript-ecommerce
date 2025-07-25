@@ -10,7 +10,6 @@ import { fileURLToPath } from 'url';
 import useRoute from './routes/userRoute.js';
 import productRoute from './routes/productRoute.js';
 import categoryRoute from './routes/categoryRoute.js';
-import paymentRoute from './routes/paymentRoute.js';
 import orderRoute from './routes/orderRoute.js';
 import countRoute from './routes/countRoute.js';
 import mpesaRoute from './routes/mpesaRoute.js';
@@ -18,9 +17,13 @@ import fs from 'fs';
 import { createStream } from 'rotating-file-stream';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-
+import swaggerSpec from './utils/swagger.js';
+import swaggerUi from 'swagger-ui-express';
 
 const app = express();
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs

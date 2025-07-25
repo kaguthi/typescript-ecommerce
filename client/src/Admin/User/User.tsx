@@ -31,6 +31,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from "@/context/AuthContext";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns'
+import { exportToCSV, exportToExcel, exportToPDF } from "@/utils/fileExport"; 
 
 function User() {
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -174,6 +175,7 @@ function User() {
             rowSelection,
         },
     });
+    const selectedRows = table.getSelectedRowModel().rows.map(row => row.original);
 
     if (isLoading)
         return (
@@ -183,8 +185,9 @@ function User() {
         );
     
 
-    if (error) return (
-        <Alert variant="destructive" className="mt-5 p-3">
+    if (error)
+        return (
+        <Alert variant="destructive" className="mt-5 p-5">
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>
                 {error.message}
@@ -194,15 +197,43 @@ function User() {
 
     return (
         <div className="m-4">
-            <div>
-                <Input
-                placeholder="Filter email..."
-                value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-                onChange={(event) =>
-                    table.getColumn("email")?.setFilterValue(event.target.value)
-                }
-                className="max-w-sm"
-                />
+            <div className="flex items-center justify-between mb-4">
+                <div>
+                    <Input
+                        placeholder="Filter email..."
+                        value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn("email")?.setFilterValue(event.target.value)
+                        }
+                        className="max-w-sm"
+                    />
+                </div>
+                <div>
+                    <Button
+                        size="sm"
+                        className="mt-2"
+                        disabled={selectedRows.length === 0}
+                        onClick={() => exportToCSV(selectedRows ?? [], "users.csv")}
+                    >
+                        Export to CSV
+                    </Button>
+                    <Button
+                        size="sm"
+                        className="mt-2 ml-2"
+                        disabled={selectedRows.length === 0}
+                        onClick={() => exportToExcel(selectedRows ?? [], "users.xlsx")}
+                    >
+                        Export to Excel
+                    </Button>
+                    <Button
+                        size="sm"
+                        className="mt-2 ml-2"
+                        disabled={selectedRows.length === 0}
+                        onClick={() => exportToPDF(selectedRows ?? [], "users.pdf")}
+                    >
+                        Export to PDF
+                    </Button>
+                </div>
             </div>
             <Table>
                 <TableHeader>

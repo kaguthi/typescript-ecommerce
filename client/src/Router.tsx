@@ -38,7 +38,7 @@ function Router() {
           <Route path='profile' element={ <PrivateRoute><Profile /></PrivateRoute> } />
           <Route path='signin' element={ <Signin />}/>
           <Route path='signup' element={ <SignUp /> }/>
-          <Route path='verify' element={ <PrivateRoute><Otp/></PrivateRoute>}/>
+          <Route path='verify' element={ <Otp/> }/>
           <Route path='confirm-email' element={ <ConfirmEmail/> }/>
           <Route path='reset-password' element={ <ResetPassword/> }/>
           <Route path='reset-otp' element={ <ResetOtp/> }/>

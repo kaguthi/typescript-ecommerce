@@ -20,7 +20,7 @@ async function getUsers(req, res) {
     }
 
     // Optionally exclude sensitive fields like password & OTP
-    const users = await User.find({}, "-password -otp");
+    const users = await User.find({}, "-publicId -password -otp -otpCreatedAt -resetOtp -resetOtpCreatedAt ");
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch users", error: error.message });

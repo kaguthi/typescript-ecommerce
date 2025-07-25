@@ -31,6 +31,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useQuery } from "@tanstack/react-query"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { format } from "date-fns";
+import { exportToCSV, exportToExcel, exportToPDF } from "@/utils/fileExport";
 
 function Product() {
     const [sorting, setSorting] = useState<SortingState>([])
@@ -168,6 +169,7 @@ function Product() {
           columnVisibility,
           rowSelection,
     }});
+    const selectedRows = table.getSelectedRowModel().rows.map(row => row.original);
 
     if (isLoading) return <div className="flex items-center justify-center mt-10"><LoaderCircle className="animate-spin size-14" /></div>;
 
@@ -182,16 +184,42 @@ function Product() {
 
   return (
     <div className="m-4">
-        <div className="flex items-center py-4 justify-between">
-            <Input
-            placeholder="Filter name..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-            />
+        <div className="flex items-center mb-4 justify-between">
+            <div>
+                <Input
+                placeholder="Filter name..."
+                value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                    table.getColumn("name")?.setFilterValue(event.target.value)
+                }
+                className="max-w-sm"
+                />
+            </div>
           <div>
+            <Button
+                size="sm"
+                className="mt-2"
+                disabled={selectedRows.length === 0}
+                onClick={() => exportToCSV(selectedRows ?? [], "products.csv")}
+            >
+                Export CSV
+            </Button>
+            <Button
+                size="sm"
+                className="mt-2 ml-2"
+                disabled={selectedRows.length === 0}
+                onClick={() => exportToExcel(selectedRows ?? [], "products.xlsx")}
+            >
+                Export Excel
+            </Button>
+            <Button
+                size="sm"
+                className="mt-2 ml-2 mr-2"
+                disabled={selectedRows.length === 0}
+                onClick={() => exportToPDF(selectedRows ?? [], "products.pdf")}
+            >
+                Export PDF
+            </Button>
             <Button>
                 <Link to="addProduct">Add Product</Link>
             </Button>

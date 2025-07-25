@@ -64,6 +64,7 @@ function Navbar() {
                 Dark
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme("system")}>
+                <Sun className="mr-2 h-4 w-4" />
                 System
               </DropdownMenuItem>
             </DropdownMenuContent>
