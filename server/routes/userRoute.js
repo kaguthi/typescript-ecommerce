@@ -53,11 +53,35 @@ router.post("/register", createUser);
 /**
  * @swagger
  * /login:
- *  post:
- *      tags:
- *          - Users
- *      summary: Login to the system
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Login to the system
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: johndoe
+ *               password:
+ *                 type: string
+ *                 example: yourpassword
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
+
 router.post("/login", loginUser);
 /**
  * @swagger

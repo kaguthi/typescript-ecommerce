@@ -17,7 +17,21 @@ const options = {
                 url: 'https://ecommerce-backend-x85q.onrender.com',
                 description: 'Production Server'
             }
-        ]
+        ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
     },
     apis: ['./routes/*.js'],
 };
