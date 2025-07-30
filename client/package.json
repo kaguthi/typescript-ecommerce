@@ -19,7 +19,7 @@
     "@react-pdf/renderer": "^3.4.4",
     "@stripe/react-stripe-js": "^2.7.3",
     "@stripe/stripe-js": "^4.1.0",
-    "@tanstack/react-query": "^5.51.1",
+    "@tanstack/react-query": "^5.81.5",
     "@tanstack/react-table": "^8.17.3",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
