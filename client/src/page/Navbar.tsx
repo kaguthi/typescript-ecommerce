@@ -45,7 +45,7 @@ function Navbar() {
 
       {/* Desktop Nav */}
       <ul className="hidden md:flex space-x-4 items-center">
-        <li>
+        {/* <li>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -69,7 +69,7 @@ function Navbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </li>
+        </li> */}
         {token ? (
           <>
             {role === "admin" ? (
