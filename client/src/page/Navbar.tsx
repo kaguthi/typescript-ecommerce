@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LogOut, Menu, ShoppingCart, User, Sun, Moon } from "lucide-react";
+import { LogOut, Menu, ShoppingCart, User} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "../context/AuthContext";
 import useLogout from "./auth/Logout";
@@ -22,8 +22,6 @@ import {
 import Cart from "./Cart";
 import { useCartContext } from "@/context/cartContext";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/context/ThemeContext";
 
 function Navbar() {
   const { token, name, profileImage, role } = useAuth();
@@ -33,7 +31,6 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false); // <- separate cart control
 
-  const { setTheme } = useTheme();
   return (
     <div className="bg-primary flex items-center justify-between sticky top-0 z-50 px-4 py-3">
       <Link
