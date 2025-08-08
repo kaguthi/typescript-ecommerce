@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import { getUsers, createUser, loginUser, deleteUser, updateUser, getUserById, renewToken, verifyOtp, confirmEmail, resetPassword, verifyResetOtp } from "../controllers/userController.js";
 import useMiddleware from '../middleware/useMiddleware.js';
+import multer from 'multer';
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 const router = Router();
 
@@ -49,7 +52,7 @@ router.get("/renewtoken", renewToken)
  *          - Users
  *      summary: Register new users
  */
-router.post("/register", createUser);
+router.post("/register", upload.single('profileImage'), createUser);
 /**
  * @swagger
  * /login:

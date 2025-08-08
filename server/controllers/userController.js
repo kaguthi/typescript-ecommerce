@@ -9,7 +9,7 @@ import { mail } from '../utils/mail.js';
 import { uploadImage, deleteImage } from '../utils/cloudinary.js';
 
 
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } }); // 10 MB limit
+
 
 // Get all user data - Admin only
 async function getUsers(req, res) {
@@ -46,75 +46,87 @@ async function getUserById(req, res) {
 }
 // create user function
 async function createUser(req, res) {
-    upload.single('profileImage')(req, res, async (err) => {
-        if (err) {
-            return res.status(400).json({ message: err.message });
+    try {
+            const { username, email, password } = req.body;
+
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: "All fields are required" });
         }
-        try {
-             const { username, email, password } = req.body;
-
-            if (!username || !email || !password) {
-                return res.status(400).json({ message: "All fields are required" });
-            }
-            if (!validator.isEmail(email)) {
-                throw new Error("Email is in valid")
-            }
-
-            if (!validator.isStrongPassword(password, {minLength: 8, minUppercase: 1, minLowercase: 1, minNumbers: 1, minSymbols: 1})) {
-                throw new Error("Password is not strong 8-15 characters required")
-            }
-            const existingUser = await User.findOne({ email: email });
-            if (existingUser) {
-                return res.status(409).json({ message: "Email already in use", success: false });
-            }
-
-            const imageUploadResult = req.file
-                ? await uploadImage(req.file.buffer, {
-                    folder: 'uploads',
-                    resource_type: 'auto',
-                    })
-                : { secure_url: null, public_id: null };
-
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
-            const otp = Math.floor(1000 + Math.random() * 900000);
-            const mailOption = {
-                from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
-                to: email,
-                subject: "Your OTP Code",
-                text: `Your OTP code is ${otp}`,
-            };
-            await mail(mailOption);
-            const user = {
-                username,
-                email,
-                password: hashedPassword,
-                profileImage: imageUploadResult.secure_url,
-                publicId: imageUploadResult.public_id,
-                createdAt: Date.now(),
-                otp
-            };
-            await User.create(user);
-            res.status(201).json({ message: "User created successfully", success: true });
-        } catch (error) {
-            res.status(500).json({ message: error.message, success: false });
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ message: "Email is invalid"})
         }
-    });
+
+        if (!validator.isStrongPassword(password, {minLength: 8, minUppercase: 1, minLowercase: 1, minNumbers: 1, minSymbols: 1})) {
+            return res.status(400).json({ message :"Password must be strong (8+ chars, upper, lower, number, symbol)"})
+        }
+        const existingUser = await User.findOne({ email: email });
+        if (existingUser) {
+            return res.status(409).json({ message: "Email already in use", success: false });
+        }
+
+        const imageUploadResult = req.file
+            ? await uploadImage(req.file.buffer, {
+                folder: 'uploads',
+                resource_type: 'auto',
+                })
+            : { secure_url: null, public_id: null };
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const otp = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
+        const mailOption = {
+            from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
+            to: email,
+            subject: "Your OTP Code",
+            text: `Your OTP code is ${otp}`,
+        };
+        await mail(mailOption);
+        const user = {
+            username,
+            email,
+            password: hashedPassword,
+            profileImage: imageUploadResult.secure_url,
+            publicId: imageUploadResult.public_id,
+            createdAt: Date.now(),
+            otp
+        };
+        await User.create(user);
+        res.status(201).json({ message: "User created successfully", success: true });
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+    }
 }
 
 // login the user function
 async function loginUser(req, res) {
     try {
-        const user = await User.findOne({ username: req.body.username });
-        if (!user) {
-            return res.status(400).json({ message: "Invalid username or password." });
+        const identifier = req.body.username?.trim().toLowerCase();
+        const password = req.body.password;
+
+        
+        if (!identifier || !password) {
+            return res.status(400).json({ message: "username/email and password are required." });
         }
-        const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+        const user = await User.findOne({
+            $or: [
+                { username: identifier },
+                { email: identifier }
+            ]
+        });
+        
+        if (!user) {
+            return res.status(400).json({ message: "Invalid username/email or password." });
+        }
+        
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
         if (isPasswordValid) {
             const token = createToken(user._id);
             res.cookie("token", token, {
                 withCredentials: true,
                 httpOnly: true,
-                secure: true
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000
             });
 
             res.status(200).json({ message: "Login successful", success: true, token: token, username: user.username, profileImage: user.profileImage, userId: user._id, role: user.role });
@@ -163,39 +175,46 @@ async function updateUser(req, res) {
     if (!id) {
         return res.status(400).json({ message: "User ID is required." });
     }
+
     upload.single('profileImage')(req, res, async (err) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(400).json({ message: err.message });
         }
+
         try {
-            const existingUser = await User.findById(id)
+            const existingUser = await User.findById(id);
             if (!existingUser) {
-                return res.status(404).json({ message: "User not found."})
-            }
-            const updateData = { ...req.body, updatedAt: Date.now() };
-            if (req.file) {
-                if (existingUser.profileImage) {
-                    const deleteImageResult = await deleteImage(existingUser.publicId);
-                    if (deleteImageResult.result !== 'ok') {
-                        return res.status(500).json({ message: "Failed to delete image from Cloudinary" });
-                    }
-                    const result = await uploadImage(req.file.buffer, {
-                        folder: 'uploads',
-                        resource_type: 'auto'
-                    });
-                    updateData.profileImage = result.secure_url;
-                    updateData.publicId = result.public_id;
-                }
-            }
-            const user = await User.findByIdAndUpdate(id, updateData, { new: true });
-            if (!user) {
                 return res.status(404).json({ message: "User not found." });
             }
+
+            const updateData = { ...req.body, updatedAt: Date.now() };
+
+            if (req.file) {
+                // If user already had an image, try to delete it
+                if (existingUser.publicId) {
+                    const deleteImageResult = await deleteImage(existingUser.publicId);
+                    if (deleteImageResult.result !== 'ok' && deleteImageResult.result !== 'not found') {
+                        return res.status(500).json({ message: "Failed to delete image from Cloudinary" });
+                    }
+                }
+
+                // Upload the new image
+                const result = await uploadImage(req.file.buffer, {
+                    folder: 'uploads',
+                    resource_type: 'auto'
+                });
+
+                updateData.profileImage = result.secure_url;
+                updateData.publicId = result.public_id;
+            }
+
+            const user = await User.findByIdAndUpdate(id, updateData, { new: true });
             res.status(200).json({ message: "User updated successfully", user });
-        } catch (error) { 
-            res.status(500).json({ message: error.message })
+
+        } catch (error) {
+            res.status(500).json({ message: error.message });
         }
-    })
+    });
 }
 
 async function renewToken(req, res) {
@@ -271,7 +290,7 @@ async function confirmEmail(req, res){
         if (!user) {
             return res.status(404).json({ message: "User not found", success: false });
         }
-        const otp = Math.floor(1000 + Math.random() * 900000);
+        const otp = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
         const mailOption = {
             from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
             to: email,
