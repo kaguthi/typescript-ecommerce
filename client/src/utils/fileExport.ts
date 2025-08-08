@@ -15,7 +15,11 @@ export const exportToExcel = (rows: any[], fileName: string) => {
 }
 
 export const exportToPDF = (rows: any[], fileName: string) => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: 'a4'
+    });
     const columns = Object.keys(rows[0]);
     const data = rows.map(row => columns.map(col => row[col]));
 

@@ -81,6 +81,7 @@ function Signin() {
                 className="mt-1" 
                 type="text"
                 name="username"
+                placeholder="Username or Email"
                 required
                 value={studentDetail.username} 
                 onChange={(e) => setStudentDetails({ ...studentDetail, username: e.target.value })} 
