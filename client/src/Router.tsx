@@ -24,6 +24,7 @@ const PaymentMethod = lazy(() => import ('./page/PaymentMethod'))
 const ConfirmEmail = lazy(() => import ('./page/ConfirmEmail'))
 const ResetPassword = lazy(() => import ('./page/ResetPassword'))
 const ResetOtp = lazy(() => import ('./page/auth/Otp'))
+const ViewOrder = lazy(() => import ('./Admin/Order/view'))
 import { PrivateRoute } from './PrivateRoute'
 import { LoaderCircle } from 'lucide-react'
 import  AdminRoute  from './AdminRoute'
@@ -65,6 +66,7 @@ function Router() {
           </Route> 
           <Route path='allOrder'> 
             <Route index element={ <AdminRoute><AllOrder /></AdminRoute> } />
+            <Route path='view' element={ <AdminRoute><ViewOrder /></AdminRoute> } />
           </Route>
         </Route>
         <Route path='*' element={ < NotFound/> }/>
