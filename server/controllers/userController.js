@@ -73,13 +73,13 @@ async function createUser(req, res) {
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const otp = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
-        const mailOption = {
-            from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
-            to: email,
-            subject: "Your OTP Code",
-            text: `Your OTP code is ${otp}`,
-        };
-        await mail(mailOption);
+        // const mailOption = {
+        //     from: `"E_Buy Stores" <${process.env.EMAIL_FROM}>`,
+        //     to: email,
+        //     subject: "Your OTP Code",
+        //     text: `Your OTP code is ${otp}`,
+        // };
+        // await mail(mailOption);
         const user = {
             username,
             email,
