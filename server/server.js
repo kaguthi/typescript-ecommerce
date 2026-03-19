@@ -75,9 +75,6 @@ app.use(cors({
 }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
-app.use((req, res, next) => {
-  res.send("Welcome to E-buy")
-})
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 

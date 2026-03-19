@@ -23,6 +23,25 @@ const router = Router();
  *                          type: array
  *                          items:
  *                              type: object
+ *                              properties:
+ *                                  id:
+ *                                    type: string
+ *                                    example: 1234567890
+ *                                  username:
+ *                                    type: string
+ *                                    example: johndoe
+ *                                  email:
+ *                                    type: string
+ *                                    example: johndoe@example.com
+ *                                  profileImage:
+ *                                    type: string
+ *                                    example: http://example.com/images/johndoe.jpg
+ *                                  createdAt:
+ *                                    type: string
+ *                                    example: 2023-10-01T12:34:56.789Z
+ *                                  role:
+ *                                    type: string
+ *                                    example: user
  */
 
 router.get("/users", useMiddleware, getUsers);
@@ -33,6 +52,25 @@ router.get("/users", useMiddleware, getUsers);
  *      tags:
  *          - Users
  *      summary: Retrieve user with User id
+ *      responses:
+ *          200:
+ *              description: A single user.
+ *              content:
+ *                 application/json:
+ *                    schema:   
+ *                        type: array   
+ *                        items:
+ *                            type: object
+ *                            properties:
+ *                              id:
+ *                                type: string
+ *                                example: 1234567890
+ *                              username:
+ *                                type: string
+ *                                example: johndoe
+ *                              email:
+ *                                type: string
+ *                                example: johndoe@example.com
  */
 router.get("/users/:id", useMiddleware, getUserById);
 /**
